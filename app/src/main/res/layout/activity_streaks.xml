@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StreaksActivity">
+
+    <include
+        android:id="@+id/streaks_toolbar"
+        layout="@layout/streaks_toolbar_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!-- PERSONAL/FREINDS Toggle button -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/centsible_background_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/streaks_toolbar"
+        app:tabIndicatorColor="@color/centsible_purple"
+        app:tabSelectedTextColor="@color/centsible_purple"
+        app:tabTextColor="@color/centsible_inactive_tab">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PERSONAL" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FREINDS" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <!-- Streak number -->
+
+    <!-- Strak Icon -->
+    <TextView
+        android:id="@+id/streakNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="56dp"
+        android:text="128"
+        android:textColor="@color/black"
+        android:textSize="90sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/streaks_toolbar" />
+
+    <ImageView
+        android:id="@+id/streakIcon"
+        android:layout_width="238dp"
+        android:layout_height="152dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/fire_icon"
+        app:layout_constraintStart_toEndOf="@id/streakNumber"
+        app:layout_constraintTop_toTopOf="@id/streakNumber" />
+
+    <TextView
+        android:id="@+id/streakLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:text="day streak!"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/streakNumber"
+        app:layout_constraintTop_toBottomOf="@id/streakNumber" />
+
+    <!-- Congratulations Message Container -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/congratsCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/centsible_light_purple"
+        app:layout_constraintTop_toBottomOf="@id/streakLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+
+            <!-- Celebration Icon -->
+            <ImageView
+                android:id="@+id/congratsIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/celebration_icon"
+                android:tint="@color/centsible_purple"
+                android:layout_marginEnd="12dp" />
+
+            <!-- Congratulations Message -->
+            <TextView
+                android:id="@+id/congratsMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="You've kept a Perfect Streak for 18 straight weeks. Wow!"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

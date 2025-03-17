@@ -27,4 +27,44 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <!--SATHISH -->
+    <string-array name="name_list">
+        <item>Amanda</item>
+        <item>Brandon</item>
+        <item>Charlotte</item>
+        <item>Daniel</item>
+        <item>Emma</item>
+        <item>Felix</item>
+        <item>Grace</item>
+        <item>Henry</item>
+        <item>Isabella</item>
+        <item>Jacob</item>
+    </string-array>
+
+    <string-array name="points_list">
+        <item>120 points</item>
+        <item>144 points</item>
+        <item>200 points</item>
+        <item>175 points</item>
+        <item>160 points</item>
+        <item>90 points</item>
+        <item>250 points</item>
+        <item>300 points</item>
+        <item>110 points</item>
+        <item>185 points</item>
+    </string-array>
+
+    <string-array name="limited_numbers">
+        <item>1</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>1</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+    </string-array>
 </resources>
