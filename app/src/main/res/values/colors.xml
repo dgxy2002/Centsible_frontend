@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background">#FAF6FE</color>
+    <color name="pie1">#d9bff6</color>
+    <color name="pie2">#e4d4f9</color>
+    <color name="pie3">#f4bfdf</color>
+    <color name="pie4">#f8deee</color>
+    <color name="pie5">#bdd299</color>
+    <color name="pie6">#eee3b7</color>
+    <color name="pie7">#d4a8b6</color>
+    <color name="pie8">#eebab7</color>
+    <color name="buttons">#e6dff1</color>
+    <color name="progress_bg">#828282</color>
+
+
+
+</resources>

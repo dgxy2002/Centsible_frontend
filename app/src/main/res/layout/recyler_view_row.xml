@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:background="#f4edfd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:paddingBottom="15dp"
+        app:cardElevation="6dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f4edfd">
+
+            <ImageView
+                android:id="@+id/iconView"
+                android:layout_width="60dp"
+                android:layout_height="62dp"
+                android:layout_marginStart="28dp"
+                android:background="@drawable/rounded_icon_container"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_fastfood_24" />
+
+            <TextView
+                android:id="@+id/categoryView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:fontFamily="@font/varela_round"
+                android:text="Dining"
+                app:layout_constraintStart_toEndOf="@+id/iconView"
+                app:layout_constraintTop_toTopOf="@+id/iconView" />
+
+            <TextView
+                android:id="@+id/amtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/varela_round"
+                android:text="$205.50"
+                android:textColor="#828282"
+                app:layout_constraintBottom_toTopOf="@+id/roundedBarView"
+                app:layout_constraintStart_toStartOf="@+id/categoryView"
+                app:layout_constraintTop_toBottomOf="@+id/categoryView"
+                app:layout_constraintVertical_bias="0.444" />
+
+            <View
+                android:id="@+id/roundedBarView"
+                android:layout_width="100dp"
+                android:layout_height="10dp"
+                android:background="@drawable/rounded_bar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/amtView"
+                app:layout_constraintTop_toBottomOf="@id/amtView"
+                tools:layout_editor_absoluteY="81dp" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

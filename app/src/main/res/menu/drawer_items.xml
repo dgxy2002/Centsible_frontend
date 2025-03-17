@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navAvatar"
+        android:icon="@drawable/avatar"
+        android:title="Avatar">
+
+    </item>
+    <item
+        android:id="@+id/navLB"
+        android:icon="@drawable/leaderboard"
+        android:title="Leaderboard">
+
+    </item>
+    <item
+        android:id="@+id/navGroups"
+        android:icon="@drawable/groups"
+        android:title="Groups">
+
+    </item>
+    <item
+        android:id="@+id/navQuest"
+        android:icon="@drawable/checkbox_empty"
+        android:title="Quest1">
+
+    </item>
+    <item
+        android:id="@+id/navQuest2"
+        android:icon="@drawable/checkbox_empty"
+        android:title="Quest2">
+
+    </item>
+    <item
+        android:id="@+id/Quest3"
+        android:icon="@drawable/checkbox_ticked"
+        android:title="Quest3">
+
+    </item>
+    <item
+        android:id="@+id/navSettings"
+        android:icon="@drawable/settings"
+        android:title="Settings">
+
+    </item>
+    <item
+        android:id="@+id/navLogout"
+        android:icon="@drawable/logout"
+        android:title="Logout">
+
+    </item>
+</menu>
