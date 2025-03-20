@@ -13,21 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.example.andyapp.Exp_RecyclerViewAdapter;
-import com.example.andyapp.ExpensesModel;
+import com.example.andyapp.adapters.Exp_RecyclerViewAdapter;
+import com.example.andyapp.models.ExpensesModel;
 import com.example.andyapp.LogExpense;
 import com.example.andyapp.R;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,8 +82,8 @@ public class ExpenseFragment extends Fragment {
 
     private void setupExpensesModel(){
         String[] categoryNames = {"Dining", "Shopping", "Transport", "Education"};
-        float[] amounts = {150.50F, 137.70F, 250.50F, 100.00F};
-        int[] iconImages = {R.drawable.baseline_fastfood_24, R.drawable.baseline_shopping_cart_24, R.drawable.baseline_directions_bus_24, R.drawable.baseline_library_books_24};
+        float[] amounts = {150.50F, 137.70F, 250.50F, 1000.00F};
+        int[] iconImages = {R.drawable.dining, R.drawable.dining, R.drawable.dining, R.drawable.dining};
         for (int i =0; i < categoryNames.length; i++){
             expensesModels.add(new ExpensesModel(categoryNames[i], amounts[i], iconImages[i]));
         }

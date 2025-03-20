@@ -3,14 +3,17 @@
     <item android:id="@+id/background_pb">
         <shape android:shape="rectangle">
             <corners android:radius="6dp"/>
-            <solid android:color="@color/pie1"/>
+            <solid android:color="@color/progress_bg"/>
         </shape>
     </item>
     <item android:id="@+id/progress">
         <scale android:scaleWidth="100%">
             <shape android:shape="rectangle">
                 <corners android:radius="6dp"/>
-                <solid android:color="@color/pie2"/>
+                <gradient
+                    android:startColor="@color/gradient_start"
+                    android:endColor="@color/gradient_end"
+                    />
             </shape>
         </scale>
     </item>

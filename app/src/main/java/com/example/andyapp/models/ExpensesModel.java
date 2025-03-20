@@ -1,4 +1,4 @@
-package com.example.andyapp;
+package com.example.andyapp.models;
 
 public class ExpensesModel {
     private String category;

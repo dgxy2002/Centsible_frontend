@@ -3,31 +3,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
+        android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/fredoka_medium"
+        android:textColor="@color/black"
         android:gravity="center"
         android:text="$500"
         android:textSize="50sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/budgetProgressBar"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="@+id/budgetProgressBar"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.052">
+        app:layout_constraintVertical_bias="0.023">
 
     </TextView>
 
     <ProgressBar
         android:id="@+id/budgetProgressBar"
         style="?android:progressBarStyleHorizontal"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:progress="25"
         android:progressDrawable="@drawable/custom_progressbar_bg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="111dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="800dp"
+        android:layout_marginTop="25dp"
+        android:background="@color/backgroundaccent"
+        app:cardCornerRadius="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/budgetProgressBar"
+        app:strokeColor="@color/black">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroundaccent">
+
+            <TextView
+                android:id="@+id/textTopCategories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/varela_round"
+                android:text="Spending Breakdown"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/bdrecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/backgroundaccent"
+                app:layout_constraintTop_toBottomOf="@+id/textTopCategories" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

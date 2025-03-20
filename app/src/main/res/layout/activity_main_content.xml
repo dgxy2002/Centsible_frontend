@@ -46,7 +46,7 @@
             android:layout_marginEnd="16dp"
             android:background="#FAF6FE"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/hamburgermenu" />
+            app:srcCompat="@drawable/bell" />
     </Toolbar>
 
     <androidx.fragment.app.FragmentContainerView

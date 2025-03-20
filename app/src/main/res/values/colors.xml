@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background">#FAF6FE</color>
+    <color name="backgroundaccent">#F4EDFD </color>
     <color name="pie1">#d9bff6</color>
     <color name="pie2">#e4d4f9</color>
     <color name="pie3">#f4bfdf</color>
@@ -13,6 +14,19 @@
     <color name="pie8">#eebab7</color>
     <color name="buttons">#e6dff1</color>
     <color name="progress_bg">#828282</color>
+    <color name="gradient_start">#F4BFDF</color>
+    <color name="gradient_end">#D8BFF5</color>
+
+    <array name="category_colors">
+        <item>@color/pie1</item>
+        <item>@color/pie2</item>
+        <item>@color/pie3</item>
+        <item>@color/pie4</item>
+        <item>@color/pie5</item>
+        <item>@color/pie6</item>
+        <item>@color/pie7</item>
+        <item>@color/pie8</item>
+    </array>
 
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
