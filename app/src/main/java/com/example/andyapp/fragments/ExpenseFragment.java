@@ -44,6 +44,7 @@ public class ExpenseFragment extends Fragment {
 
     ArrayList<ExpensesModel> expensesModels = new ArrayList<>();
     ArrayList<PieEntry> entries = new ArrayList<>();
+    ArrayList<Integer> colors;
     ImageButton btnAdd;
 
     @Override
@@ -52,8 +53,7 @@ public class ExpenseFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_expense, container, false);
         PieChart pieChart = view.findViewById(R.id.expensePieChart);
-
-        ArrayList<Integer> colors = new ArrayList<>();
+        colors = new ArrayList<>();
         for (int colorResId : colorResIds) {
             colors.add(ContextCompat.getColor(requireActivity(), colorResId));
         }
