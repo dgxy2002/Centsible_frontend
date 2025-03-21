@@ -45,10 +45,10 @@ public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerVi
         //assigning values to each view we create in recycler_row_view file
         //based on the position of the recycler view
         holder.catView.setText(expensesModels.get(position).getCategory());
-        holder.amtView.setText(String.valueOf(expensesModels.get(position).getAmount()));
+        holder.amtView.setText(String.format("$%.2f", expensesModels.get(position).getAmount()));
         holder.iconView.setImageResource(expensesModels.get(position).getImage());
-        setBarWidth(holder.barView, expensesModels.get(position).getAmount());
-        setBarColor(holder.barView, position);
+        setBarWidth(holder.roundedBarView, expensesModels.get(position).getAmount());
+        setBarColor(holder.roundedBarView, position);
     }
 
     @Override
@@ -82,7 +82,6 @@ public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerVi
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             iconView = itemView.findViewById(R.id.iconView);
-            barView = itemView.findViewById(R.id.roundedBarView);
             catView = itemView.findViewById(R.id.categoryView);
             amtView = itemView.findViewById(R.id.amtView);
             roundedBarView = itemView.findViewById(R.id.roundedBarView);

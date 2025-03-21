@@ -7,8 +7,16 @@
       </SelectionState>
       <SelectionState runConfigName="NavigationDrawerActivity">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2025-03-21T06:40:50.449566Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/seanleng/.android/avd/Pixel_6_Pro_API_33.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="StreaksActivity">
+      <SelectionState runConfigName="LogExpense">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

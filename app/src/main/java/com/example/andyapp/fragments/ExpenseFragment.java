@@ -10,21 +10,25 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.andyapp.adapters.Exp_RecyclerViewAdapter;
 import com.example.andyapp.models.ExpensesModel;
 import com.example.andyapp.LogExpense;
 import com.example.andyapp.R;
+import com.example.andyapp.queries.ExpenseService;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,6 +85,21 @@ public class ExpenseFragment extends Fragment {
     }
 
     private void setupExpensesModel(){
+        ExpenseService expenseService = new ExpenseService(this.getContext());
+        String userId = "67d3d20a29d0cd06ab44add8"; // Replace with actual userId
+        expenseService.fetchTotalExpensesByCategory(userId, new ExpenseService.ExpenseCallback() {
+            @Override
+            public void onSuccess(Map<String, Double> categoryExpenses) {
+                for (Map.Entry<String, Double> entry : categoryExpenses.entrySet()) {
+                    Log.d("EXPENSE_DATA", "Category: " + entry.getKey() + " - Total: " + entry.getValue());
+                }
+            }
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(getContext(), "Failed to fetch", Toast.LENGTH_SHORT).show();
+                Log.e("API_ERROR", errorMessage);
+            }
+        });
         String[] categoryNames = {"Dining", "Shopping", "Transport", "Education"};
         float[] amounts = {150.50F, 137.70F, 250.50F, 1000.00F};
         int[] iconImages = {R.drawable.dining, R.drawable.dining, R.drawable.dining, R.drawable.dining};
@@ -98,13 +117,14 @@ public class ExpenseFragment extends Fragment {
         return new PieDataSet(entries, "Expenses");
     }
     private void formatPieDataSet(PieDataSet pieDataSet, ArrayList<Integer> colors, int black, Typeface font){
+        pieDataSet.setSliceSpace(3f);
         pieDataSet.setColors(colors);
         pieDataSet.setValueTypeface(font);
         pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        pieDataSet.setValueLinePart1OffsetPercentage(80f); // Offset of the first part of the line
-        pieDataSet.setValueLinePart1Length(0.2f);           // Length of the first part of the line
-        pieDataSet.setValueLinePart2Length(0.4f);           // Length of the second part of the line
+        pieDataSet.setValueLinePart1OffsetPercentage(100f); // Offset of the first part of the line
+        pieDataSet.setValueLinePart1Length(0.4f);           // Length of the first part of the line
+        pieDataSet.setValueLinePart2Length(0.6f);           // Length of the second part of the line
         pieDataSet.setValueLineColor(black);
         pieDataSet.setValueTextSize(12f);     // Size of the value text
         pieDataSet.setValueTextColor(black); // Color of the value text

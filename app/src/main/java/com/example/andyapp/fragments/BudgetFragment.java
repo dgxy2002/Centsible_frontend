@@ -59,7 +59,6 @@ public class BudgetFragment extends Fragment {
     }
 
     void setupBudgetModels(int[]progresses, int[]images, float[] spentData, float[] budgetData, String[] categories){
-
         for(int i = 0; i < categories.length; i++){
             budgetModels.add(new BudgetModel(progresses[i], images[i], spentData[i], budgetData[i], categories[i]));
         }

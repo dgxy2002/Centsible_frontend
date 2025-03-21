@@ -18,24 +18,25 @@
         android:title="Groups">
 
     </item>
-    <item
-        android:id="@+id/navQuest"
-        android:icon="@drawable/checkbox_empty"
-        android:title="Quest1">
+    <group android:id = "@+id/questGroup">
+        <item
+            android:id="@+id/navQuest"
+            android:icon="@drawable/checkbox_empty"
+            android:title="Quest1">
 
-    </item>
-    <item
-        android:id="@+id/navQuest2"
-        android:icon="@drawable/checkbox_empty"
-        android:title="Quest2">
+        </item>
+        <item
+            android:id="@+id/navQuest2"
+            android:icon="@drawable/checkbox_empty"
+            android:title="Quest2">
 
-    </item>
-    <item
-        android:id="@+id/Quest3"
-        android:icon="@drawable/checkbox_ticked"
-        android:title="Quest3">
-
-    </item>
+        </item>
+        <item
+            android:id="@+id/navQuest3"
+            android:icon="@drawable/checkbox_ticked"
+            android:title="Quest3">
+        </item>
+    </group>
     <item
         android:id="@+id/navSettings"
         android:icon="@drawable/settings"

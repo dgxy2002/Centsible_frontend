@@ -49,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
             username.add(new UsernameModel(usernameNames[i],
                     pointsList[i], numberUpDown[i], profilePictures[i], arrowUpDown[i]));
 
-
         }
-
 
     }
 }

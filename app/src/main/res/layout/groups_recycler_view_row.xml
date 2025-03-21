@@ -6,11 +6,13 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:background="@color/backgroundaccent"
+        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:paddingBottom="15dp"
         app:cardElevation="0dp"
         app:cardCornerRadius="20dp"
@@ -22,55 +24,57 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#f4edfd">
+            android:background="@color/white">
 
             <ImageView
-                android:id="@+id/iconView"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="35dp"
-                android:padding="6dp"
-                android:background="@drawable/rounded_icon_container"
+                android:id="@+id/avatarView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/dining" />
+                app:srcCompat="@drawable/avatar" />
 
             <TextView
-                android:id="@+id/categoryView"
+                android:id="@+id/nameView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:textSize="18sp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/varela_round"
-                android:text="Dining"
-                app:layout_constraintStart_toEndOf="@+id/iconView"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/amtView"
-                />
+                android:text="Sean"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@id/avatarView"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/amtView"
+                android:id="@+id/relationView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
                 android:fontFamily="@font/varela_round"
-                android:textSize="18sp"
-                android:text="$205.50"
-                android:textColor="#828282"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="@id/categoryView"
+                android:text="Child"
+                android:textColor="@color/black"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                 />
+                app:layout_constraintStart_toStartOf="@+id/nameView" />
 
-            <View
-                android:id="@+id/roundedBarView"
-                android:layout_width="100dp"
-                android:layout_height="5dp"
-                android:background="@drawable/rounded_bar"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnNudge"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/rounded_button_container"
+                android:fontFamily="@font/varela_round"
+                android:gravity="center"
+                android:text="Nudge"
+                android:textAllCaps="false"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/amtView"
-                app:layout_constraintTop_toBottomOf="@id/amtView"
-                 />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
