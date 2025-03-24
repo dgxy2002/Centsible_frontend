@@ -1,5 +1,6 @@
 package com.example.andyapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -30,6 +31,7 @@ public class StreaksActivity extends AppCompatActivity {
     private LocalDate currentDate;
 
     private Set<LocalDate> completedDates = new HashSet<>();
+    private ImageButton btnback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class StreaksActivity extends AppCompatActivity {
         dayCountText = findViewById(R.id.textDayCount);
         ImageButton prevButton = findViewById(R.id.buttonPreviousMonth);
         ImageButton nextButton = findViewById(R.id.buttonNextMonth);
+        btnback = findViewById(R.id.btn_back);
+
 
         currentDate = LocalDate.now();
 
@@ -62,6 +66,10 @@ public class StreaksActivity extends AppCompatActivity {
         nextButton.setOnClickListener(v -> {
             currentDate = currentDate.plusMonths(1);
             updateCalendar();
+        });
+        btnback.setOnClickListener(view -> {
+            Intent subActivityIntent = new Intent(view.getContext(), Dashboard.class);
+            startActivity(subActivityIntent);
         });
     }
 

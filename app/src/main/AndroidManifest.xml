@@ -13,19 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndyApp"
         tools:targetApi="31">
-        <activity
-            android:name=".ActivityFragment"
-            android:exported="false"
-            />
+
 
         <activity
             android:name=".StreaksActivity"
-            android:exported="false">
+            android:exported="true">
+
+
         </activity>
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+
         <activity
             android:name=".NavigationDrawerActivity"
             android:exported="true" />
