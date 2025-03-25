@@ -1,15 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.AndyApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
 
-    <style name="Theme.AndyApp" parent="Base.Theme.AndyApp" />
-    <style name="Theme.AndyApp.NoActionBar">
+
+    <style name="Theme.AndyApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Enables use of custom MaterialToolbar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <!-- Optional customizations -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/colorAccent</item>
     </style>
+
+
     <style name="Theme.AndyApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.AndyApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

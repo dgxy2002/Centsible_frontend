@@ -64,7 +64,7 @@ public class CalendarAdapter extends BaseAdapter {
 
             if (date.equals(LocalDate.now())) {
                 view.setBackgroundResource(R.drawable.today_background);
-                dayText.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                dayText.setTextColor(ContextCompat.getColor(context, android.R.color.black));
             }
 
             view.setOnClickListener(v -> {

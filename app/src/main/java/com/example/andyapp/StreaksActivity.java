@@ -75,9 +75,9 @@ public class StreaksActivity extends AppCompatActivity {
 
     private void loadSampleData() {
         // Simulating completed dates from Feb 1–17, 2025 except 18–22
-        for (int i = 1; i <= 17; i++) {
-            if (i <= 17) {
-                completedDates.add(LocalDate.of(2025, 2, i));
+        for (int i = 1; i <= 25; i++) {
+            if (i <= 24) {
+                completedDates.add(LocalDate.of(2025, 3, i));
             }
         }
         updateMonthStats();
