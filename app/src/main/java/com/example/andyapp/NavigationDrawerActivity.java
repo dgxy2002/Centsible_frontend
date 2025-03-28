@@ -4,6 +4,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -54,7 +55,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                if (itemid == R.id.navAvatar){
                    changeFragment(new DashboardFragment());
                }else if (itemid == R.id.navLB){
-                   Toast.makeText(NavigationDrawerActivity.this, "leaderboard", Toast.LENGTH_SHORT).show();
+                   Intent intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
+                   startActivity(intent);
                }else if (itemid == R.id.navGroups){
                    changeFragment(new GroupsFragment());
                }else if (itemid == R.id.navSettings){

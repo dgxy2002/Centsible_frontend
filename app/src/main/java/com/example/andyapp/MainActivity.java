@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton btn_back = findViewById(R.id.btn_back);
 
         btn_back.setOnClickListener(view -> {
-            Intent subActivityIntent = new Intent(view.getContext(), Dashboard.class);
+            Intent subActivityIntent = new Intent(view.getContext(), NavigationDrawerActivity.class);
             startActivity(subActivityIntent);
         });
     }

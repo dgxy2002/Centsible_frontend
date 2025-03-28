@@ -29,6 +29,10 @@
             android:name=".StreaksActivity"
             android:exported="true"/>
 
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"/>
+
 
         <activity
             android:name=".ActivityActivity"
