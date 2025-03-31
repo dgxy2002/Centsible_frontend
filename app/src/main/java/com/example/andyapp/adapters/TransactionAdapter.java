@@ -78,7 +78,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 return R.drawable.dollar_icon;
             case "bills":
                 return R.drawable.baseline_library_books_24;
-            case "game":
+            case "entertainment":
                 return R.drawable.game_icon;
             default:
                 return R.drawable.dollar_icon; // fallback icon

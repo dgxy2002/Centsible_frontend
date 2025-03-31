@@ -13,51 +13,51 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class UsernameModelRCV extends RecyclerView.Adapter<UsernameModelRCV.MyViewHolder> {
-    Context context;
-    ArrayList<UsernameModel> usernameModels;
+    private final Context context;
+    private final ArrayList<UsernameModel> usernameModels;
 
     public UsernameModelRCV(Context context, ArrayList<UsernameModel> usernameModels){
         this.context = context;
         this.usernameModels = usernameModels;
-
     }
-
 
     @NonNull
     @Override
     public UsernameModelRCV.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recycler_view_row,parent,false);
-        return new UsernameModelRCV.MyViewHolder(view);
+        View view = inflater.inflate(R.layout.recycler_view_row, parent, false);
+        return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull UsernameModelRCV.MyViewHolder holder, int position) {
-        holder.name.setText(usernameModels.get(position).getName());
-        holder.points.setText(usernameModels.get(position).getNumber_points());
-        holder.img_arrow.setImageResource(usernameModels.get(position).getArrowUpDown_img());
-        holder.img_profile.setImageResource(usernameModels.get(position).getImage());
-        holder.pointsUpDown.setText(usernameModels.get(position).getPointsUpDown());
+        UsernameModel model = usernameModels.get(position);
 
+        holder.rank.setText(String.format("%02d", position + 4)); // Start from 04
+        holder.name.setText(model.getName());
+        holder.points.setText(model.getNumber_points() + " points");
+        holder.pointsChange.setText(model.getPointsUpDown());
+        holder.imgArrow.setImageResource(model.getArrowUpDown_img());
+        holder.imgProfile.setImageResource(model.getImage());
     }
 
     @Override
     public int getItemCount() {
         return usernameModels.size();
     }
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
-        // grabbing the views from our recycler view layout
-        ImageView img_profile, img_arrow;
-        TextView name, points, pointsUpDown;
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        ImageView imgProfile, imgArrow;
+        TextView rank, name, points, pointsChange;
+
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
-
-            img_profile = itemView.findViewById(R.id.profilepicture);
-            img_arrow = itemView.findViewById(R.id.arrowUpDown);
+            rank = itemView.findViewById(R.id.rank);
+            imgProfile = itemView.findViewById(R.id.profilepicture);
+            imgArrow = itemView.findViewById(R.id.arrowUpDown);
             name = itemView.findViewById(R.id.username);
             points = itemView.findViewById(R.id.points);
-            pointsUpDown = itemView.findViewById(R.id.arrowUpDownText);
-
+            pointsChange = itemView.findViewById(R.id.arrowChangeText);
         }
     }
 }

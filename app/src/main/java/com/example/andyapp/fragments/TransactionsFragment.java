@@ -1,6 +1,8 @@
 package com.example.andyapp.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -45,8 +47,14 @@ public class TransactionsFragment extends Fragment {
     }
 
     private void fetchExpensesFromBackend() {
-        String userId = "123"; // Replace with real user ID
-        String token = "YOUR_JWT_TOKEN"; // Replace with real token
+        SharedPreferences prefs = getContext().getSharedPreferences("auth", Context.MODE_PRIVATE);
+        String userId = prefs.getString("userId", "");
+        String token = prefs.getString("token", "");
+
+        if (userId.isEmpty() || token.isEmpty()) {
+            Toast.makeText(getContext(), "Missing user ID or token. Please log in again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         ApiService api = AuthRetrofitClient.getApiService(token);
         api.getUserExpenses(userId).enqueue(new Callback<List<Expense>>() {
@@ -66,13 +74,14 @@ public class TransactionsFragment extends Fragment {
 
                     adapter.updateData(allItems);
                 } else {
-                    Toast.makeText(getContext(), "Failed to load expenses", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Failed to load expenses (server error)", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Expense>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                t.printStackTrace(); // Optional: view detailed error in Logcat
             }
         });
     }
