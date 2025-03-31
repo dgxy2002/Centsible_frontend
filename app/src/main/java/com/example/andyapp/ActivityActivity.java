@@ -3,16 +3,20 @@ package com.example.andyapp;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -32,6 +36,7 @@ public class ActivityActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,25 @@ public class ActivityActivity extends AppCompatActivity {
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // to change the font of the Activity header, toolbar cannot change directly in xml
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.fredoka_medium);
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            View view = toolbar.getChildAt(i);
+            if (view instanceof TextView) {
+                TextView tv = (TextView) view;
+                if (tv.getText().equals(toolbar.getTitle())) {
+                    tv.setTypeface(typeface);
+                    break;
+                }
+            }
+        }
+
+
+        toolbar.setNavigationOnClickListener(view -> {
+            Intent intent = new Intent(ActivityActivity.this, MainActivityContent.class);
+            startActivity(intent);
+            finish();
+        });
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);

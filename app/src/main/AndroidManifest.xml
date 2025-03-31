@@ -15,6 +15,9 @@
         android:theme="@style/Theme.AndyApp"
         tools:targetApi="31">
         <activity
+            android:name=".ActivityActivity"
+            android:exported="false" />
+        <activity
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity
