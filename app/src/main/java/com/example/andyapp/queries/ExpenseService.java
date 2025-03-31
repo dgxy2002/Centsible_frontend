@@ -23,11 +23,10 @@ public class ExpenseService {
         this.context = context;
     }
 
-    public void postExpense(String title, double amount, String userId, String category, String createdDate) {
-        Expense expense = new Expense(title, amount, userId, category, createdDate);
+    public void postExpense(Expense expense) {
         Log.d("API_REQUEST", "Sending Expense: " +
-                "Title: " + title + ", Amount: " + amount + ", UserID: " + userId +
-                ", Category: " + category + ", CreatedDate: " + createdDate);
+                "Title: " + expense.getTitle() + ", Amount: " + expense.getAmount() + ", UserID: " + expense.getUserID() +
+                ", Category: " + expense.getCategory() + ", CreatedDate: " + expense.getCreatedDate());
         apiService.createExpense(expense).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -72,6 +71,7 @@ public class ExpenseService {
             }
         });
     }
+
     public interface ExpenseCallback {
         void onSuccess(Map<String, Double> categoryExpenses);
         void onError(String errorMessage);

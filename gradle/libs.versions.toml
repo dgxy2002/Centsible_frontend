@@ -15,6 +15,7 @@ navigationFragment = "2.6.0"
 navigationUi = "2.6.0"
 retrofit = "2.9.0"
 gson = "2.9.0"
+appcompatVersion = "1.7.0"
 
 
 [libraries]
@@ -33,6 +34,7 @@ lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-lived
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 

@@ -2,10 +2,10 @@ package com.example.andyapp.models;
 
 public class ExpensesModel {
     private String category;
-    private float amount;
+    private double amount;
     private int image;
 
-    public ExpensesModel(String category, float amount, int image) {
+    public ExpensesModel(String category, double amount, int image) {
         this.category = category;
         this.amount = amount;
         this.image = image;
@@ -19,7 +19,7 @@ public class ExpensesModel {
         return category;
     }
 
-    public float getAmount() {
+    public double getAmount() {
         return amount;
     }
 

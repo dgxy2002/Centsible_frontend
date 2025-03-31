@@ -18,6 +18,8 @@ public interface ApiService {
     @GET("expenses/user/{userId}/total-by-category")
     Call<Map<String, Double>> getTotalExpensesByCategory(@Path("userId") String userId);
 
+
+
 }
 
 

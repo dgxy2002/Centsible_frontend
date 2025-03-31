@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerViewAdapter.MyViewHolder> {
     Context context;
     ArrayList<ExpensesModel> expensesModels;
-    float totalExpense;
+    double totalExpense;
 
     public Exp_RecyclerViewAdapter(Context context, ArrayList<ExpensesModel> expensesModels){
         this.context = context;
@@ -57,16 +57,21 @@ public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerVi
         return expensesModels.size();
     }
 
+    public void updateData(ArrayList<ExpensesModel> expensesModels){
+        this.expensesModels = expensesModels;
+        notifyDataSetChanged();
+    }
+
     private void setBarColor(View barView, int position){
         Drawable background =  barView.getBackground();
         int[] colors = context.getResources().getIntArray(R.array.category_colors);
         background.setColorFilter(colors[position], android.graphics.PorterDuff.Mode.SRC_IN);
     }
 
-    private void setBarWidth(View barView, float amtSpent){
+    private void setBarWidth(View barView, double amtSpent){
         ViewGroup.LayoutParams layoutParams = barView.getLayoutParams();
         layoutParams.width = (int) ((amtSpent / totalExpense) * 1000);
-        layoutParams.width = Math.min(1500, layoutParams.width);
+        layoutParams.width = Math.min(900, layoutParams.width);
         layoutParams.width = Math.max(100, layoutParams.width);
         barView.setLayoutParams(layoutParams);
     }

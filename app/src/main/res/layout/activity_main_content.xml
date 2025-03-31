@@ -9,45 +9,45 @@
     tools:context=".MainActivityContent">
 
     <Toolbar
-        android:id="@+id/navBar"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    android:id="@+id/navBar"
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/btnMenu"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_gravity="start"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="#FAF6FE"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/hamburgermenu" />
+    <ImageButton
+        android:id="@+id/btnMenu"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_gravity="start"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#FAF6FE"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/hamburgermenu" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/varela_round"
-            android:text="Insights"
-            android:textSize="20sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/varela_round"
+        android:text="Insights"
+        android:textSize="20sp" />
 
-        <ImageButton
-            android:id="@+id/btnBarRight"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_gravity="end"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="#FAF6FE"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/bell" />
-    </Toolbar>
+    <ImageButton
+        android:id="@+id/btnBarRight"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#FAF6FE"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/bell" />
+</Toolbar>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/dashboardFragmentContainer"

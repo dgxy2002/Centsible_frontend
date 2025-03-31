@@ -20,6 +20,8 @@
     <color name="progress_bg">#828282</color>
     <color name="gradient_start">#F4BFDF</color>
     <color name="gradient_end">#D8BFF5</color>
+    <color name="mtrl_textinput_default_box_stroke_color">#D8BFF5</color>
+    <color name="primary_purple">#D8BFF5</color>
 
     <array name="category_colors">
         <item>@color/pie1</item>

@@ -46,6 +46,7 @@ public class ExpenseFragment extends Fragment {
     ArrayList<PieEntry> entries = new ArrayList<>();
     ArrayList<Integer> colors;
     ImageButton btnAdd;
+    private Exp_RecyclerViewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,13 +74,11 @@ public class ExpenseFragment extends Fragment {
         PieData pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
         formatPieChart(pieChart, black);
-
         RecyclerView recyclerView = view.findViewById(R.id.expenserecycler);
-        setupExpensesModel();
-        Exp_RecyclerViewAdapter adapter = new Exp_RecyclerViewAdapter(view.getContext(), expensesModels);
+        adapter = new Exp_RecyclerViewAdapter(view.getContext(), expensesModels);
         recyclerView.setAdapter(adapter);
+        setupExpensesModel();
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
 
         return view;
     }
@@ -90,8 +89,15 @@ public class ExpenseFragment extends Fragment {
         expenseService.fetchTotalExpensesByCategory(userId, new ExpenseService.ExpenseCallback() {
             @Override
             public void onSuccess(Map<String, Double> categoryExpenses) {
+                Log.d("API call", categoryExpenses.toString());
                 for (Map.Entry<String, Double> entry : categoryExpenses.entrySet()) {
-                    Log.d("EXPENSE_DATA", "Category: " + entry.getKey() + " - Total: " + entry.getValue());
+                    String category = entry.getKey();
+                    double amount = entry.getValue();
+                    int iconImage = R.drawable.dining;
+                    Log.d("API call", entry.getKey());
+                    Log.d("API call", entry.getValue().toString());
+                    expensesModels.add(new ExpensesModel(category, amount, iconImage));
+                    adapter.updateData(expensesModels);
                 }
             }
             @Override
@@ -100,12 +106,12 @@ public class ExpenseFragment extends Fragment {
                 Log.e("API_ERROR", errorMessage);
             }
         });
-        String[] categoryNames = {"Dining", "Shopping", "Transport", "Education"};
-        float[] amounts = {150.50F, 137.70F, 250.50F, 1000.00F};
-        int[] iconImages = {R.drawable.dining, R.drawable.dining, R.drawable.dining, R.drawable.dining};
-        for (int i =0; i < categoryNames.length; i++){
-            expensesModels.add(new ExpensesModel(categoryNames[i], amounts[i], iconImages[i]));
-        }
+//        String[] categoryNames = {"Dining", "Shopping", "Transport", "Education"};
+//        float[] amounts = {150.50F, 137.70F, 250.50F, 1000.00F};
+//        int[] iconImages = {R.drawable.dining, R.drawable.dining, R.drawable.dining, R.drawable.dining};
+//        for (int i =0; i < categoryNames.length; i++){
+//            expensesModels.add(new ExpensesModel(categoryNames[i], amounts[i], iconImages[i]));
+//        }
     }
 
     private PieDataSet getDataSet(){
@@ -139,4 +145,5 @@ public class ExpenseFragment extends Fragment {
         pieChart.animateY(1000);
         pieChart.invalidate();
     }
+
 }

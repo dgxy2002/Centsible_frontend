@@ -1,5 +1,6 @@
 package com.example.andyapp;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -30,6 +32,9 @@ import com.example.andyapp.queries.ExpenseService;
 import com.example.andyapp.queries.RetrofitClient;
 import com.example.andyapp.queries.mongoModels.Expense;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,13 +43,14 @@ import retrofit2.Response;
 public class LogExpense extends AppCompatActivity {
     private String amount = "$";
     private String category = "";
-    private String payOption = "";
+    private String date;
 
     ArrayAdapter<String> payAdapter;
     ArrayAdapter<String> catAdapter;
     ImageButton btnSubmit;
     ImageButton btnDelete;
-    Button btnBack;
+    ImageButton btnDate;
+    ImageButton btnBack;
     TextView amountView;
     EditText descEditText;
     AutoCompleteTextView dropdownCat;
@@ -58,12 +64,14 @@ public class LogExpense extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_log_expense);
         //Initialise Views
+        expenseService = new ExpenseService(this);
         dropdownCat = findViewById(R.id.dropdownCategories);
         dropdownPay = findViewById(R.id.dropdownPay);
-        descEditText = findViewById(R.id.descEditText);
         amountView = findViewById(R.id.amountView);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnDelete = findViewById(R.id.buttoncross);
+        descEditText = findViewById(R.id.logExpDesc);
+        btnDate = findViewById(R.id.btnDate);
         btnArray[0] = findViewById(R.id.button0);
         btnArray[1] = findViewById(R.id.button1);
         btnArray[2] = findViewById(R.id.button2);
@@ -78,9 +86,9 @@ public class LogExpense extends AppCompatActivity {
 
         //Configure dropdown menu
         String[] categories = getResources().getStringArray(R.array.categories);
-        String[] payOptions = getResources().getStringArray(R.array.payOptions);
+        String[] transactions = getResources().getStringArray(R.array.transaction_types);
         catAdapter = new ArrayAdapter<String>(this, R.layout.dropdownitem, categories);
-        payAdapter = new ArrayAdapter<String>(this, R.layout.dropdownitem, payOptions);
+        payAdapter = new ArrayAdapter<String>(this, R.layout.dropdownitem, transactions);
         dropdownPay.setAdapter(payAdapter);
         dropdownCat.setAdapter(catAdapter);
         dropdownCat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -95,21 +103,18 @@ public class LogExpense extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
-                payOption = item;
                 Toast.makeText(LogExpense.this, "Item: " + item, Toast.LENGTH_SHORT).show();
             }
         });
-
+        //Configure EditText
         descEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                     (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-
                 // Hide Keyboard
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
-
                 // Clear focus from EditText
                 descEditText.clearFocus();
                 return true;
@@ -121,6 +126,12 @@ public class LogExpense extends AppCompatActivity {
         for (Button btn: btnArray){
             btn.setOnClickListener(new numOnClickListener());
         }
+        btnDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
+            }
+        });
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,8 +141,6 @@ public class LogExpense extends AppCompatActivity {
                 setAmountViewText();
             }
         });
-        ImageButton btnSubmit = findViewById(R.id.btnSubmit);
-        expenseService = new ExpenseService(this);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,16 +153,19 @@ public class LogExpense extends AppCompatActivity {
                     amtLogged = Float.parseFloat(amount.substring(1));
                 }
                 String userId = "67d3cbd26b238d2f9f63855b"; // Replace with actual user ID
-                String currentDate = "2025-03-18";
-                expenseService.postExpense(title, amtLogged, userId, category, currentDate);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate currentDate = LocalDate.parse(date, formatter);
+                Expense expense = new Expense(title, amtLogged, userId, category, currentDate);
+                Log.d("Logcat", expense.toString());
+                expenseService.postExpense(expense);
             }
         });
 
-        btnBack = findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.logExpBtnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentBack = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
+                Intent intentBack = new Intent(LogExpense.this, NavigationDrawerActivity.class);
                 startActivity(intentBack);
             }
         });
@@ -166,6 +178,16 @@ public class LogExpense extends AppCompatActivity {
         }
         amountView.getLayoutParams().width = 200 * amount.length();
         amountView.requestLayout();
+    }
+
+    private void openDialog(){
+        DatePickerDialog dialog = new DatePickerDialog(LogExpense.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                date = String.format("%04d-%02d-%02d", year, month, day);
+            }
+        },2025, 0, 0);
+        dialog.show();
     }
 
 

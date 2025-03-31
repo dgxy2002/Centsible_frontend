@@ -72,6 +72,18 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/backgroundaccent"
                 app:layout_constraintTop_toBottomOf="@+id/textTopCategories" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnEditBudget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="460dp"
+                android:layout_marginEnd="40dp"
+                android:clickable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textTopCategories"
+                app:srcCompat="@drawable/editicon" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
