@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
                             intent.putExtra(USERKEY, id);
                             intent.putExtra(VIEWERKEY, id);
-                            intent.putExtra(TOKENKEY, "Bearer:` " + token);
+                            intent.putExtra(TOKENKEY, "Bearer: " + token);
                             startActivity(intent);
                         }else{
                             if (response.errorBody() != null){
