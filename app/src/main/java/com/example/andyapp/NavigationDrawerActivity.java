@@ -33,6 +33,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     Intent intent;
     int fragmentState;
     SharedPreferences mypref;
+    ImageButton btnNavStreaks;
+    View headerView;
+
 
     private static final String TAG = "LOGCAT";
     @Override
@@ -44,6 +47,15 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         btnBarRight = findViewById(R.id.btnBarRight);
         drawerLayout = findViewById(R.id.drawerLayout);
         drawerNavView = findViewById(R.id.drawerNavView);
+        headerView = drawerNavView.getHeaderView(0);
+        btnNavStreaks = headerView.findViewById(R.id.navStreaks);
+        btnNavStreaks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NavigationDrawerActivity.this, StreaksActivity.class);
+                startActivity(intent);
+            }
+        });
         mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userid = mypref.getString(LoginActivity.USERKEY, "None");
         viewerid = mypref.getString(LoginActivity.VIEWERKEY, "None");
@@ -63,6 +75,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 view.getContext().startActivity(intent);
             }
         });
+
        drawerNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
            @Override
            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -76,7 +89,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                    changeFragment(new GroupsFragment());
                }else if (itemid == R.id.navSettings){
                    Toast.makeText(NavigationDrawerActivity.this, "settings", Toast.LENGTH_SHORT).show();
-               }else if (itemid == R.id.navLogout){
+               }else if (itemid == R.id.navLogout) {
                    Intent intent = new Intent(NavigationDrawerActivity.this, LoginActivity.class);
                    startActivity(intent);
                }
