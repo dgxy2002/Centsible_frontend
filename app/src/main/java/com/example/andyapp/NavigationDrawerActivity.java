@@ -1,11 +1,12 @@
 package com.example.andyapp;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import android.content.Intent;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -17,7 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.andyapp.fragments.DashboardFragment;
 import com.example.andyapp.fragments.GroupsFragment;
-import com.example.andyapp.fragments.IncomeFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class NavigationDrawerActivity extends AppCompatActivity {
@@ -54,12 +54,13 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             }
         });
 
-       btnBarRight.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               changeFragment(new IncomeFragment());
-           }
-       });
+        btnBarRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ActivityActivity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
        drawerNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
            @Override
            public boolean onNavigationItemSelected(@NonNull MenuItem item) {

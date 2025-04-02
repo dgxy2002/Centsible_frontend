@@ -56,12 +56,12 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         return transactions.size();
     }
 
-    // ✅ Expose current visible items (for share/export)
+    // Expose current visible items (for share/export)
     public List<TransactionItem> getItems() {
         return new ArrayList<>(transactions);
     }
 
-    // ✅ Allow list refresh (for filtering)
+    //  Allow list refresh (for filtering)
     public void updateData(List<TransactionItem> newItems) {
         transactions.clear();
         transactions.addAll(newItems);
@@ -78,7 +78,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 return R.drawable.dollar_icon;
             case "bills":
                 return R.drawable.baseline_library_books_24;
-            case "game":
+            case "entertainment":
                 return R.drawable.game_icon;
             default:
                 return R.drawable.dollar_icon; // fallback icon
