@@ -68,7 +68,7 @@ public class StreaksActivity extends AppCompatActivity {
             updateCalendar();
         });
         btnback.setOnClickListener(view -> {
-            Intent subActivityIntent = new Intent(view.getContext(), Dashboard.class);
+            Intent subActivityIntent = new Intent(view.getContext(), NavigationDrawerActivity.class);
             startActivity(subActivityIntent);
         });
     }
