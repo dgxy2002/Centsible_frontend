@@ -45,6 +45,8 @@ public class ExpenseFragment extends Fragment {
     ArrayList<ExpensesModel> expensesModels = new ArrayList<>();
     ArrayList<PieEntry> entries = new ArrayList<>();
     ArrayList<Integer> colors;
+    PieChart pieChart;
+    RecyclerView recyclerView;
     ImageButton btnAdd;
     private Exp_RecyclerViewAdapter adapter;
 
@@ -53,15 +55,18 @@ public class ExpenseFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_expense, container, false);
-        PieChart pieChart = view.findViewById(R.id.expensePieChart);
+        //Initialise Variables/Views
         colors = new ArrayList<>();
         for (int colorResId : colorResIds) {
             colors.add(ContextCompat.getColor(requireActivity(), colorResId));
         }
+        pieChart = view.findViewById(R.id.expensePieChart);
+        recyclerView = view.findViewById(R.id.expenserecycler);
+        btnAdd = view.findViewById(R.id.btnAdd);
 
         int black = ContextCompat.getColor(requireContext(), R.color.black);
         Typeface font = ResourcesCompat.getFont(requireContext(), R.font.poppins_semibold);
-        btnAdd = view.findViewById(R.id.btnAdd);
+        //Initialise Button Listeners
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,17 +74,17 @@ public class ExpenseFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        //Configure Pie Chart
         PieDataSet pieDataSet = getDataSet();
         formatPieDataSet(pieDataSet, colors, black, font);
         PieData pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
         formatPieChart(pieChart, black);
-        RecyclerView recyclerView = view.findViewById(R.id.expenserecycler);
+        //Configure RecyclerView
         adapter = new Exp_RecyclerViewAdapter(view.getContext(), expensesModels);
         recyclerView.setAdapter(adapter);
         setupExpensesModel();
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
         return view;
     }
 
@@ -102,8 +107,10 @@ public class ExpenseFragment extends Fragment {
             }
             @Override
             public void onError(String errorMessage) {
-                Toast.makeText(getContext(), "Failed to fetch", Toast.LENGTH_SHORT).show();
-                Log.e("API_ERROR", errorMessage);
+                if(isAdded()) {
+                    Toast.makeText(requireContext(), "Failed to fetch", Toast.LENGTH_SHORT).show();
+                    Log.e("API_ERROR", errorMessage);
+                }
             }
         });
 //        String[] categoryNames = {"Dining", "Shopping", "Transport", "Education"};

@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.andyapp.RecyclerViewSpacingDecorator;
 import com.example.andyapp.models.GroupsModel;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class Groups_RecyclerViewAdapter extends RecyclerView.Adapter<Groups_Recy
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.imageView.setImageResource(groupsModels.get(position).getImage());
         holder.nameView.setText(groupsModels.get(position).getName());
-        holder.relationView.setText(groupsModels.get(position).getRelationship());
+        holder.relationView.setText("Connection");
         holder.btnNudge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

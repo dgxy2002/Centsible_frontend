@@ -27,11 +27,11 @@
         android:background="@drawable/custom_login_input"
         android:ems="10"
         android:fontFamily="@font/varela_round"
+        android:hint="Username"
         android:inputType="text"
         android:paddingStart="15dp"
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
-        android:text="Username"
         android:textColor="@color/centsible_text_secondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,15 +41,15 @@
         android:id="@+id/loginPWTextView"
         android:layout_width="293dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/custom_login_input"
         android:ems="10"
         android:fontFamily="@font/varela_round"
+        android:hint="Password"
         android:inputType="text"
         android:paddingStart="15dp"
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
-        android:text="Password"
         android:textColor="@color/centsible_text_secondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="44dp"
         android:fontFamily="@font/varela_round"
         android:text="Don't have an account?"
         android:textColor="@color/white"
@@ -84,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnLogIn" />
 
     <Button
-        android:id="@+id/btnSignUp"
+        android:id="@+id/loginBtnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -100,7 +100,7 @@
         android:id="@+id/btnLogIn"
         android:layout_width="293dp"
         android:layout_height="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/rounded_button_container"
         android:backgroundTint="@color/backgroundaccent"
         android:gravity="center"
@@ -110,5 +110,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginPWTextView" />
+
+    <TextView
+        android:id="@+id/loginErrorTextView"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:textColor="@color/design_default_color_error"
+        android:text="@string/login_error"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogIn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

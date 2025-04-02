@@ -13,12 +13,14 @@ lifecycleLivedataKtx = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
 navigationFragment = "2.6.0"
 navigationUi = "2.6.0"
+recyclerviewSwipedecorator = "1.4"
 retrofit = "2.9.0"
 gson = "2.9.0"
 appcompatVersion = "1.7.0"
 
 
 [libraries]
+recyclerview-swipedecorator = { module = "it.xabaras.android:recyclerview-swipedecorator", version.ref = "recyclerviewSwipedecorator" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

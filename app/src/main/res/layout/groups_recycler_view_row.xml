@@ -9,8 +9,6 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:paddingBottom="15dp"
@@ -45,7 +43,7 @@
                 android:fontFamily="@font/varela_round"
                 android:text="Sean"
                 android:textColor="@color/black"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@id/avatarView"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +55,7 @@
                 android:fontFamily="@font/varela_round"
                 android:text="Child"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/nameView" />
 
@@ -65,7 +63,7 @@
                 android:id="@+id/btnNudge"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginEnd="12dp"
                 android:background="@drawable/rounded_button_container"
                 android:fontFamily="@font/varela_round"
                 android:gravity="center"
@@ -73,7 +71,19 @@
                 android:textAllCaps="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.511" />
+
+            <ImageButton
+                android:id="@+id/groupsBtnView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnNudge"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/arrow_back" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

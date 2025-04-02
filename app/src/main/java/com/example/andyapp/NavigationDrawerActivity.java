@@ -1,5 +1,6 @@
 package com.example.andyapp;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -24,7 +25,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     ImageButton btnMenu;
     ImageButton btnBarRight;
     NavigationView drawerNavView;
+    String userid;
+    String viewerid;
+    String token;
+    Intent intent;
     int fragmentState;
+    private static final String TAG = "LOGCAT";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +40,13 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         btnBarRight = findViewById(R.id.btnBarRight);
         drawerLayout = findViewById(R.id.drawerLayout);
         drawerNavView = findViewById(R.id.drawerNavView);
-
+        intent = getIntent();
+        if (intent != null) {
+            userid = intent.getStringExtra(LoginActivity.USERKEY);
+            viewerid = intent.getStringExtra(LoginActivity.VIEWERKEY);
+            token = intent.getStringExtra(LoginActivity.TOKENKEY);
+        }
+        Log.d(TAG, String.format("USERID IN NAVDRAWER %s", userid));
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +74,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                }else if (itemid == R.id.navSettings){
                    Toast.makeText(NavigationDrawerActivity.this, "settings", Toast.LENGTH_SHORT).show();
                }else if (itemid == R.id.navLogout){
-                   Toast.makeText(NavigationDrawerActivity.this, "logout", Toast.LENGTH_SHORT).show();
+                   Intent intent = new Intent(NavigationDrawerActivity.this, LoginActivity.class);
+                   startActivity(intent);
                }
                drawerLayout.close();
                return false;
@@ -73,6 +86,11 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     public void changeFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Bundle arguments = new Bundle();
+        arguments.putString(LoginActivity.USERKEY, userid);
+        arguments.putString(LoginActivity.VIEWERKEY, viewerid);
+        arguments.putString(LoginActivity.TOKENKEY, token);
+        fragment.setArguments(arguments);
         transaction.replace(R.id.dashboardFragmentContainer, fragment);
         transaction.commit();
     }

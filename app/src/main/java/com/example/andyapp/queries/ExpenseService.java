@@ -76,6 +76,5 @@ public class ExpenseService {
         void onSuccess(Map<String, Double> categoryExpenses);
         void onError(String errorMessage);
     }
-
 }
 

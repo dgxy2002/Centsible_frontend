@@ -41,7 +41,7 @@ android {
 dependencies {
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
-
+    implementation(libs.recyclerview.swipedecorator)
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.mpchart)

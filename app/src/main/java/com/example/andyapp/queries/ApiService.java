@@ -1,6 +1,8 @@
 package com.example.andyapp.queries;
 
 import com.example.andyapp.queries.mongoModels.Expense;
+import com.example.andyapp.queries.mongoModels.LoginModel;
+import com.example.andyapp.queries.mongoModels.UserModel;
 
 import java.util.Map;
 
@@ -18,8 +20,8 @@ public interface ApiService {
     @GET("expenses/user/{userId}/total-by-category")
     Call<Map<String, Double>> getTotalExpensesByCategory(@Path("userId") String userId);
 
-
-
+    @GET("/users/login")
+    Call<UserModel> getUser(@Body LoginModel login);
 }
 
 
