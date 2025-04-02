@@ -4,6 +4,7 @@ import com.example.andyapp.queries.mongoModels.Expense;
 import com.example.andyapp.queries.mongoModels.LoginModel;
 import com.example.andyapp.queries.mongoModels.UserModel;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -22,6 +23,9 @@ public interface ApiService {
 
     @GET("/users/login")
     Call<UserModel> getUser(@Body LoginModel login);
+
+    @GET("expenses/user/{userId}")
+    Call<List<Expense>> getUserExpenses(@Path("userId") String userId);
 }
 
 

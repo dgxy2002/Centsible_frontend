@@ -1,7 +1,9 @@
 package com.example.andyapp.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
 
@@ -42,16 +44,16 @@ import retrofit2.http.Path;
 public class GroupsFragment extends Fragment {
     interface GetConnections{
         @GET("users/{userId}/connections")
-        Call<String[]>getConnections(@Header("Authorization Bearer: ") String token, @Path("userId") String userId);
+        Call<String[]>getConnections(@Header("Authorization") String token, @Path("userId") String userId);
     }
     RecyclerView groupsRecycler;
     ArrayList<GroupsModel> groupsModels;
     Groups_RecyclerViewAdapter adapter;
     ItemTouchHelper.SimpleCallback simpleCallback;
     RecyclerViewSpacingDecorator spacingDecorator;
-    Bundle bundle;
     String userId;
     String token;
+    SharedPreferences mypref;
     private final String TAG = "LOGCAT";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,14 +69,12 @@ public class GroupsFragment extends Fragment {
         spacingDecorator = new RecyclerViewSpacingDecorator(40);
         groupsModels = new ArrayList<>();
         groupsRecycler.addItemDecoration(spacingDecorator);
-        bundle = getArguments();
-        if (bundle!=null){
-            userId = bundle.getString(LoginActivity.USERKEY);
-            token = bundle.getString(LoginActivity.TOKENKEY);
-        }
+        mypref = requireContext().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        userId = mypref.getString(LoginActivity.USERKEY, "None");
+        token = mypref.getString(LoginActivity.TOKENKEY, "None");
         Log.d(TAG, String.format("USERID IN GROUPS %s", userId));
         Log.d(TAG, String.format("TOKEN IN GROUPS %s", token));
-        setUpGroupsModels("67ea78b67a03cd48a9aa3313");
+        setUpGroupsModels(userId);
         adapter = new Groups_RecyclerViewAdapter(groupsModels, view.getContext());
         groupsRecycler.setAdapter(adapter);
         groupsRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));

@@ -1,6 +1,8 @@
 package com.example.andyapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,8 +36,10 @@ public class LoginActivity extends AppCompatActivity {
     public static final String USERKEY = "USERKEY";
     public static final String VIEWERKEY = "USERKEY";
     public static final String TOKENKEY = "TOKENKEY";
+    public static final String PREFTAG = "MYPREF";
     private String TAG = "LOGCAT";
     RequestUser requestUser;
+    SharedPreferences sharedPreferences;
 
     interface RequestUser{
         @POST("users/login")
@@ -77,11 +81,14 @@ public class LoginActivity extends AppCompatActivity {
                             String message = user.getMessage();
                             String token = user.getToken();
                             int streak = user.getStreak();
+                            sharedPreferences = getSharedPreferences(PREFTAG, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(TOKENKEY, "Bearer " +token);
+                            editor.putString(USERKEY, id);
+                            editor.putString(VIEWERKEY, id);
+                            editor.apply();
                             Log.d(TAG, String.format("userID: %s, message: %s, token: %s, streak: %d", id, message, token, streak));
                             Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
-                            intent.putExtra(USERKEY, id);
-                            intent.putExtra(VIEWERKEY, id);
-                            intent.putExtra(TOKENKEY, "Bearer: " + token);
                             startActivity(intent);
                         }else{
                             if (response.errorBody() != null){

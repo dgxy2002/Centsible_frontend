@@ -1,6 +1,8 @@
 package com.example.andyapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,6 +32,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     String token;
     Intent intent;
     int fragmentState;
+    SharedPreferences mypref;
+
     private static final String TAG = "LOGCAT";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +44,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         btnBarRight = findViewById(R.id.btnBarRight);
         drawerLayout = findViewById(R.id.drawerLayout);
         drawerNavView = findViewById(R.id.drawerNavView);
-        intent = getIntent();
-        if (intent != null) {
-            userid = intent.getStringExtra(LoginActivity.USERKEY);
-            viewerid = intent.getStringExtra(LoginActivity.VIEWERKEY);
-            token = intent.getStringExtra(LoginActivity.TOKENKEY);
-        }
+        mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        userid = mypref.getString(LoginActivity.USERKEY, "None");
+        viewerid = mypref.getString(LoginActivity.VIEWERKEY, "None");
+        token = mypref.getString(LoginActivity.TOKENKEY, "None");
         Log.d(TAG, String.format("USERID IN NAVDRAWER %s", userid));
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
