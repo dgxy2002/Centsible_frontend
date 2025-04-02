@@ -13,11 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.andyapp.LoginActivity;
 import com.example.andyapp.R;
 import com.example.andyapp.adapters.TransactionAdapter;
 import com.example.andyapp.models.TransactionItem;
 import com.example.andyapp.queries.ApiService;
-import com.example.andyapp.queries.AuthRetrofitClient;
+import com.example.andyapp.queries.RetrofitClient;
 import com.example.andyapp.queries.mongoModels.Expense;
 
 import java.util.ArrayList;
@@ -47,17 +48,18 @@ public class TransactionsFragment extends Fragment {
     }
 
     private void fetchExpensesFromBackend() {
-        SharedPreferences prefs = getContext().getSharedPreferences("auth", Context.MODE_PRIVATE);
-        String userId = prefs.getString("userId", "");
-        String token = prefs.getString("token", "");
+        SharedPreferences prefs = getContext().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        String userId = prefs.getString(LoginActivity.USERKEY, "");
+
+        String token = prefs.getString(LoginActivity.TOKENKEY, "");
 
         if (userId.isEmpty() || token.isEmpty()) {
             Toast.makeText(getContext(), "Missing user ID or token. Please log in again.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        ApiService api = AuthRetrofitClient.getApiService(token);
-        api.getUserExpenses(userId).enqueue(new Callback<List<Expense>>() {
+        ApiService api = RetrofitClient.getApiService();
+        api.getUserExpenses(token,userId).enqueue(new Callback<List<Expense>>() {
             @Override
             public void onResponse(Call<List<Expense>> call, Response<List<Expense>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -87,7 +89,7 @@ public class TransactionsFragment extends Fragment {
     }
 
     public void showFilterDialog() {
-        String[] categories = {"All", "income", "food", "transport", "bills", "game"};
+        String[] categories = getResources().getStringArray(R.array.categories);
         new AlertDialog.Builder(getContext())
                 .setTitle("Filter Transactions")
                 .setItems(categories, (dialog, which) -> {
