@@ -126,7 +126,6 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
         recyclerView = findViewById(R.id.logBdRecyclerView);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setItemViewCacheSize(10); //To prevent weird focus bug
         ScaleCenterItemLayoutManager layoutManager = new ScaleCenterItemLayoutManager (this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
         SnapHelper snapHelper = new LinearSnapHelper();

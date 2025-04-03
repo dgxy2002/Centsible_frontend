@@ -222,11 +222,11 @@ public class LogExpense extends AppCompatActivity {
 
     private PostExpense getPostExpense(){
         String title = descEditText.getText().toString();
-        float amtLogged;
+        double amtLogged;
         if (amount.length() == 1){
             amtLogged = 0;
         }else {
-            amtLogged = Float.parseFloat(amount.substring(1));
+            amtLogged = Double.parseDouble(amount.substring(1));
         }
         if (date != null){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -297,7 +297,3 @@ public class LogExpense extends AppCompatActivity {
     }
 }
 
-//TODO Create onSubmit Logic: Need to parse amount into a BigDecimal and then check for null strings
-//TODO In category and payOptions
-//TODO: If have time, please place files properly
-//TODO Add button icons

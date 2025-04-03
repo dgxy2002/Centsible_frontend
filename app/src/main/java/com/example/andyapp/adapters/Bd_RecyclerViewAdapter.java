@@ -1,6 +1,8 @@
 package com.example.andyapp.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.andyapp.R;
@@ -47,6 +50,9 @@ public class Bd_RecyclerViewAdapter extends RecyclerView.Adapter<Bd_RecyclerView
         holder.catView.setText(budgetModels.get(position).getCategory());
         holder.amtView.setText(String.format("%.2f / %.2f", budgetModels.get(position).getSpent(), budgetModels.get(position).getBudget()));
         holder.progressBar.setProgress(budgetModels.get(position).getProgress());
+        int[] colors = context.getResources().getIntArray(R.array.category_colors);
+        holder.progressBar.setProgressTintList(ColorStateList.valueOf(colors[position % 4]));
+        holder.progressBar.setProgressBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.progress_bg)));
 //        ViewGroup.LayoutParams pgblayout = holder.progressBar.getLayoutParams();
 //        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 //        pgblayout.width = (int) ((budgetModels.get(position).getBudget()/ totalBudget) * 3000);

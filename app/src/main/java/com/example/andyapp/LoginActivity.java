@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String VIEWERKEY = "USERKEY";
     public static final String TOKENKEY = "TOKENKEY";
     public static final String PREFTAG = "MYPREF";
+    public static final String DEFAULT_USERID = "67ecf4e07cb6ed67c0e7e67a";
     private String TAG = "LOGCAT";
     RequestUser requestUser;
     SharedPreferences sharedPreferences;

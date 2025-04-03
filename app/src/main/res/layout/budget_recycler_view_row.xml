@@ -66,7 +66,7 @@
                 style="?android:progressBarStyleHorizontal"
                 android:layout_width="250dp"
                 android:layout_height="5dp"
-                android:progressDrawable="@drawable/custom_progressbar_bg"
+                android:progressDrawable="@drawable/progress_bg_no_gradient"
                 android:scaleType="centerInside"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/bdamtView"

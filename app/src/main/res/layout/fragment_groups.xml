@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,23 +21,12 @@
             android:layout_height="match_parent"
             android:background="@color/backgroundaccent">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnManage"
-                android:background="@android:color/transparent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="Manage"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/selfView"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_marginBottom="15dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:background="@color/white"
                 android:paddingBottom="15dp"
@@ -44,7 +34,7 @@
                 app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnManage">
+                app:layout_constraintTop_toBottomOf="@+id/addFriendEditText">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -101,6 +91,37 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/selfView"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@+id/addFriendEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@null"
+                android:drawableLeft="@drawable/search_icon"
+                android:drawablePadding="5dp"
+                android:ems="10"
+                android:fontFamily="@font/varela_round"
+                android:hint="Enter Username"
+                android:inputType="text"
+                android:textColorHint="@color/centsible_text_secondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btnConnect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/primary_purple"
+                android:textColor="@color/black"
+                android:fontFamily="@font/varela_round"
+                android:text="Add Friend"
+                app:layout_constraintEnd_toEndOf="@+id/selfView"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
