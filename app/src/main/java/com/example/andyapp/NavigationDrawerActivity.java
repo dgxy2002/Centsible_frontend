@@ -70,8 +70,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         btnBarRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ActivityActivity.class);
-                view.getContext().startActivity(intent);
+                Intent intent = new Intent(NavigationDrawerActivity.this, ActivityActivity.class);
+                startActivity(intent);
             }
         });
 
