@@ -13,27 +13,31 @@
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:background="@color/background"
+        app:tabTextAppearance="@style/tab_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:tabIndicatorColor="@color/primary_purple"
+        app:tabTextColor="@color/black"
+        app:tabIndicatorFullWidth="true"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/varela_round"
-            android:text="Expenses" />
+            android:text="EXPENSES" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/varela_round"
-            android:text="Income" />
+            android:text="INCOME" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/varela_round"
-            android:text="Budget" />
+            android:text="BUDGET" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

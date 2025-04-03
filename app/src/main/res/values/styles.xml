@@ -4,4 +4,19 @@
         <item name="android:fontFamily">@font/fredoka_medium</item>
         <item name="android:textColor">@color/black</item>
     </style>
+    <style name="TopRoundedCardView" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">50dp</item>
+        <item name="cornerSizeTopRight">50dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+    <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/varela_round</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+        <item name="android:fontFamily">@font/varela_round</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

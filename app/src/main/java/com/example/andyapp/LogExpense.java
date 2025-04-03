@@ -3,6 +3,7 @@ package com.example.andyapp;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -31,14 +32,21 @@ import com.example.andyapp.queries.ApiService;
 import com.example.andyapp.queries.ExpenseService;
 import com.example.andyapp.queries.RetrofitClient;
 import com.example.andyapp.queries.mongoModels.Expense;
+import com.example.andyapp.queries.mongoModels.PostExpense;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
 
 public class LogExpense extends AppCompatActivity {
     private String amount = "$";
@@ -56,8 +64,18 @@ public class LogExpense extends AppCompatActivity {
     AutoCompleteTextView dropdownCat;
     AutoCompleteTextView dropdownPay;
     ExpenseService expenseService;
+    SharedPreferences myPref;
+    String token;
+    String userId;
+    LocalDate currentDate;
+    String TAG = "LOGCAT";
 
     AppCompatButton[] btnArray = new AppCompatButton[11];
+
+    interface PostExpenseService{
+        @POST("expenses/post")
+        Call<Map<String, String>> postExpenseService(@Body PostExpense expense);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +101,10 @@ public class LogExpense extends AppCompatActivity {
         btnArray[8]= findViewById(R.id.button8);
         btnArray[9]= findViewById(R.id.button9);
         btnArray[10] = findViewById(R.id.buttondot);
+
+        //SharedPreferences
+        myPref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        userId = myPref.getString(LoginActivity.USERKEY, "67ecf4e07cb6ed67c0e7e67a");
 
         //Configure dropdown menu
         String[] categories = getResources().getStringArray(R.array.categories);
@@ -145,19 +167,37 @@ public class LogExpense extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Enter onSubmit Logic here, category, description, amount, dateCreated
-                String title = descEditText.getText().toString();
-                float amtLogged;
-                if (amount.length() == 1){
-                    amtLogged = 0;
-                }else {
-                    amtLogged = Float.parseFloat(amount.substring(1));
-                }
-                String userId = "67d3cbd26b238d2f9f63855b"; // Replace with actual user ID
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDate currentDate = LocalDate.parse(date, formatter);
-                Expense expense = new Expense(title, amtLogged, userId, category, currentDate);
-                Log.d("Logcat", expense.toString());
-                expenseService.postExpense(expense);
+                PostExpense expense = getPostExpense();
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        PostExpenseService service = RetrofitClient.getRetrofit().create(PostExpenseService.class);
+                        service.postExpenseService(expense).enqueue(new Callback<Map<String, String>>() {
+                            @Override
+                            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+                                if (response.body() != null){
+                                    String message = response.body().get("message");
+                                    Log.d(TAG, message);
+                                }else{
+                                    try {
+                                        String error = response.errorBody().string();
+                                        Log.e(TAG, "Response code: " + response.code());
+                                        Log.e(TAG, "Error body: " + error);
+                                    } catch (IOException e) {
+                                        Log.e(TAG, "Error reading errorBody", e);
+                                    };
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                                if (t.getMessage() != null) {
+                                    Log.d(TAG, t.getMessage());
+                                }
+                            }
+                        });
+                    }
+                });
             }
         });
 
@@ -180,11 +220,31 @@ public class LogExpense extends AppCompatActivity {
         amountView.requestLayout();
     }
 
+    private PostExpense getPostExpense(){
+        String title = descEditText.getText().toString();
+        float amtLogged;
+        if (amount.length() == 1){
+            amtLogged = 0;
+        }else {
+            amtLogged = Float.parseFloat(amount.substring(1));
+        }
+        if (date != null){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            currentDate = LocalDate.parse(date, formatter);
+        }else{
+            currentDate =  LocalDate.now();
+        }
+        String userId = "67ecf4e07cb6ed67c0e7e67a"; // Replace with actual user ID
+        PostExpense expense = new PostExpense(userId, title, amtLogged, category, currentDate);
+        Log.d(TAG, expense.toString());
+        return expense;
+    }
+
     private void openDialog(){
         DatePickerDialog dialog = new DatePickerDialog(LogExpense.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                date = String.format("%04d-%02d-%02d", year, month, day);
+                date = String.format("%04d-%02d-%02d", year, month + 1, day);
             }
         },2025, 0, 0);
         dialog.show();

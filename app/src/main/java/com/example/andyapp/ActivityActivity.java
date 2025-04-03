@@ -36,7 +36,6 @@ public class ActivityActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +58,7 @@ public class ActivityActivity extends AppCompatActivity {
 
 
         toolbar.setNavigationOnClickListener(view -> {
-            Intent intent = new Intent(ActivityActivity.this, MainActivityContent.class);
+            Intent intent = new Intent(ActivityActivity.this, NavigationDrawerActivity.class);
             startActivity(intent);
             finish();
         });

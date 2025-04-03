@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navAvatar"
-        android:icon="@drawable/avatar"
-        android:title="Avatar">
+        android:id="@+id/navDashboard"
+        android:icon="@drawable/dashboard_icon"
+        android:title="Dashboard">
 
     </item>
     <item

@@ -36,7 +36,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     ImageButton btnNavStreaks;
     View headerView;
 
-
     private static final String TAG = "LOGCAT";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,28 +75,30 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             }
         });
 
-       drawerNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-           @Override
-           public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-               int itemid = item.getItemId();
-               if (itemid == R.id.navAvatar){
-                   changeFragment(new DashboardFragment());
-               }else if (itemid == R.id.navLB){
-                   Intent intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
-                   startActivity(intent);
-               }else if (itemid == R.id.navGroups){
-                   changeFragment(new GroupsFragment());
-               }else if (itemid == R.id.navSettings){
-                   Toast.makeText(NavigationDrawerActivity.this, "settings", Toast.LENGTH_SHORT).show();
-               }else if (itemid == R.id.navLogout) {
-                   Intent intent = new Intent(NavigationDrawerActivity.this, LoginActivity.class);
-                   startActivity(intent);
-               }
-               drawerLayout.close();
-               return false;
-           }
-       });
+        drawerNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemid = item.getItemId();
+                if (itemid == R.id.navDashboard) {
+                    changeFragment(new DashboardFragment());
+                } else if (itemid == R.id.navLB) {
+                    Intent intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else if (itemid == R.id.navGroups) {
+                    changeFragment(new GroupsFragment());
+                } else if (itemid == R.id.navSettings) {
+                    Toast.makeText(NavigationDrawerActivity.this, "settings", Toast.LENGTH_SHORT).show();
+                } else if (itemid == R.id.navLogout) {
+                    Intent intent = new Intent(NavigationDrawerActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+                drawerLayout.close();
+                return false;
+            }
+        });
     }
+
+
     public void changeFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

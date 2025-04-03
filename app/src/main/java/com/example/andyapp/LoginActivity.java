@@ -103,7 +103,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     }
-
                     @Override
                     public void onFailure(Call<UserModel> call, Throwable t) {
                         if (t.getMessage() != null) {

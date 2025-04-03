@@ -9,13 +9,26 @@
     tools:context=".LogBudgetCategoryActivity">
 
 
+    <TextView
+        android:id="@+id/logExpTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/fredoka_regular"
+        android:text="Edit Budget"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/logBdCategoryBtnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/logBdCategoryBtnBack" />
+
     <ImageButton
         android:id="@+id/logBdCategoryBtnBack"
         android:layout_width="30dp"
         android:layout_height="40dp"
-        android:background="@color/background"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:background="@color/background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_back" />
@@ -50,8 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/fredoka_medium"
-        android:text="for Category:"
-        android:textSize="24sp"
+        android:text="For Category:"
+        android:textSize="28sp"
         app:layout_constraintStart_toStartOf="@+id/logBudgetGreetingsTV"
         app:layout_constraintTop_toBottomOf="@+id/logBudgetGreetingsTV" />
 
@@ -98,6 +111,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editTextNumberDecimal"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/plus" />
+        app:srcCompat="@drawable/minus_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

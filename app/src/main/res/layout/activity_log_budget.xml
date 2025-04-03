@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@color/white"
+    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LogBudget">
@@ -12,7 +12,7 @@
         android:id="@+id/logBdNavBar"
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:background="@color/white"
+        android:background="@color/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
             android:layout_gravity="start"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:background="@color/white"
+            android:background="@color/background"
             android:scaleType="centerInside"
             app:srcCompat="@drawable/arrow_back" />
 
@@ -44,12 +44,12 @@
         android:id="@+id/ovBdTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/fredoka_medium"
         android:text="Overall Budget"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logBdNavBar" />
 
@@ -98,18 +98,18 @@
 
     <ImageView
         android:id="@+id/categoryImage"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="225dp"
+        android:layout_height="225dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prevMthBdgtView"
-        app:srcCompat="@drawable/walletasset" />
+        app:srcCompat="@drawable/walleticon" />
 
     <Button
         android:id="@+id/btnApplyLogBudget"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/logbudget_pink"
+        android:backgroundTint="#CFB0F5"
         android:fontFamily="@font/varela_round"
         android:text="Apply"
         android:textColor="@color/black"

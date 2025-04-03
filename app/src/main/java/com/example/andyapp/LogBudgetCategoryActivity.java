@@ -57,15 +57,16 @@ public class LogBudgetCategoryActivity extends AppCompatActivity {
         btnDecrease = findViewById(R.id.LogBdBtnDecrease);
         budgetEditText = findViewById(R.id.editTextNumberDecimal);
         categoryTextView = findViewById(R.id.logBudgetCategoryNameTV);
-        categoryTextView.setText(String.format("for: %s", categoryText));
+        categoryTextView.setText(String.format("For: %s", categoryText));
         budgetEditText.setText(budgetAmount);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 budgetAmount = budgetEditText.getText().toString().substring(1);
-//                logBudgetModels.get(id).setBudget(budgetAmount);
-//                Intent intent = new Intent(LogBudgetCategoryActivity.this, LogBudget.class);
+                if (budgetAmount.isEmpty()){
+                    budgetAmount = "0.00";
+                }
                 intent.putExtra(LogBudget.BD_KEY, budgetAmount);
                 intent.putExtra(LogBudget.ID_KEY, id);
                 setResult(LogBudget.RESULT_OK,intent);

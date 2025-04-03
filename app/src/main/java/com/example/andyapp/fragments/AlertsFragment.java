@@ -22,6 +22,8 @@ import com.example.andyapp.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,22 +55,27 @@ public class AlertsFragment extends Fragment {
         String token = prefs.getString(LoginActivity.TOKENKEY, "");
 
         if (userId.isEmpty() || token.isEmpty()) return;
-
-        ApiService api = RetrofitClient.getApiService();
-        api.getUnreadCount("Bearer " + token, userId).enqueue(new Callback<Integer>() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    int count = response.body();
-                    if (count > 0) {
-                        Toast.makeText(getContext(), "🔴 " + count + " unread alert(s)", Toast.LENGTH_SHORT).show();
+            public void run() {
+                ApiService api = RetrofitClient.getApiService();
+                api.getUnreadCount("Bearer " + token, userId).enqueue(new Callback<Integer>() {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            int count = response.body();
+                            if (count > 0) {
+                                Toast.makeText(getContext(), "🔴 " + count + " unread alert(s)", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-                Toast.makeText(getContext(), "Failed to load unread count", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
+                        Toast.makeText(getContext(), "Failed to load unread count", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
@@ -79,33 +86,38 @@ public class AlertsFragment extends Fragment {
         String token = prefs.getString(LoginActivity.TOKENKEY, "");
 
         if (userId.isEmpty() || token.isEmpty()) return;
-
-        ApiService api = RetrofitClient.getApiService();
-        api.getNotifications("Bearer " + token, userId).enqueue(new Callback<List<NotificationResponse>>() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
             @Override
-            public void onResponse(Call<List<NotificationResponse>> call, Response<List<NotificationResponse>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    allAlerts.clear();
+            public void run() {
+                ApiService api = RetrofitClient.getApiService();
+                api.getNotifications("Bearer " + token, userId).enqueue(new Callback<List<NotificationResponse>>() {
+                    @Override
+                    public void onResponse(Call<List<NotificationResponse>> call, Response<List<NotificationResponse>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            allAlerts.clear();
 
-                    for (NotificationResponse notif : response.body()) {
-                        allAlerts.add(new AlertItem(
-                                notif.getMessage(),
-                                "By " + notif.getSenderUsername() + "\nOn " + notif.getCreatedAt(),
-                                "notification",
-                                notif.isRead()
-                        ));
+                            for (NotificationResponse notif : response.body()) {
+                                allAlerts.add(new AlertItem(
+                                        notif.getMessage(),
+                                        "By " + notif.getSenderUsername() + "\nOn " + notif.getCreatedAt(),
+                                        "notification",
+                                        notif.isRead()
+                                ));
+                            }
+
+                            adapter.updateData(allAlerts);
+                        } else {
+                            Toast.makeText(getContext(), "Failed to load alerts", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
-                    adapter.updateData(allAlerts);
-                } else {
-                    Toast.makeText(getContext(), "Failed to load alerts", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<NotificationResponse>> call, Throwable t) {
-                Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                t.printStackTrace();
+                    @Override
+                    public void onFailure(Call<List<NotificationResponse>> call, Throwable t) {
+                        Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                        t.printStackTrace();
+                    }
+                });
             }
         });
     }

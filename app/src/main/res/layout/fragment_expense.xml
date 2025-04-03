@@ -58,14 +58,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4"
                 app:layout_constraintVertical_bias="1.0" />
 
-            <ImageButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btnAdd"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_marginEnd="36dp"
-                android:layout_marginBottom="68dp"
-                android:background="@drawable/circle_background"
-                android:src="@drawable/plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="124dp"
+                android:backgroundTint="#CFB0F5"
+                android:src="@drawable/plus_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

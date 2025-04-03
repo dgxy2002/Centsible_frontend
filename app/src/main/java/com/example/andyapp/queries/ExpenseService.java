@@ -7,6 +7,8 @@ import android.widget.Toast;
 import com.example.andyapp.queries.mongoModels.Expense;
 
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -55,21 +57,28 @@ public class ExpenseService {
     }
 
     public void fetchTotalExpensesByCategory(String userId, ExpenseCallback callback) {
-        apiService.getTotalExpensesByCategory(userId).enqueue(new Callback<Map<String, Double>>() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
             @Override
-            public void onResponse(Call<Map<String, Double>> call, Response<Map<String, Double>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body()); // Pass data back
-                } else {
-                    callback.onError("Failed to fetch expenses: " + response.code());
-                }
-            }
+            public void run() {
+                apiService.getTotalExpensesByCategory(userId).enqueue(new Callback<Map<String, Double>>() {
+                    @Override
+                    public void onResponse(Call<Map<String, Double>> call, Response<Map<String, Double>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            callback.onSuccess(response.body()); // Pass data back
+                        } else {
+                            callback.onError("Failed to fetch expenses: " + response.code());
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<Map<String, Double>> call, Throwable t) {
-                callback.onError("Network error: " + t.getMessage());
+                    @Override
+                    public void onFailure(Call<Map<String, Double>> call, Throwable t) {
+                        callback.onError("Network error: " + t.getMessage());
+                    }
+                });
             }
         });
+
     }
 
     public interface ExpenseCallback {
