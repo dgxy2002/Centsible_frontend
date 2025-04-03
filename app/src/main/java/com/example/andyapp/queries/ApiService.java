@@ -1,5 +1,6 @@
 package com.example.andyapp.queries;
 
+import com.example.andyapp.models.NotificationResponse;
 import com.example.andyapp.queries.mongoModels.Expense;
 import com.example.andyapp.queries.mongoModels.LoginModel;
 import com.example.andyapp.queries.mongoModels.UserModel;
@@ -27,6 +28,18 @@ public interface ApiService {
 
     @GET("expenses/user/{userId}")
     Call<List<Expense>> getUserExpenses(@Header("Authorization") String token,@Path("userId") String userId);
+
+    @GET("users/{userId}/notifications")
+    Call<List<NotificationResponse>> getNotifications(
+            @Header("Authorization") String token,
+            @Path("userId") String userId
+    );
+
+    @GET("users/{userId}/notifications/unread-count")
+    Call<Integer> getUnreadCount(
+            @Header("Authorization") String token,
+            @Path("userId") String userId
+    );
 }
 
 

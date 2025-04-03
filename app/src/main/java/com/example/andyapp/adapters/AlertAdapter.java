@@ -1,5 +1,6 @@
 package com.example.andyapp.adapters;
 
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,8 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.AlertViewHol
         holder.title.setText(item.title);
         holder.subtitle.setText(item.subtitle);
         holder.icon.setImageResource(getIconForType(item.type));
+
+        holder.title.setTypeface(null, item.isRead ? Typeface.NORMAL : Typeface.BOLD);
     }
 
     @Override
@@ -58,25 +61,19 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.AlertViewHol
 
     private int getIconForType(String type) {
         switch (type.toLowerCase()) {
-            case "money_request":
-                return R.drawable.money_receive;
-            case "reminder":
-                return R.drawable.baseline_notifications_24;
-            case "spend_alert":
-                return R.drawable.warning_icon;
-            default:
-                return R.drawable.baseline_notifications_24;
+            case "money_request": return R.drawable.money_receive;
+            case "reminder": return R.drawable.baseline_notifications_24;
+            case "spend_alert": return R.drawable.warning_icon;
+            default: return R.drawable.baseline_notifications_24;
         }
     }
 
-    // 🔥 Allow fragment to update the adapter dynamically
     public void updateData(List<AlertItem> newAlerts) {
         alerts.clear();
         alerts.addAll(newAlerts);
         notifyDataSetChanged();
     }
 
-    // Expose current visible items for sharing/export
     public List<AlertItem> getItems() {
         return new ArrayList<>(alerts);
     }
