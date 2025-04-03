@@ -1,6 +1,8 @@
 package com.example.andyapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -14,6 +16,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.andyapp.adapters.CalendarAdapter;
+import com.example.andyapp.queries.ApiService;
+import com.example.andyapp.queries.RetrofitClient;
+import com.example.andyapp.queries.mongoModels.Expense;
 import com.example.andyapp.utils.CalendarUtils;
 
 import java.time.LocalDate;
@@ -22,6 +27,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class StreaksActivity extends AppCompatActivity {
 
@@ -55,7 +65,7 @@ public class StreaksActivity extends AppCompatActivity {
 
         currentDate = LocalDate.now();
 
-        loadSampleData();
+        loadExpenseDatesFromBackend();
         updateCalendar();
 
         prevButton.setOnClickListener(v -> {
@@ -68,20 +78,55 @@ public class StreaksActivity extends AppCompatActivity {
             updateCalendar();
         });
         btnback.setOnClickListener(view -> {
-            Intent subActivityIntent = new Intent(view.getContext(), Dashboard.class);
+            Intent subActivityIntent = new Intent(view.getContext(), NavigationDrawerActivity.class);
             startActivity(subActivityIntent);
         });
     }
 
-    private void loadSampleData() {
-        // Simulating completed dates from Feb 1–17, 2025 except 18–22
-        for (int i = 1; i <= 25; i++) {
-            if (i <= 24) {
-                completedDates.add(LocalDate.of(2025, 3, i));
-            }
+
+
+    private void loadExpenseDatesFromBackend() {
+        SharedPreferences prefs = this.getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        String userId = prefs.getString(LoginActivity.USERKEY, "");
+        String token = prefs.getString(LoginActivity.TOKENKEY, "");
+
+        if (userId.isEmpty() || token.isEmpty()) {
+            Toast.makeText(this, "Missing user ID or token. Please log in again.", Toast.LENGTH_SHORT).show();
+            return;
         }
-        updateMonthStats();
+
+        ApiService api = RetrofitClient.getApiService();
+        api.getUserExpenses(token, userId).enqueue(new Callback<List<Expense>>() {
+            @Override
+            public void onResponse(Call<List<Expense>> call, Response<List<Expense>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    completedDates.clear();
+                    for (Expense expense : response.body()) {
+                        try {
+                            LocalDate date = expense.getCreatedDate(); // date format 2025-03-29
+                            completedDates.add(date);
+                        } catch (Exception e) {
+                            e.printStackTrace(); // Invalid date format handling
+                        }
+                    }
+                    updateCalendar(); // Refresh calendar after loading data
+                } else {
+                    Toast.makeText(StreaksActivity.this, "Failed to load expense dates", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Expense>> call, Throwable t) {
+                Toast.makeText(StreaksActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                t.printStackTrace();
+            }
+        });
     }
+
+
+
+
+
 
     private void updateCalendar() {
         // Set the month-year label
