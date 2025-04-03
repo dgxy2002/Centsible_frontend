@@ -59,7 +59,6 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/varela_round"
-                android:text="Spending Breakdown"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,6 +79,7 @@
                 android:layout_marginTop="460dp"
                 android:layout_marginEnd="40dp"
                 android:clickable="true"
+                android:background="@color/backgroundaccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textTopCategories"
                 app:srcCompat="@drawable/editicon" />

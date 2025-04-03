@@ -2,9 +2,14 @@ package com.example.andyapp.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.andyapp.R;
+import com.example.andyapp.RecyclerViewOnClickInterface;
 import com.example.andyapp.models.LogBudgetModel;
 
 import java.util.ArrayList;
@@ -24,11 +30,14 @@ import java.util.ArrayList;
 public class LogBd_RecyclerViewAdapter extends RecyclerView.Adapter<LogBd_RecyclerViewAdapter.MyViewHolder>{
     Context context;
     ArrayList<LogBudgetModel> logBudgetModels;
-    public int selectedItemPosition = 0;
+    private final RecyclerViewOnClickInterface recyclerViewInterface;
+    String TAG = "LOGCAT";
 
-    public LogBd_RecyclerViewAdapter(Context context, ArrayList<LogBudgetModel> logBudgetModels) {
+
+    public LogBd_RecyclerViewAdapter(Context context, ArrayList<LogBudgetModel> logBudgetModels, RecyclerViewOnClickInterface recyclerViewInterface) {
         this.context = context;
         this.logBudgetModels = logBudgetModels;
+        this.recyclerViewInterface = recyclerViewInterface;
     }
 
     @NonNull
@@ -41,27 +50,47 @@ public class LogBd_RecyclerViewAdapter extends RecyclerView.Adapter<LogBd_Recycl
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        position = position % logBudgetModels.size();
         LogBudgetModel logBudgetModel = logBudgetModels.get(position);
         String category = logBudgetModel.getCategory();
         int icon = logBudgetModel.getIcon();
+        String budget = logBudgetModel.getBudget();
+        int id = logBudgetModel.getId();
+        //Initialise Views
         holder.imageView.setImageResource(icon);
-        holder.textView.setText(category);
+        holder.categoryTextView.setText(category);
+        holder.budgetTextView.setText("$" + budget);
     }
 
     @Override
     public int getItemCount() {
-        return Integer.MAX_VALUE;
+        return logBudgetModels.size();
+    }
+
+    private void updateData(){
+
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView textView;
+        TextView categoryTextView;
         ImageView imageView;
+        TextView budgetTextView;
 
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
-            textView = itemView.findViewById(R.id.logBdCategoryView);
+            categoryTextView = itemView.findViewById(R.id.logBdCategoryView);
             imageView = itemView.findViewById(R.id.logBdImageView);
+            budgetTextView = itemView.findViewById(R.id.catBudgetTextView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (recyclerViewInterface != null){
+                        int position = getBindingAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            recyclerViewInterface.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
 
     }

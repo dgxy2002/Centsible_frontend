@@ -12,7 +12,7 @@
         android:id="@+id/logBdNavBar"
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:background="@color/background"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
             android:layout_gravity="start"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:background="#FAF6FE"
+            android:background="@color/white"
             android:scaleType="centerInside"
             app:srcCompat="@drawable/arrow_back" />
 
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/logBdNavBar" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/overallEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -62,7 +62,7 @@
         android:gravity="center"
         android:text="$0.00"
         android:fontFamily="@font/fredoka_medium"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:textSize="50sp"
         android:background="@null"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +71,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ovBdTV" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/prevMthBdgtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -83,63 +83,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/overallEditText" />
 
-    <androidx.cardview.widget.CardView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/logBdRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_marginTop="32dp"
-        app:cardCornerRadius="50dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="76dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryImage"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/categoryImage"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7">
+        app:layout_constraintTop_toBottomOf="@+id/prevMthBdgtView"
+        app:srcCompat="@drawable/walletasset" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/logBdRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:inputType="number"
-                android:fontFamily="@font/fredoka"
-                android:text="$0.00"
-                android:textSize="50sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/logBdRecyclerView"
-                app:layout_constraintVertical_bias="0.32" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Budget for Shopping"
-                android:textSize="20sp"
-                android:fontFamily="@font/fredoka"
-                app:layout_constraintBottom_toTopOf="@+id/editText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/logBdRecyclerView"
-                app:layout_constraintVertical_bias="0.703" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/btnApplyLogBudget"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/logbudget_pink"
+        android:fontFamily="@font/varela_round"
+        android:text="Apply"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logBdRecyclerView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

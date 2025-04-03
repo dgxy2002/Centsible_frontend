@@ -1,0 +1,7 @@
+<resources>
+    <style name="PrefixStyle" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">40sp</item>
+        <item name="android:fontFamily">@font/fredoka_medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+</resources>

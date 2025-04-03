@@ -69,7 +69,6 @@ public class BudgetFragment extends Fragment {
         bdRecyclerView.setAdapter(adapter);
         bdRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-
     }
 
     void setupBudgetModels(int[]progresses, int[]images, float[] spentData, float[] budgetData, String[] categories){

@@ -97,7 +97,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                return false;
            }
        });
-
     }
     public void changeFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
