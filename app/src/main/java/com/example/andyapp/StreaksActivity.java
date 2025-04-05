@@ -39,6 +39,8 @@ public class StreaksActivity extends AppCompatActivity {
     private TextView textMonthYear;
     private TextView dayCountText;
     private LocalDate currentDate;
+    private TextView streakNumberText;
+
 
     private Set<LocalDate> completedDates = new HashSet<>();
     private ImageButton btnback;
@@ -58,6 +60,8 @@ public class StreaksActivity extends AppCompatActivity {
         calendarGridView = findViewById(R.id.calendarGridView);
         textMonthYear = findViewById(R.id.textMonthYear);
         dayCountText = findViewById(R.id.textDayCount);
+        streakNumberText = findViewById(R.id.streakNumber);
+
         ImageButton prevButton = findViewById(R.id.buttonPreviousMonth);
         ImageButton nextButton = findViewById(R.id.buttonNextMonth);
         btnback = findViewById(R.id.btn_back);
@@ -91,7 +95,7 @@ public class StreaksActivity extends AppCompatActivity {
         String token = prefs.getString(LoginActivity.TOKENKEY, "");
 
         if (userId.isEmpty() || token.isEmpty()) {
-            Toast.makeText(this, "Missing user ID or token. Please log in again.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Missing user ID or token. Check log in credentials.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -160,6 +164,9 @@ public class StreaksActivity extends AppCompatActivity {
                 count++;
             }
         }
+        // to update the 128 Day streak
         dayCountText.setText(String.valueOf(count));
+        streakNumberText.setText(String.valueOf(count));
     }
+
 }
