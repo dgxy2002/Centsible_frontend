@@ -23,19 +23,19 @@
         <item
             android:id="@+id/navQuest"
             android:icon="@drawable/checkbox_empty"
-            android:title="Quest1">
+            android:title="Log an Expense!">
 
         </item>
         <item
             android:id="@+id/navQuest2"
             android:icon="@drawable/checkbox_empty"
-            android:title="Quest2">
+            android:title="Nudge a friend!">
 
         </item>
         <item
             android:id="@+id/navQuest3"
-            android:icon="@drawable/checkbox_ticked"
-            android:title="Quest3">
+            android:icon="@drawable/checkbox_full"
+            android:title="Keep Budget for a Month!">
         </item>
     </group>
     <item

@@ -19,6 +19,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.MainActivity;
 import com.example.andyapp.R;
@@ -54,6 +57,8 @@ public class GroupsFragment extends Fragment {
     String userId;
     String token;
     SharedPreferences mypref;
+    Button btnConnect;
+    EditText usernameEditText;
     private final String TAG = "LOGCAT";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,16 +70,29 @@ public class GroupsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //Initialise Views and Models
+        btnConnect = view.findViewById(R.id.btnConnect);
+        usernameEditText = view.findViewById(R.id.addFriendEditText);
         groupsRecycler = view.findViewById(R.id.groupsRecycler);
         spacingDecorator = new RecyclerViewSpacingDecorator(40);
         groupsModels = new ArrayList<>();
         groupsRecycler.addItemDecoration(spacingDecorator);
+        //Shared Preferences
         mypref = requireContext().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
-        userId = mypref.getString(LoginActivity.USERKEY, "None");
-        token = mypref.getString(LoginActivity.TOKENKEY, "None");
+        userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
+        token = mypref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
         Log.d(TAG, String.format("USERID IN GROUPS %s", userId));
         Log.d(TAG, String.format("TOKEN IN GROUPS %s", token));
-        setUpGroupsModels(userId);
+        //Set Up Buttons
+        btnConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String username = usernameEditText.getText().toString();
+                //TODO Finish setting up the get friend, and option to view get friend request.
+            }
+        });
+        //Set up Recycler View
+        setUpGroupsModels(userId); //Get data
         adapter = new Groups_RecyclerViewAdapter(groupsModels, view.getContext());
         groupsRecycler.setAdapter(adapter);
         groupsRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -121,10 +139,10 @@ public class GroupsFragment extends Fragment {
     }
 
     private void setUpGroupsModels(String userID){
-        /*String[] connections = {"Herbert", "Philbert", "Jacob"};
+        String[] connections = {"Herbert", "Philbert", "Jacob"};
         for (String connection: connections){
             groupsModels.add(new GroupsModel(connection, R.drawable.avatar));
-        }*/
+        }
         GetConnections connectionsService = RetrofitClient.getRetrofit().create(GetConnections.class);
         connectionsService.getConnections(token, userId).enqueue(new Callback<String[]>() {
             @Override
@@ -151,6 +169,5 @@ public class GroupsFragment extends Fragment {
                 }
             }
         });
-
     }
 }
