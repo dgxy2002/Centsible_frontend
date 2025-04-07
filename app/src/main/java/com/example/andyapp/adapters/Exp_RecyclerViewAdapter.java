@@ -1,9 +1,7 @@
 package com.example.andyapp.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +12,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.andyapp.R;
-import com.example.andyapp.models.ExpensesModel;
+import com.example.andyapp.models.GetCategoryExpenseModel;
 
 import java.util.ArrayList;
 
 public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerViewAdapter.MyViewHolder> {
     Context context;
-    ArrayList<ExpensesModel> expensesModels;
+    ArrayList<GetCategoryExpenseModel> getCategoryExpenseModels;
     double totalExpense;
 
-    public Exp_RecyclerViewAdapter(Context context, ArrayList<ExpensesModel> expensesModels){
+    public Exp_RecyclerViewAdapter(Context context, ArrayList<GetCategoryExpenseModel> getCategoryExpenseModels){
         this.context = context;
-        this.expensesModels = expensesModels;
+        this.getCategoryExpenseModels = getCategoryExpenseModels;
         this.totalExpense = 0;
-        for (int i = 0; i < expensesModels.size(); i++){
-            this.totalExpense += expensesModels.get(i).getAmount();
+        for (int i = 0; i < getCategoryExpenseModels.size(); i++){
+            this.totalExpense += getCategoryExpenseModels.get(i).getAmount();
         }
     }
     @NonNull
@@ -44,21 +42,21 @@ public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerVi
     public void onBindViewHolder(@NonNull Exp_RecyclerViewAdapter.MyViewHolder holder, int position) {
         //assigning values to each view we create in recycler_row_view file
         //based on the position of the recycler view
-        holder.catView.setText(expensesModels.get(position).getCategory());
-        holder.amtView.setText(String.format("$%.2f", expensesModels.get(position).getAmount()));
-        holder.iconView.setImageResource(expensesModels.get(position).getImage());
-        setBarWidth(holder.roundedBarView, expensesModels.get(position).getAmount());
+        holder.catView.setText(getCategoryExpenseModels.get(position).getCategory());
+        holder.amtView.setText(String.format("$%.2f", getCategoryExpenseModels.get(position).getAmount()));
+        holder.iconView.setImageResource(getCategoryExpenseModels.get(position).getImage());
+        setBarWidth(holder.roundedBarView, getCategoryExpenseModels.get(position).getAmount());
         setBarColor(holder.roundedBarView, position);
     }
 
     @Override
     public int getItemCount() {
         //Number of total items
-        return expensesModels.size();
+        return getCategoryExpenseModels.size();
     }
 
-    public void updateData(ArrayList<ExpensesModel> expensesModels){
-        this.expensesModels = expensesModels;
+    public void updateData(ArrayList<GetCategoryExpenseModel> getCategoryExpenseModels){
+        this.getCategoryExpenseModels = getCategoryExpenseModels;
         notifyDataSetChanged();
     }
 

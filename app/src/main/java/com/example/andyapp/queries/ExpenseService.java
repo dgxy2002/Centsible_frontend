@@ -4,8 +4,13 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.andyapp.R;
+import com.example.andyapp.models.GetCategoryExpenseModel;
 import com.example.andyapp.queries.mongoModels.Expense;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,6 +24,7 @@ public class ExpenseService {
 
     private final ApiService apiService;
     private final Context context;
+    private final String TAG = "LOGCAT";
 
     public ExpenseService(Context context) {
         this.apiService = RetrofitClient.getApiService();
@@ -56,34 +62,46 @@ public class ExpenseService {
         });
     }
 
-    public void fetchTotalExpensesByCategory(String userId, ExpenseCallback callback) {
+    public ArrayList<GetCategoryExpenseModel> fetchTotalExpensesByCategory(String userId) {
+        ArrayList<GetCategoryExpenseModel> getCategoryExpenseModels = new ArrayList<>();
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                apiService.getTotalExpensesByCategory(userId).enqueue(new Callback<Map<String, Double>>() {
+                apiService.getTotalExpensesByCategory(userId).enqueue(new Callback<HashMap<String, Double>>() {
                     @Override
-                    public void onResponse(Call<Map<String, Double>> call, Response<Map<String, Double>> response) {
+                    public void onResponse(Call<HashMap<String, Double>> call, Response<HashMap<String, Double>> response) {
+
                         if (response.isSuccessful() && response.body() != null) {
-                            callback.onSuccess(response.body()); // Pass data back
+                            Log.d(TAG, response.body().toString());
+                            HashMap<String, Double> data = response.body();
+                            for (String key: data.keySet()){
+                                Log.d(TAG, key);
+                                double amount = data.get(key);
+                                GetCategoryExpenseModel categoryExpenseModel = new GetCategoryExpenseModel(key, amount, R.drawable.dining);
+                            }
                         } else {
-                            callback.onError("Failed to fetch expenses: " + response.code());
+                            try {
+                                Log.d(TAG, response.errorBody().string());
+                            } catch(IOException e){
+                                Log.e(TAG, "Response code"+ response.code());
+                                Log.e(TAG, e.toString());
+                            }
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<Map<String, Double>> call, Throwable t) {
-                        callback.onError("Network error: " + t.getMessage());
+                    public void onFailure(Call<HashMap<String, Double>> call, Throwable t) {
+                        if (t.getMessage() != null){
+                            Log.d(TAG, t.getMessage());
+                        }
                     }
                 });
             }
         });
-
+        return getCategoryExpenseModels;
     }
 
-    public interface ExpenseCallback {
-        void onSuccess(Map<String, Double> categoryExpenses);
-        void onError(String errorMessage);
-    }
+
 }
 

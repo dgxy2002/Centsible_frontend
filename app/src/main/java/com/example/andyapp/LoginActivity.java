@@ -19,6 +19,7 @@ import com.example.andyapp.queries.mongoModels.LoginModel;
 import com.example.andyapp.queries.mongoModels.UserModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,9 +43,27 @@ public class LoginActivity extends AppCompatActivity {
     RequestUser requestUser;
     SharedPreferences sharedPreferences;
 
+    class LoginResponse{
+        private String userId;
+        private String token;
+        private String message;
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
+
     interface RequestUser{
         @POST("users/login")
-        Call<UserModel> getUser(@Body LoginModel login);
+        Call<LoginResponse> getUser(@Body LoginModel login);
     }
 
     @Override
@@ -75,20 +94,19 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, String.format("username: %s, password: %s", loginModel.getUsername(), loginModel.getPassword()));
                 requestUser.getUser(loginModel).enqueue(new Callback<>() {
                     @Override
-                    public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         if ( response.body() != null ) {
-                            UserModel user = response.body();
-                            String id = user.getId();
-                            String message = user.getMessage();
-                            String token = user.getToken();
-                            int streak = user.getStreak();
+                            LoginResponse resp = response.body();
+                            String id = resp.getUserId();
+                            String message = resp.getMessage();
+                            String token = resp.getToken();
                             sharedPreferences = getSharedPreferences(PREFTAG, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString(TOKENKEY, "Bearer " +token);
                             editor.putString(USERKEY, id);
                             editor.putString(VIEWERKEY, id);
                             editor.apply();
-                            Log.d(TAG, String.format("userID: %s, message: %s, token: %s, streak: %d", id, message, token, streak));
+                            Log.d(TAG, String.format("userID: %s, message: %s, token: %s", id, message, token));
                             Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
                             startActivity(intent);
                         }else{
@@ -105,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                     @Override
-                    public void onFailure(Call<UserModel> call, Throwable t) {
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
                         if (t.getMessage() != null) {
                             Log.d(TAG, t.getMessage());
                         }
