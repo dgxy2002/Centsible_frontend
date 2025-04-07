@@ -4,7 +4,7 @@
     android:id="@+id/streaks_toolbar"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    android:background="@color/centsible_background_color"
+    android:background="@color/background"
     android:elevation="4dp">
 
 
