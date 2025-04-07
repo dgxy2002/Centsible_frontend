@@ -35,7 +35,7 @@ public class UsernameModelRCV extends RecyclerView.Adapter<UsernameModelRCV.MyVi
 
         holder.rank.setText(String.format("%02d", position + 4)); // Start from 04
         holder.name.setText(model.getName());
-        holder.points.setText(model.getNumber_points() + " points");
+        holder.points.setText(model.getNumber_points());
         holder.pointsChange.setText(model.getPointsUpDown());
         holder.imgArrow.setImageResource(model.getArrowUpDown_img());
         holder.imgProfile.setImageResource(model.getImage());
