@@ -164,9 +164,28 @@ public class StreaksActivity extends AppCompatActivity {
                 count++;
             }
         }
-        // to update the 128 Day streak
+
+        // Update day count and streak number
         dayCountText.setText(String.valueOf(count));
         streakNumberText.setText(String.valueOf(count));
+
+        // Update congratulatory message based on week streak
+        TextView congratsMessage = findViewById(R.id.congratsMessage);
+
+        if (count < 1) {
+            congratsMessage.setText(("Let's get back to it! Good practices take time  "));
+
+        } else if (count <= 7) {
+            congratsMessage.setText("Keep up the good work! 💪");
+        } else {
+            int weekCount = count / 7;
+            if (weekCount == 1) {
+                congratsMessage.setText("🎉 You've kept a Perfect Streak for 1 straight week. Wow!");
+            } else {
+                congratsMessage.setText("🎉 You've kept a Perfect Streak for " + weekCount + " straight weeks. Wow!");
+            }
+        }
     }
+
 
 }

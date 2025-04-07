@@ -1,38 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:padding="12dp"
+    android:padding="16dp"
+    android:background="@color/centsible_light_purple"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!-- Icon -->
+    <!-- Notification Icon -->
     <ImageView
         android:id="@+id/alertIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginEnd="12dp"
-        android:src="@drawable/baseline_notifications_24" />
+        android:src="@drawable/baseline_notifications_24"
+        android:tint="@color/centsible_text_primary"
+        android:contentDescription="Alert Icon" />
 
-    <!-- Text -->
+    <!-- Vertical Info Block -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
+        <!-- Alert Title -->
         <TextView
             android:id="@+id/alertTitle"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="squirtle logged a new expense: Poké Ball ($200.00)"
             android:textColor="@color/centsible_text_primary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_semibold" />
 
-        <TextView
-            android:id="@+id/alertSubtitle"
-            android:textSize="14sp"
-            android:textColor="@color/centsible_text_secondary"
+        <!-- Sender + Date Container -->
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:id="@+id/alertSender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="By squirtle"
+                android:textColor="@color/centsible_text_secondary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/alertDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="On 31 Mar 2025, 11:37 AM"
+                android:textColor="@color/centsible_text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
