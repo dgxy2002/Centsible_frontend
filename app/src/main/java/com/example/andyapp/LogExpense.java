@@ -104,7 +104,7 @@ public class LogExpense extends AppCompatActivity {
 
         //SharedPreferences
         myPref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
-        userId = myPref.getString(LoginActivity.USERKEY, "67ecf4e07cb6ed67c0e7e67a");
+        userId = myPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
 
         //Configure dropdown menu
         String[] categories = getResources().getStringArray(R.array.categories);
@@ -239,6 +239,12 @@ public class LogExpense extends AppCompatActivity {
         }else{
             currentDate =  LocalDate.now();
             date = "2025-04-04";
+        }
+        if (category.isEmpty()){
+            category = "Others";
+        }
+        if (title.isEmpty()){
+            title = "No Title";
         }
 
         String userId = "67ecf4e07cb6ed67c0e7e67a"; // Replace with actual user ID

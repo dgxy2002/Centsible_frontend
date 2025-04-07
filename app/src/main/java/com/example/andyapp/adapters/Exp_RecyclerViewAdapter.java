@@ -2,6 +2,7 @@ package com.example.andyapp.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +12,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.andyapp.DataObserver;
 import com.example.andyapp.R;
 import com.example.andyapp.models.GetCategoryExpenseModel;
+import com.example.andyapp.models.GetCategoryExpenseModels;
 
 import java.util.ArrayList;
 
-public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerViewAdapter.MyViewHolder> {
+public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerViewAdapter.MyViewHolder> implements DataObserver<GetCategoryExpenseModels> {
     Context context;
     ArrayList<GetCategoryExpenseModel> getCategoryExpenseModels;
     double totalExpense;
 
-    public Exp_RecyclerViewAdapter(Context context, ArrayList<GetCategoryExpenseModel> getCategoryExpenseModels){
+    public Exp_RecyclerViewAdapter(Context context, GetCategoryExpenseModels data){
         this.context = context;
-        this.getCategoryExpenseModels = getCategoryExpenseModels;
+        this.getCategoryExpenseModels = data.getCategoryExpensesModels();
         this.totalExpense = 0;
         for (int i = 0; i < getCategoryExpenseModels.size(); i++){
             this.totalExpense += getCategoryExpenseModels.get(i).getAmount();
@@ -55,15 +58,20 @@ public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerVi
         return getCategoryExpenseModels.size();
     }
 
-    public void updateData(ArrayList<GetCategoryExpenseModel> getCategoryExpenseModels){
-        this.getCategoryExpenseModels = getCategoryExpenseModels;
+    public void updateData(GetCategoryExpenseModels data){
+        this.getCategoryExpenseModels = data.getCategoryExpensesModels(); // Update list
+        Log.d("LOGCAT", "Updating with size: " + getCategoryExpenseModels.size());
+        this.totalExpense = 0;
+        for (GetCategoryExpenseModel model : this.getCategoryExpenseModels) {
+            this.totalExpense += model.getAmount();
+        }
         notifyDataSetChanged();
     }
 
     private void setBarColor(View barView, int position){
         Drawable background =  barView.getBackground();
         int[] colors = context.getResources().getIntArray(R.array.category_colors);
-        background.setColorFilter(colors[position], android.graphics.PorterDuff.Mode.SRC_IN);
+        background.setColorFilter(colors[position % colors.length], android.graphics.PorterDuff.Mode.SRC_IN);
     }
 
     private void setBarWidth(View barView, double amtSpent){
