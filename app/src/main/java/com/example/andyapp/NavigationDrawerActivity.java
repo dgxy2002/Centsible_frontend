@@ -56,8 +56,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             }
         });
         mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
-        userid = mypref.getString(LoginActivity.USERKEY, "None");
-        viewerid = mypref.getString(LoginActivity.VIEWERKEY, "None");
+        userid = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
+        viewerid = mypref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
         token = mypref.getString(LoginActivity.TOKENKEY, "None");
         Log.d(TAG, String.format("USERID IN NAVDRAWER %s", userid));
         btnMenu.setOnClickListener(new View.OnClickListener() {

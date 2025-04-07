@@ -1,11 +1,11 @@
 package com.example.andyapp.models;
 
-public class ExpensesModel {
+public class GetCategoryExpenseModel {
     private String category;
     private double amount;
     private int image;
 
-    public ExpensesModel(String category, double amount, int image) {
+    public GetCategoryExpenseModel(String category, double amount, int image) {
         this.category = category;
         this.amount = amount;
         this.image = image;

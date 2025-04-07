@@ -5,6 +5,7 @@ import com.example.andyapp.queries.mongoModels.Expense;
 import com.example.andyapp.queries.mongoModels.LoginModel;
 import com.example.andyapp.queries.mongoModels.UserModel;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public interface ApiService {
     Call<ResponseBody> createExpense(@Body Expense expense);
 
     @GET("expenses/user/{userId}/total-by-category")
-    Call<Map<String, Double>> getTotalExpensesByCategory(@Path("userId") String userId);
+    Call<HashMap<String, Double>> getTotalExpensesByCategory(@Path("userId") String userId);
 
     @GET("/users/login")
     Call<UserModel> getUser(@Body LoginModel login);

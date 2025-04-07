@@ -8,10 +8,10 @@ public class PostExpense {
     private String title;
     private double amount;
     private String category;
-    private LocalDate createdDate; // Must match "createdDate" in backend
+    private String createdDate; // Must match "createdDate" in backend
     private String userId;
 
-    public PostExpense(String userId, String title, double amount, String category, LocalDate createdDate) {
+    public PostExpense(String userId, String title, double amount, String category, String createdDate) {
         this.userId = userId;
         this.title = title;
         this.amount = amount;
@@ -20,7 +20,7 @@ public class PostExpense {
     }
     @Override @NonNull
     public String toString(){
-        String out_string = String.format("title: %s, amount: %.2f, userId: %s, category: %s, createdDate: %s", title, amount, userId, category, createdDate.toString());
+        String out_string = String.format("title: %s, amount: %.2f, userId: %s, category: %s, createdDate: %s", title, amount, userId, category, createdDate);
         return out_string;
     }
 
@@ -36,7 +36,7 @@ public class PostExpense {
         return amount;
     }
 
-    public LocalDate getCreatedDate() {
+    public String getCreatedDate() {
         return createdDate;
     }
 

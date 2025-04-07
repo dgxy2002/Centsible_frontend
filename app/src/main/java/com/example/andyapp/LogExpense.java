@@ -74,7 +74,7 @@ public class LogExpense extends AppCompatActivity {
 
     interface PostExpenseService{
         @POST("expenses/post")
-        Call<Map<String, String>> postExpenseService(@Body PostExpense expense);
+        Call<ResponseBody> postExpenseService(@Body PostExpense expense);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,12 +173,16 @@ public class LogExpense extends AppCompatActivity {
                     @Override
                     public void run() {
                         PostExpenseService service = RetrofitClient.getRetrofit().create(PostExpenseService.class);
-                        service.postExpenseService(expense).enqueue(new Callback<Map<String, String>>() {
+                        service.postExpenseService(expense).enqueue(new Callback<ResponseBody>() {
                             @Override
-                            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                 if (response.body() != null){
-                                    String message = response.body().get("message");
-                                    Log.d(TAG, message);
+                                    try{
+                                        String message = response.body().string();
+                                        Log.d(TAG, message);
+                                    } catch(IOException e){
+                                        Log.d(TAG, e.toString());
+                                    }
                                 }else{
                                     try {
                                         String error = response.errorBody().string();
@@ -190,7 +194,7 @@ public class LogExpense extends AppCompatActivity {
                                 }
                             }
                             @Override
-                            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
                                 if (t.getMessage() != null) {
                                     Log.d(TAG, t.getMessage());
                                 }
@@ -231,11 +235,14 @@ public class LogExpense extends AppCompatActivity {
         if (date != null){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             currentDate = LocalDate.parse(date, formatter);
+
         }else{
             currentDate =  LocalDate.now();
+            date = "2025-04-04";
         }
+
         String userId = "67ecf4e07cb6ed67c0e7e67a"; // Replace with actual user ID
-        PostExpense expense = new PostExpense(userId, title, amtLogged, category, currentDate);
+        PostExpense expense = new PostExpense(userId, title, amtLogged, category, date);
         Log.d(TAG, expense.toString());
         return expense;
     }

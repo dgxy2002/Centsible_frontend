@@ -8,8 +8,6 @@ import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,13 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.adapters.Exp_RecyclerViewAdapter;
-import com.example.andyapp.models.ExpensesModel;
+import com.example.andyapp.models.GetCategoryExpenseModel;
 import com.example.andyapp.LogExpense;
 import com.example.andyapp.R;
+import com.example.andyapp.queries.ApiService;
 import com.example.andyapp.queries.ExpenseService;
 import com.example.andyapp.queries.RetrofitClient;
 import com.example.andyapp.queries.mongoModels.Expense;
@@ -36,6 +34,7 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -53,8 +52,8 @@ import retrofit2.http.Path;
 public class ExpenseFragment extends Fragment {
 
     interface GetExpenses{
-        @GET("expenses/user/{userId}")
-        Call<ArrayList<Expense>>getExpenses(@Path("userId") String userId);
+        @GET("expenses/user/{userId}/total-by-category")
+        Call<HashMap<String, Double>>getExpenses(@Path("userId") String userId);
     }
 
     int[] colorResIds = {
@@ -63,7 +62,7 @@ public class ExpenseFragment extends Fragment {
     };
 
 
-    ArrayList<ExpensesModel> expensesModels = new ArrayList<>();
+    ArrayList<GetCategoryExpenseModel> getCategoryExpenseModels = new ArrayList<>();
     ArrayList<PieEntry> entries = new ArrayList<>();
     ArrayList<Integer> colors;
     PieChart pieChart;
@@ -89,8 +88,8 @@ public class ExpenseFragment extends Fragment {
             colors.add(ContextCompat.getColor(requireActivity(), colorResId));
         }
         myPref = requireActivity().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
-        viewerId = myPref.getString(LoginActivity.VIEWERKEY, "67ecf4e07cb6ed67c0e7e67a");
-        token = myPref.getString(LoginActivity.TOKENKEY, "67ecf4e07cb6ed67c0e7e67a");
+        viewerId = myPref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
+        token = myPref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
 
         pieChart = view.findViewById(R.id.expensePieChart);
         recyclerView = view.findViewById(R.id.expenserecycler);
@@ -113,7 +112,7 @@ public class ExpenseFragment extends Fragment {
         pieChart.setData(pieData);
         formatPieChart(pieChart, black);
         //Configure RecyclerView
-        adapter = new Exp_RecyclerViewAdapter(view.getContext(), expensesModels);
+        adapter = new Exp_RecyclerViewAdapter(view.getContext(), getCategoryExpenseModels);
         recyclerView.setAdapter(adapter);
         setupExpensesModel();
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -121,38 +120,15 @@ public class ExpenseFragment extends Fragment {
     }
 
     private void setupExpensesModel(){
-        getExpense = RetrofitClient.getRetrofit().create(GetExpenses.class);
-        if (viewerId.isEmpty()){
-            viewerId = userId;
-        }
+        Log.d(TAG, "USERID" + viewerId);
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                getExpense.getExpenses("67ecf4e07cb6ed67c0e7e67a").enqueue(new Callback<>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Expense>> call, Response<ArrayList<Expense>> response) {
-                        if (response.body() != null) {
-                            Log.d(TAG, response.body().toString());
-                        }else{
-                            try {
-                                String error = response.errorBody().string();
-                                Log.e(TAG, "Response code: " + response.code());
-                                Log.e(TAG, "Error body: " + error);
-                            } catch (IOException e) {
-                                Log.e(TAG, "Error reading errorBody", e);
-                            }
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<ArrayList<Expense>> call, Throwable t) {
-                        if (t.getMessage() != null) {
-                            Log.d(TAG, t.getMessage());
-                        }
-                    }
-                });
-            }
-        });
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    ExpenseService expenseService = new ExpenseService(requireContext());
+                    getCategoryExpenseModels = expenseService.fetchTotalExpensesByCategory(viewerId);
+                }
+            });
     }
 
     private PieDataSet getDataSet(){
