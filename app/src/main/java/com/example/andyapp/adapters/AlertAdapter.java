@@ -52,7 +52,7 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> 
         // Split the subtitle into sender and datetime
         String[] parts = alert.getSubtitle().split("\n");
         if (parts.length >= 2) {
-            holder.sender.setText(parts[0]); 
+            holder.sender.setText(parts[0]);
             holder.date.setText(formatDate(parts[1])); // ISO to readable format
         } else {
             holder.sender.setText("");

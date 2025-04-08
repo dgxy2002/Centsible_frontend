@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -32,18 +33,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class StreaksActivity extends AppCompatActivity {
 
     private GridView calendarGridView;
     private TextView textMonthYear;
     private TextView dayCountText;
-    private LocalDate currentDate;
     private TextView streakNumberText;
-
+    private TextView congratsMessage;
+    private ImageButton btnBack;
+    private LocalDate currentDate;
 
     private Set<LocalDate> completedDates = new HashSet<>();
-    private ImageButton btnback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,37 +57,38 @@ public class StreaksActivity extends AppCompatActivity {
             return insets;
         });
 
-        calendarGridView = findViewById(R.id.calendarGridView);
-        textMonthYear = findViewById(R.id.textMonthYear);
-        dayCountText = findViewById(R.id.textDayCount);
-        streakNumberText = findViewById(R.id.streakNumber);
-
-        ImageButton prevButton = findViewById(R.id.buttonPreviousMonth);
-        ImageButton nextButton = findViewById(R.id.buttonNextMonth);
-        btnback = findViewById(R.id.btn_back);
-
-
+        initViews();
         currentDate = LocalDate.now();
 
         loadExpenseDatesFromBackend();
         updateCalendar();
+        setListeners();
+    }
 
-        prevButton.setOnClickListener(v -> {
+    private void initViews() {
+        calendarGridView = findViewById(R.id.calendarGridView);
+        textMonthYear = findViewById(R.id.textMonthYear);
+        dayCountText = findViewById(R.id.textDayCount);
+        streakNumberText = findViewById(R.id.streakNumber);
+        congratsMessage = findViewById(R.id.congratsMessage);
+        btnBack = findViewById(R.id.btn_back);
+    }
+
+    private void setListeners() {
+        findViewById(R.id.buttonPreviousMonth).setOnClickListener(v -> {
             currentDate = currentDate.minusMonths(1);
             updateCalendar();
         });
 
-        nextButton.setOnClickListener(v -> {
+        findViewById(R.id.buttonNextMonth).setOnClickListener(v -> {
             currentDate = currentDate.plusMonths(1);
             updateCalendar();
         });
-        btnback.setOnClickListener(view -> {
-            Intent subActivityIntent = new Intent(view.getContext(), NavigationDrawerActivity.class);
-            startActivity(subActivityIntent);
+
+        btnBack.setOnClickListener(view -> {
+            startActivity(new Intent(this, NavigationDrawerActivity.class));
         });
     }
-
-
 
     private void loadExpenseDatesFromBackend() {
         SharedPreferences prefs = this.getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
@@ -107,13 +108,13 @@ public class StreaksActivity extends AppCompatActivity {
                     completedDates.clear();
                     for (Expense expense : response.body()) {
                         try {
-                            LocalDate date = expense.getCreatedDate(); // date format 2025-03-29
+                            LocalDate date = expense.getCreatedDate();
                             completedDates.add(date);
                         } catch (Exception e) {
-                            e.printStackTrace(); // Invalid date format handling
+                            e.printStackTrace();
                         }
                     }
-                    updateCalendar(); // Refresh calendar after loading data
+                    updateCalendar();
                 } else {
                     Toast.makeText(StreaksActivity.this, "Failed to load expense dates", Toast.LENGTH_SHORT).show();
                 }
@@ -127,33 +128,19 @@ public class StreaksActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
     private void updateCalendar() {
-        // Set the month-year label
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.US);
         textMonthYear.setText(currentDate.format(formatter));
 
-        // Generate days for the current month view
         List<LocalDate> monthDays = CalendarUtils.getMonthDates(currentDate);
-
-        // Set the adapter
         CalendarAdapter adapter = new CalendarAdapter(this, monthDays, completedDates);
         calendarGridView.setAdapter(adapter);
-
-        updateMonthStats();
-
-
 
         adapter.setOnDateClickListener(date -> {
             Toast.makeText(this, "Clicked: " + date.toString(), Toast.LENGTH_SHORT).show();
         });
 
-        calendarGridView.setAdapter(adapter);
-
+        updateMonthStats();
     }
 
     private void updateMonthStats() {
@@ -165,27 +152,18 @@ public class StreaksActivity extends AppCompatActivity {
             }
         }
 
-        // Update day count and streak number
+        // Update UI
         dayCountText.setText(String.valueOf(count));
         streakNumberText.setText(String.valueOf(count));
 
-        // Update congratulatory message based on week streak
-        TextView congratsMessage = findViewById(R.id.congratsMessage);
-
+        // Week-based message
         if (count < 1) {
-            congratsMessage.setText(("Let's get back to it! Good practices take time  "));
-
-        } else if (count <= 7) {
+            congratsMessage.setText("Let’s get back to it! Good practices take time.");
+        } else if (count <= 6) {
             congratsMessage.setText("Keep up the good work! 💪");
         } else {
-            int weekCount = count / 7;
-            if (weekCount == 1) {
-                congratsMessage.setText("🎉 You've kept a Perfect Streak for 1 straight week. Wow!");
-            } else {
-                congratsMessage.setText("🎉 You've kept a Perfect Streak for " + weekCount + " straight weeks. Wow!");
-            }
+            int weeks = count / 7;
+            congratsMessage.setText("🎉 You've kept a Perfect Streak for " + weeks + " straight " + (weeks == 1 ? "week" : "weeks") + ". Wow!");
         }
     }
-
-
 }
