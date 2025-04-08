@@ -15,6 +15,11 @@
         <item>"Expense"</item>
         <item>"Income"</item>
     </string-array>
+    <string-array name="sorting_types">
+        <item>"Increasing"</item>
+        <item>"Decreasing"</item>
+        <item>"A-Z"</item>
+    </string-array>
     <string name="sign_up"><u>Sign Up</u></string>
     <string name="log_in"><u>Log In</u></string>
     <string name="login_error">Invalid username or password. Please check your details</string>

@@ -1,19 +1,20 @@
 package com.example.andyapp.queries;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.andyapp.DataObserver;
+import com.example.andyapp.DataSubject;
 import com.example.andyapp.R;
 import com.example.andyapp.models.GetCategoryExpenseModel;
+import com.example.andyapp.models.GetCategoryExpenseModels;
 import com.example.andyapp.queries.mongoModels.Expense;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -62,46 +63,44 @@ public class ExpenseService {
         });
     }
 
-    public ArrayList<GetCategoryExpenseModel> fetchTotalExpensesByCategory(String userId) {
-        ArrayList<GetCategoryExpenseModel> getCategoryExpenseModels = new ArrayList<>();
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
+    public GetCategoryExpenseModels fetchTotalExpensesByCategory(String userId, Handler handler, DataSubject<GetCategoryExpenseModels> subject) {
+        GetCategoryExpenseModels categoryExpenseModels = new GetCategoryExpenseModels(new ArrayList<GetCategoryExpenseModel>());
+        apiService.getTotalExpensesByCategory(userId).enqueue(new Callback<HashMap<String, Double>>() {
             @Override
-            public void run() {
-                apiService.getTotalExpensesByCategory(userId).enqueue(new Callback<HashMap<String, Double>>() {
-                    @Override
-                    public void onResponse(Call<HashMap<String, Double>> call, Response<HashMap<String, Double>> response) {
-
-                        if (response.isSuccessful() && response.body() != null) {
-                            Log.d(TAG, response.body().toString());
-                            HashMap<String, Double> data = response.body();
-                            for (String key: data.keySet()){
-                                Log.d(TAG, key);
-                                double amount = data.get(key);
-                                GetCategoryExpenseModel categoryExpenseModel = new GetCategoryExpenseModel(key, amount, R.drawable.dining);
-                            }
-                        } else {
-                            try {
-                                Log.d(TAG, response.errorBody().string());
-                            } catch(IOException e){
-                                Log.e(TAG, "Response code"+ response.code());
-                                Log.e(TAG, e.toString());
-                            }
-                        }
+            public void onResponse(Call<HashMap<String, Double>> call, Response<HashMap<String, Double>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d(TAG, response.body().toString());
+                    HashMap<String, Double> data = response.body();
+                    for (String key: data.keySet()){
+                        Log.d(TAG, key);
+                        double amount = data.get(key);
+                        GetCategoryExpenseModel categoryExpenseModel = new GetCategoryExpenseModel(key, amount, R.drawable.dining);
+                        ArrayList<GetCategoryExpenseModel> model =  categoryExpenseModels.getCategoryExpensesModels();
+                        model.add(categoryExpenseModel);
                     }
-
-                    @Override
-                    public void onFailure(Call<HashMap<String, Double>> call, Throwable t) {
-                        if (t.getMessage() != null){
-                            Log.d(TAG, t.getMessage());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            subject.notifyObservers(categoryExpenseModels);
                         }
+                    });
+                } else {
+                    try {
+                        Log.d(TAG, response.errorBody().string());
+                    } catch(IOException e){
+                        Log.e(TAG, "Response code"+ response.code());
+                        Log.e(TAG, e.toString());
                     }
-                });
+                }
+            }
+            @Override
+            public void onFailure(Call<HashMap<String, Double>> call, Throwable t) {
+                if (t.getMessage() != null){
+                    Log.d(TAG, t.getMessage());
+                }
             }
         });
-        return getCategoryExpenseModels;
+        return categoryExpenseModels;
     }
-
-
 }
 
