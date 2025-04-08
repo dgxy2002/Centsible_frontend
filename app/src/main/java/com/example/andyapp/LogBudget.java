@@ -1,7 +1,11 @@
 package com.example.andyapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -11,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -29,22 +34,32 @@ import androidx.recyclerview.widget.SnapHelper;
 import com.example.andyapp.managers.ScaleCenterItemLayoutManager;
 
 import com.example.andyapp.adapters.LogBd_RecyclerViewAdapter;
+import com.example.andyapp.models.CategoryAllocation;
 import com.example.andyapp.models.LogBudgetModel;
+import com.example.andyapp.models.LogBudgetModels;
+import com.example.andyapp.queries.BudgetService;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickInterface{
-    ArrayList<LogBudgetModel> logBudgetModels;
+    LogBudgetModels logBudgetModels;
     LogBd_RecyclerViewAdapter recyclerViewAdapter;
     ImageButton btnBack;
     Button btnApply;
     RecyclerView recyclerView;
     EditText overallBdEditText;
+    BudgetService budgetService;
     String TAG = "LOGCAT";
     static String CAT_KEY = "Category";
     static String BD_KEY = "Budget";
     static String ID_KEY = "ID";
+    private String userId;
+    private String token;
     static String MODEL_KEY = "Model";
+    private SharedPreferences mPref;
+    private DataSubject<LogBudgetModels> subject;
 
     final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -53,9 +68,8 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
                 Bundle b = result.getData().getExtras();
                 int id = b.getInt(ID_KEY);
                 String budget = b.getString(BD_KEY);
-                logBudgetModels.get(id).setBudget(budget);
+                logBudgetModels.updateBudgetModel(id, budget);
                 recyclerViewAdapter.notifyItemChanged(id);
-//                Log.d(TAG, logBudgetModels.get(id).getBudget());
             }
         }
     });
@@ -70,6 +84,17 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        //SharedPreferences Permissions
+        mPref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        userId = mPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
+        token = mPref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
+
+        //set up subject, model and service
+        subject = new DataSubject<>();
+        logBudgetModels = new LogBudgetModels();
+        budgetService = new BudgetService(LogBudget.this);
+
+        //Initalize Overall Budget EditText
         overallBdEditText = findViewById(R.id.overallEditText);
         overallBdEditText.addTextChangedListener(new TextWatcher() {
             boolean isEditing = false;
@@ -106,10 +131,17 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
             @Override
             public void onClick(View view) {
                 //TODO Save new budget to db, check for invalid budget input, go to new screen
-
+                Toast.makeText(LogBudget.this, "Applying Changes", Toast.LENGTH_SHORT).show();
+                ArrayList<LogBudgetModel> models = logBudgetModels.getLogBudgetModels();
+                ArrayList<CategoryAllocation> categoryAllocations = new ArrayList<>();
+                for(LogBudgetModel model : models){
+                    Log.d(TAG, "Category " + model.getCategory() + " Amount " + model.getBudget());
+//                    categoryAllocations.add(new CategoryAllocation());
+                }
 
             }
         });
+
         btnBack = findViewById(R.id.logBdBtnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,11 +150,7 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
                 startActivity(intent);
             }
         });
-        if (logBudgetModels == null) {
-            logBudgetModels = new ArrayList<>();
-            setUpLogBudgetModels();
-        }
-        recyclerViewAdapter = new LogBd_RecyclerViewAdapter(LogBudget.this, logBudgetModels, this);
+        recyclerViewAdapter = new LogBd_RecyclerViewAdapter(LogBudget.this, logBudgetModels.getLogBudgetModels(), this);
         recyclerView = findViewById(R.id.logBdRecyclerView);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setHasFixedSize(true);
@@ -130,28 +158,32 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
         recyclerView.setLayoutManager(layoutManager);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
+        subject.registerObserver(recyclerViewAdapter);
+        setUpLogBudgetModels();
     }
 
     private void setUpLogBudgetModels(){
-        String[] categories = getResources().getStringArray(R.array.categories);
-
-        for (int i = 0; i < categories.length; i++){
-            String category = categories[i];
-            logBudgetModels.add(new LogBudgetModel(i, category, R.drawable.othercategory, String.valueOf(i)));
-        }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Looper looper = Looper.getMainLooper();
+        Handler handler = new Handler(looper);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                logBudgetModels = budgetService.getLogBudgetCategories(userId, handler, subject);
+            }
+        });
     }
 
     @Override
     public void onItemClick(int position) {
-        String category = logBudgetModels.get(position).getCategory();
-        String budget = logBudgetModels.get(position).getBudget();
-        int id = logBudgetModels.get(position).getId();
+        LogBudgetModel model = logBudgetModels.getLogBudgetModels().get(position);
+        String category = model.getCategory();
+        String budget = model.getBudget();
+        int id = model.getId();
         Intent intent = new Intent(LogBudget.this, LogBudgetCategoryActivity.class);
         intent.putExtra(CAT_KEY, category);
         intent.putExtra(BD_KEY, "$" + budget);
         intent.putExtra(ID_KEY, id);
-        intent.putParcelableArrayListExtra(MODEL_KEY, logBudgetModels);
         launcher.launch(intent);
-//        Log.d(TAG, category + budget);
     }
 }

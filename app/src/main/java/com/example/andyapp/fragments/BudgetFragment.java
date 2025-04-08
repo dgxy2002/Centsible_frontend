@@ -1,6 +1,8 @@
 package com.example.andyapp.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,20 +11,30 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.andyapp.DataObserver;
+import com.example.andyapp.DataSubject;
 import com.example.andyapp.LogBudget;
+import com.example.andyapp.LoginActivity;
 import com.example.andyapp.R;
 import com.example.andyapp.adapters.Bd_RecyclerViewAdapter;
 import com.example.andyapp.models.BudgetModel;
+import com.example.andyapp.models.BudgetModels;
+import com.example.andyapp.queries.BudgetService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,9 +43,17 @@ import java.util.ArrayList;
  */
 public class BudgetFragment extends Fragment {
     private int budgetProgress = 25;
-    private ProgressBar budgetProgressBar;
+
     private ArrayList<BudgetModel> budgetModels;
-    FloatingActionButton btnEditBudget;
+    private FloatingActionButton btnEditBudget;
+    private TextView overallBudgetTextView;
+    private ProgressBar budgetProgressBar;
+    private DataSubject<BudgetModels> subject;
+    private BudgetService budgetService;
+    private String userId;
+    private String token;
+    private String username;
+    private SharedPreferences mPref;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,10 +64,15 @@ public class BudgetFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //SharedPreferences Permissions
+        mPref = requireActivity().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        userId = mPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
+        token = mPref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
+        subject = new DataSubject<>();
         btnEditBudget = view.findViewById(R.id.btnEditBudget);
         budgetProgressBar = view.findViewById(R.id.budgetProgressBar);
         budgetProgressBar.setProgress(budgetProgress);
-
+        overallBudgetTextView = view.findViewById(R.id.textView5);
         btnEditBudget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,26 +80,43 @@ public class BudgetFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        int[] images = {R.drawable.dining, R.drawable.dining, R.drawable.dining, R.drawable.dining, R.drawable.dining, R.drawable.dining, R.drawable.dining, R.drawable.dining};
         budgetModels = new ArrayList<>();
-        String[] categories = getResources().getStringArray(R.array.categories);
-        float[] budgetData = getBudgetData().get(0);
-        float[] spentData = getBudgetData().get(1);
-        int[] progresses = getBudgetProgress(budgetData, spentData);
-
-        setupBudgetModels(progresses, images, spentData, budgetData, categories);
+        budgetService = new BudgetService(requireContext());
         RecyclerView bdRecyclerView = view.findViewById(R.id.bdrecyclerView);
         Bd_RecyclerViewAdapter adapter = new Bd_RecyclerViewAdapter(view.getContext(), budgetModels);
         bdRecyclerView.setAdapter(adapter);
         bdRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        //Register Observers
+        subject.registerObserver(adapter);
+        subject.registerObserver(new DataObserver<BudgetModels>() {
+            @Override
+            public void updateData(BudgetModels data) {
+                double totalBudget = data.getTotalBudget();
+                String formattedBudget = String.format("%.2f", totalBudget);
+                overallBudgetTextView.setText(formattedBudget);
+            }
+        });
 
+        subject.registerObserver(new DataObserver<BudgetModels>() {
+            @Override
+            public void updateData(BudgetModels data) {
+                double totalBudget = data.getTotalBudget();
+                double totalSpent = data.getTotalSpent();
+                budgetProgressBar.setProgress((int) (totalSpent/totalBudget * 100));
+            }
+        });
+        setupBudgetModels();
     }
-
-    void setupBudgetModels(int[]progresses, int[]images, float[] spentData, float[] budgetData, String[] categories){
-        for(int i = 0; i < categories.length; i++){
-            budgetModels.add(new BudgetModel(progresses[i], images[i], spentData[i], budgetData[i], categories[i]));
-        }
+    void setupBudgetModels(){
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Looper looper = Looper.getMainLooper();
+        Handler handler = new Handler(looper);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                budgetService.getBudgetCategories(userId, handler, subject);
+            }
+        });
     }
 
     ArrayList<float[]> getBudgetData(){
@@ -97,5 +139,4 @@ public class BudgetFragment extends Fragment {
         }
         return progresses;
     }
-
 }

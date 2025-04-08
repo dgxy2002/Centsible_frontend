@@ -15,24 +15,21 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.andyapp.DataObserver;
 import com.example.andyapp.R;
 import com.example.andyapp.models.BudgetModel;
+import com.example.andyapp.models.BudgetModels;
 
 import java.util.ArrayList;
 
-public class Bd_RecyclerViewAdapter extends RecyclerView.Adapter<Bd_RecyclerViewAdapter.MyViewHolder> {
+public class Bd_RecyclerViewAdapter extends RecyclerView.Adapter<Bd_RecyclerViewAdapter.MyViewHolder> implements DataObserver<BudgetModels> {
 
     Context context;
     ArrayList<BudgetModel> budgetModels;
-    float totalBudget;
 
     public Bd_RecyclerViewAdapter(Context context, ArrayList<BudgetModel> budgetModels) {
         this.context = context;
         this.budgetModels = budgetModels;
-        this.totalBudget = 0;
-        for (int i = 0; i < budgetModels.size(); i++){
-            this.totalBudget += budgetModels.get(i).getBudget();
-        }
     }
 
     @NonNull
@@ -46,10 +43,12 @@ public class Bd_RecyclerViewAdapter extends RecyclerView.Adapter<Bd_RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.imageView.setImageResource(budgetModels.get(position).getImage());
-        holder.catView.setText(budgetModels.get(position).getCategory());
-        holder.amtView.setText(String.format("%.2f / %.2f", budgetModels.get(position).getSpent(), budgetModels.get(position).getBudget()));
-        holder.progressBar.setProgress(budgetModels.get(position).getProgress());
+        BudgetModel model = budgetModels.get(position);
+        holder.imageView.setImageResource(model.getImage());
+        holder.catView.setText(model.getCategory());
+        holder.amtView.setText(String.format("%.2f / %.2f", model.getSpent(), model.getBudget()));
+        holder.progressBar.setMax(100);
+        holder.progressBar.setProgress((int) ((model.getSpent() / model.getBudget()) * 100));
         int[] colors = context.getResources().getIntArray(R.array.category_colors);
         holder.progressBar.setProgressTintList(ColorStateList.valueOf(colors[position % 4]));
         holder.progressBar.setProgressBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.progress_bg)));
@@ -66,12 +65,17 @@ public class Bd_RecyclerViewAdapter extends RecyclerView.Adapter<Bd_RecyclerView
         return budgetModels.size();
     }
 
+    @Override
+    public void updateData(BudgetModels data) {
+        this.budgetModels = data.getBudgetModels();
+        notifyDataSetChanged();
+    }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         //grabbing views from recycler_row_view.xml file
         ImageView imageView;
         TextView amtView, catView;
         ProgressBar progressBar;
-
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.bdiconView);

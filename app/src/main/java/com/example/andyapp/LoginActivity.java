@@ -16,8 +16,10 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.andyapp.queries.RetrofitClient;
 import com.example.andyapp.queries.mongoModels.LoginModel;
+import com.example.andyapp.queries.mongoModels.UserModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,9 +36,13 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnSignUp;
     public static final String USERKEY = "USERKEY";
     public static final String VIEWERKEY = "VIEWERKEY";
+    public static final String VIEWERNAMEKEY = "VIEWERNAMEKEY";
     public static final String TOKENKEY = "TOKENKEY";
     public static final String PREFTAG = "MYPREF";
+    public static final String USERNAMEKEY = "USERNAMEKEY";
     public static final String DEFAULT_USERID = "67ecf4e07cb6ed67c0e7e67a";
+    public static final String DEFAULT_USERNAME = "hugo";
+
     private String TAG = "LOGCAT";
     RequestUser requestUser;
     SharedPreferences sharedPreferences;
@@ -103,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString(TOKENKEY, "Bearer " +token);
                             editor.putString(USERKEY, id);
                             editor.putString(VIEWERKEY, id);
+                            editor.putString(USERNAMEKEY, username);
                             editor.apply();
                             Log.d(TAG, String.format("userID: %s, message: %s, token: %s", id, message, token));
                             Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);

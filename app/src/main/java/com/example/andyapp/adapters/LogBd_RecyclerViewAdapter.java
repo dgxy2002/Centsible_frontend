@@ -20,14 +20,16 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.andyapp.DataObserver;
 import com.example.andyapp.R;
 import com.example.andyapp.RecyclerViewOnClickInterface;
 import com.example.andyapp.models.LogBudgetModel;
+import com.example.andyapp.models.LogBudgetModels;
 
 import java.util.ArrayList;
 
 
-public class LogBd_RecyclerViewAdapter extends RecyclerView.Adapter<LogBd_RecyclerViewAdapter.MyViewHolder>{
+public class LogBd_RecyclerViewAdapter extends RecyclerView.Adapter<LogBd_RecyclerViewAdapter.MyViewHolder> implements DataObserver<LogBudgetModels> {
     Context context;
     ArrayList<LogBudgetModel> logBudgetModels;
     private final RecyclerViewOnClickInterface recyclerViewInterface;
@@ -66,8 +68,10 @@ public class LogBd_RecyclerViewAdapter extends RecyclerView.Adapter<LogBd_Recycl
         return logBudgetModels.size();
     }
 
-    private void updateData(){
-
+    @Override
+    public void updateData(LogBudgetModels data) {
+        this.logBudgetModels = data.getLogBudgetModels();
+        notifyDataSetChanged();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
