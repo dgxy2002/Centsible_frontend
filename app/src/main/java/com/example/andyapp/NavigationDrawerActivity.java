@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -20,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.andyapp.fragments.DashboardFragment;
 import com.example.andyapp.fragments.GroupsFragment;
+import com.example.andyapp.fragments.InvitationsFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class NavigationDrawerActivity extends AppCompatActivity {
@@ -27,14 +29,15 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     ImageButton btnMenu;
     ImageButton btnBarRight;
     NavigationView drawerNavView;
-    String userid;
-    String viewerid;
+    String userId;
+    String viewerId;
     String token;
     Intent intent;
     int fragmentState;
     SharedPreferences mypref;
     ImageButton btnNavStreaks;
     View headerView;
+    TextView toolbarTitle;
 
     private static final String TAG = "LOGCAT";
     @Override
@@ -44,6 +47,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation_drawer);
         btnMenu = findViewById(R.id.btnMenu);
         btnBarRight = findViewById(R.id.btnBarRight);
+        toolbarTitle = findViewById(R.id.toolbarTitle);
         drawerLayout = findViewById(R.id.drawerLayout);
         drawerNavView = findViewById(R.id.drawerNavView);
         headerView = drawerNavView.getHeaderView(0);
@@ -56,10 +60,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             }
         });
         mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
-        userid = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
-        viewerid = mypref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
+        userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
+        viewerId = mypref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
         token = mypref.getString(LoginActivity.TOKENKEY, "None");
-        Log.d(TAG, String.format("USERID IN NAVDRAWER %s", userid));
+//        Log.d(TAG, String.format("USERID IN NAVDRAWER %s", userId));
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,19 +71,17 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             }
         });
 
-        btnBarRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(NavigationDrawerActivity.this, ActivityActivity.class);
-                startActivity(intent);
-            }
-        });
+        resetToolBar();
 
         drawerNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemid = item.getItemId();
+                changeToolBar(itemid);
                 if (itemid == R.id.navDashboard) {
+                    SharedPreferences.Editor editor = mypref.edit();
+                    editor.putString(LoginActivity.VIEWERKEY, userId);
+                    editor.apply();
                     changeFragment(new DashboardFragment());
                 } else if (itemid == R.id.navLB) {
                     Intent intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
@@ -102,12 +104,38 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     public void changeFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        Bundle arguments = new Bundle();
-        arguments.putString(LoginActivity.USERKEY, userid);
-        arguments.putString(LoginActivity.VIEWERKEY, viewerid);
-        arguments.putString(LoginActivity.TOKENKEY, token);
-        fragment.setArguments(arguments);
         transaction.replace(R.id.dashboardFragmentContainer, fragment);
         transaction.commit();
+    }
+
+    public void changeToolBar(int itemId){
+        if (itemId == R.id.navGroups){
+            btnBarRight.setImageResource(R.drawable.arrow_back);
+            btnBarRight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(NavigationDrawerActivity.this, "Bringing you to invitations", Toast.LENGTH_SHORT).show();
+                    btnBarRight.setEnabled(false);
+                    btnBarRight.setVisibility(View.INVISIBLE);
+                    changeFragment(new InvitationsFragment());
+                    toolbarTitle.setText("Invitations");
+                }
+            });
+        } else{
+            resetToolBar();
+        }
+    }
+    public void resetToolBar(){
+        btnBarRight.setImageResource(R.drawable.bell);
+        btnBarRight.setEnabled(true);
+        btnBarRight.setVisibility(View.VISIBLE);
+        toolbarTitle.setText("Insights");
+        btnBarRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NavigationDrawerActivity.this, ActivityActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

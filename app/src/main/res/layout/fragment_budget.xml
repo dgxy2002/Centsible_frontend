@@ -54,10 +54,9 @@
     <com.google.android.material.card.MaterialCardView
         app:shapeAppearance="@style/TopRoundedCardView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="575dp"
         android:layout_marginTop="25dp"
         android:backgroundTint="@color/backgroundaccent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/budgetProgressBar"
         app:strokeColor="@color/black">
 
@@ -85,23 +84,21 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/backgroundaccent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textTopCategories" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btnEditBudget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="372dp"
-                android:layout_marginEnd="36dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="80dp"
                 android:backgroundTint="#CFB0F5"
                 android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textTopCategories"
                 app:srcCompat="@drawable/editicon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,65 +25,59 @@
             android:background="@color/white">
 
             <ImageView
-                android:id="@+id/avatarView"
+                android:id="@+id/inviteAvatarView"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/avatar" />
 
             <TextView
-                android:id="@+id/nameView"
+                android:id="@+id/inviteNameView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="28dp"
                 android:fontFamily="@font/varela_round"
                 android:text="Sean"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@id/avatarView"
+                app:layout_constraintStart_toEndOf="@id/inviteAvatarView"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/relationView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                android:fontFamily="@font/varela_round"
-                android:text="Child"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/nameView" />
-
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnNudge"
+                android:id="@+id/btnConfirmInvite"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginEnd="116dp"
                 android:background="@drawable/rounded_button_container"
+                android:backgroundTint="@color/primary_purple"
                 android:fontFamily="@font/varela_round"
                 android:gravity="center"
-                android:text="Nudge"
+                android:text="Confirm"
                 android:textAllCaps="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.511" />
+                />
 
-            <ImageButton
-                android:id="@+id/groupsBtnView"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDeleteInvite"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:background="@null"
+                android:layout_height="35dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_button_container"
+                android:backgroundTint="@color/pie3"
+                android:fontFamily="@font/varela_round"
+                android:gravity="center"
+                android:text="Delete"
+                android:textAllCaps="false"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnNudge"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/arrow_back" />
+                />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,24 +15,34 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.andyapp.DataObserver;
+import com.example.andyapp.DataSubject;
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.MainActivity;
 import com.example.andyapp.R;
 import com.example.andyapp.RecyclerViewSpacingDecorator;
 import com.example.andyapp.adapters.Groups_RecyclerViewAdapter;
 import com.example.andyapp.models.GroupsModel;
+import com.example.andyapp.models.GroupsModels;
+import com.example.andyapp.queries.GroupsService;
 import com.example.andyapp.queries.RetrofitClient;
 import com.example.andyapp.queries.mongoModels.Connections;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import retrofit2.Call;
@@ -49,16 +59,20 @@ public class GroupsFragment extends Fragment {
         @GET("users/{userId}/connections")
         Call<String[]>getConnections(@Header("Authorization") String token, @Path("userId") String userId);
     }
+    TextView nameView;
     RecyclerView groupsRecycler;
-    ArrayList<GroupsModel> groupsModels;
+    GroupsModels groupsModels;
     Groups_RecyclerViewAdapter adapter;
     ItemTouchHelper.SimpleCallback simpleCallback;
     RecyclerViewSpacingDecorator spacingDecorator;
     String userId;
     String token;
+    String username;
     SharedPreferences mypref;
     Button btnConnect;
     EditText usernameEditText;
+    GroupsService groupsService;
+    DataSubject<GroupsModels> subject;
     private final String TAG = "LOGCAT";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,26 +88,42 @@ public class GroupsFragment extends Fragment {
         btnConnect = view.findViewById(R.id.btnConnect);
         usernameEditText = view.findViewById(R.id.addFriendEditText);
         groupsRecycler = view.findViewById(R.id.groupsRecycler);
+        nameView = view.findViewById(R.id.nameView);
         spacingDecorator = new RecyclerViewSpacingDecorator(40);
-        groupsModels = new ArrayList<>();
+        subject = new DataSubject<>();
         groupsRecycler.addItemDecoration(spacingDecorator);
         //Shared Preferences
         mypref = requireContext().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         token = mypref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
+        username = mypref.getString(LoginActivity.USERNAMEKEY, LoginActivity.DEFAULT_USERNAME);
         Log.d(TAG, String.format("USERID IN GROUPS %s", userId));
         Log.d(TAG, String.format("TOKEN IN GROUPS %s", token));
+        //Set Up GroupsService for model querying
+        groupsService = new GroupsService(requireContext());
+        //Set Up Views
+        nameView.setText(String.format("%s%s",username.substring(0, 1).toUpperCase(),username.substring(1)));
         //Set Up Buttons
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = usernameEditText.getText().toString();
+                String inviteeUsername = usernameEditText.getText().toString();
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, username);
+                        Log.d(TAG, inviteeUsername);
+                        groupsService.addConnection(username, inviteeUsername);
+                    }
+                });
                 //TODO Finish setting up the get friend, and option to view get friend request.
             }
         });
         //Set up Recycler View
-        setUpGroupsModels(userId); //Get data
-        adapter = new Groups_RecyclerViewAdapter(groupsModels, view.getContext());
+        setUpGroupsModels(); //Get data
+        adapter = new Groups_RecyclerViewAdapter(new ArrayList<GroupsModel>(), view.getContext());
+        subject.registerObserver(adapter);
         groupsRecycler.setAdapter(adapter);
         groupsRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
         simpleCallback = new ItemTouchHelper.SimpleCallback(0,  ItemTouchHelper.LEFT) {
@@ -105,14 +135,23 @@ public class GroupsFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 int position = viewHolder.getBindingAdapterPosition();
-                String name = groupsModels.get(position).getName();
+                ArrayList<GroupsModel> models = groupsModels.getGroupsModels();
+                String name = models.get(position).getName();
+                String connectionId = models.get(position).getUserId();
                 builder.setTitle(String.format("Delete connection with %s", name));
                 builder.setMessage("Are you sure?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        groupsModels.remove(position);
+                        models.remove(position);
                         adapter.notifyItemRemoved(position);
+                        ExecutorService executor = Executors.newSingleThreadExecutor();
+                        executor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                groupsService.deleteConnection(userId, connectionId);
+                            }
+                        });
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -138,35 +177,14 @@ public class GroupsFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(groupsRecycler);
     }
 
-    private void setUpGroupsModels(String userID){
-        String[] connections = {"Herbert", "Philbert", "Jacob"};
-        for (String connection: connections){
-            groupsModels.add(new GroupsModel(connection, R.drawable.avatar));
-        }
-        GetConnections connectionsService = RetrofitClient.getRetrofit().create(GetConnections.class);
-        connectionsService.getConnections(token, userId).enqueue(new Callback<String[]>() {
+    private void setUpGroupsModels(){
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Looper looper = Looper.getMainLooper();
+        Handler handler = new Handler(looper);
+        executor.execute(new Runnable() {
             @Override
-            public void onResponse(Call<String[]> call, Response<String[]> response) {
-                if (response.body() != null){
-                    for (String connection: response.body()){
-                        Log.d(TAG, connection);
-                        groupsModels.add(new GroupsModel(connection, R.drawable.avatar));
-                    }
-                }else{
-                    try {
-                        String error = response.errorBody().string();
-                        Log.e(TAG, "Response code: " + response.code());
-                        Log.e(TAG, "Error body: " + error);
-                    } catch (IOException e) {
-                        Log.e(TAG, "Error reading errorBody", e);
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<String[]> call, Throwable t) {
-                if (t.getMessage() != null) {
-                    Log.d(TAG, t.getMessage());
-                }
+            public void run() {
+                groupsModels = groupsService.getConnections(userId, handler, subject);
             }
         });
     }

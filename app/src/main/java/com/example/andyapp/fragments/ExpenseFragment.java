@@ -3,11 +3,9 @@ package com.example.andyapp.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,8 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 
-import com.example.andyapp.CategoryExpenseSubject;
-import com.example.andyapp.DataObserver;
+import com.example.andyapp.DataSubject;
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.PieChartExpenseObserver;
 import com.example.andyapp.adapters.Exp_RecyclerViewAdapter;
@@ -36,12 +33,8 @@ import com.example.andyapp.queries.ExpenseService;
 import com.example.andyapp.utils.SortExpenseByAmount;
 import com.example.andyapp.utils.SortExpenseByName;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -77,7 +70,7 @@ public class ExpenseFragment extends Fragment {
     ImageButton btnAdd;
     private Exp_RecyclerViewAdapter adapter;
     AutoCompleteTextView dropdownSorting;
-    CategoryExpenseSubject subject;
+    DataSubject<GetCategoryExpenseModels> subject;
     SharedPreferences myPref;
     String userId;
     String viewerId;
@@ -126,7 +119,7 @@ public class ExpenseFragment extends Fragment {
         token = myPref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
 
         getCategoryExpenseModels = new GetCategoryExpenseModels(new ArrayList<GetCategoryExpenseModel>());
-        subject = new CategoryExpenseSubject(new ArrayList<DataObserver<GetCategoryExpenseModels>>());
+        subject = new DataSubject<GetCategoryExpenseModels>();
         pieChart = view.findViewById(R.id.expensePieChart);
         pieChartObserver = new PieChartExpenseObserver(pieChart, requireContext());
         recyclerView = view.findViewById(R.id.expenserecycler);

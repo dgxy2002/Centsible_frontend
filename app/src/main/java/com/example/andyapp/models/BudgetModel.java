@@ -1,33 +1,25 @@
 package com.example.andyapp.models;
 
 public class BudgetModel {
-    private int progress;
-    private float spent;
-    private float budget;
+    private double spent;
+    private double budget;
     private String category;
     private int image;
-    public BudgetModel(int progress, int image, float spent, float budget, String category) {
-        this.progress = progress;
+    public BudgetModel(int image, double spent, double budget, String category) {
         this.image = image;
         this.spent = spent;
         this.category = category;
         this.budget = budget;
     }
 
-    public float getBudget() {return budget;}
-
-    public float getSpent() {
+    public double getBudget() {return budget;}
+    public double getSpent() {
         return spent;
     }
 
     public String getCategory() {
         return category;
     }
-
-    public int getProgress() {
-        return progress;
-    }
-
     public int getImage() {
         return image;
     }
