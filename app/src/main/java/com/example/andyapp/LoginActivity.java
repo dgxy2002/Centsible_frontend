@@ -16,10 +16,8 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.andyapp.queries.RetrofitClient;
 import com.example.andyapp.queries.mongoModels.LoginModel;
-import com.example.andyapp.queries.mongoModels.UserModel;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView errorTextView;
     private Button btnSignUp;
     public static final String USERKEY = "USERKEY";
-    public static final String VIEWERKEY = "USERKEY";
+    public static final String VIEWERKEY = "VIEWERKEY";
     public static final String TOKENKEY = "TOKENKEY";
     public static final String PREFTAG = "MYPREF";
     public static final String DEFAULT_USERID = "67ecf4e07cb6ed67c0e7e67a";
