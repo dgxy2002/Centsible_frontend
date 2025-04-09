@@ -68,6 +68,8 @@ public class PieChartExpenseObserver implements DataObserver<GetCategoryExpenseM
 
     private void formatPieChart(PieChart pieChart){
         int black = ContextCompat.getColor(context, R.color.black);
+        Typeface tf = ResourcesCompat.getFont(context, R.font.varela_round);
+        pieChart.setEntryLabelTypeface(tf);
         pieChart.setEntryLabelColor(black);
         pieChart.setExtraOffsets(20, 20, 20, 20);
         pieChart.setNoDataText("Log Your Expenses");

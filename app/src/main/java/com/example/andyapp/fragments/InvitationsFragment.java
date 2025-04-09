@@ -40,6 +40,7 @@ public class InvitationsFragment extends Fragment {
     DataSubject<InvitationModels> subject;
     SharedPreferences mPref;
     String userId;
+    String userName;
     String token;
 
     InvitationService invitationService;
@@ -56,6 +57,7 @@ public class InvitationsFragment extends Fragment {
         //SharedPreferences permissions
         mPref = getContext().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = mPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
+        userName = mPref.getString(LoginActivity.USERNAMEKEY, LoginActivity.DEFAULT_USERNAME);
         recyclerView = view.findViewById(R.id.invitationsRecyclerView);
         invitationModels = new InvitationModels();
         subject = new DataSubject<>();

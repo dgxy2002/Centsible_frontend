@@ -20,8 +20,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.andyapp.fragments.DashboardFragment;
+import com.example.andyapp.fragments.ExpenseFragment;
 import com.example.andyapp.fragments.GroupsFragment;
 import com.example.andyapp.fragments.InvitationsFragment;
+import com.example.andyapp.fragments.LogExpenseFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class NavigationDrawerActivity extends AppCompatActivity {
@@ -38,6 +40,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     ImageButton btnNavStreaks;
     View headerView;
     TextView toolbarTitle;
+    public static String FRAGMENT_TAG = "FRAGMENT_TAG";
+    public static String CONNECTION_NAME_TAG = "CONNECTION_NAME_TAG";
+    String targetFragmentName;
 
     private static final String TAG = "LOGCAT";
     @Override
@@ -45,12 +50,29 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_navigation_drawer);
+        targetFragmentName = getIntent().getStringExtra("FRAGMENT_TAG");
         btnMenu = findViewById(R.id.btnMenu);
         btnBarRight = findViewById(R.id.btnBarRight);
         toolbarTitle = findViewById(R.id.toolbarTitle);
         drawerLayout = findViewById(R.id.drawerLayout);
         drawerNavView = findViewById(R.id.drawerNavView);
         headerView = drawerNavView.getHeaderView(0);
+        resetToolBar();
+        if (targetFragmentName != null && targetFragmentName.equals("LogExpense")){
+            toolbarTitle.setText("Log Expense");
+            btnMenu.setImageResource(R.drawable.arrow_back);
+            btnMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    changeFragment(new DashboardFragment());
+                }
+            });
+            changeFragment(new LogExpenseFragment());
+        }
+        String connectionName = getIntent().getStringExtra(CONNECTION_NAME_TAG);
+        if (connectionName != null){
+            toolbarTitle.setText(String.format("%s's Dashboard", connectionName));
+        }
         btnNavStreaks = headerView.findViewById(R.id.navStreaks);
         btnNavStreaks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,15 +85,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         viewerId = mypref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
         token = mypref.getString(LoginActivity.TOKENKEY, "None");
-//        Log.d(TAG, String.format("USERID IN NAVDRAWER %s", userId));
-        btnMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.open();
-            }
-        });
-
-        resetToolBar();
 
         drawerNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -110,11 +123,27 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     public void changeToolBar(int itemId){
         if (itemId == R.id.navGroups){
-            btnBarRight.setImageResource(R.drawable.arrow_back);
+            toolbarTitle.setText("Groups");
+            btnMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    resetToolBar();
+                    changeFragment(new GroupsFragment());
+                }
+            });
+            btnBarRight.setImageResource(R.drawable.message_icon);
             btnBarRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(NavigationDrawerActivity.this, "Bringing you to invitations", Toast.LENGTH_SHORT).show();
+                    btnMenu.setImageResource(R.drawable.arrow_back);
+                    btnMenu.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            resetToolBar();
+                            changeFragment(new GroupsFragment());
+                        }
+                    });
                     btnBarRight.setEnabled(false);
                     btnBarRight.setVisibility(View.INVISIBLE);
                     changeFragment(new InvitationsFragment());
@@ -137,5 +166,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.open();
+            }
+        });
+        btnMenu.setImageResource(R.drawable.hamburgermenu);
     }
 }

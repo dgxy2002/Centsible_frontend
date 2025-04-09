@@ -1,5 +1,6 @@
 package com.example.andyapp.fragments;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -51,6 +52,7 @@ public class BudgetFragment extends Fragment {
     private DataSubject<BudgetModels> subject;
     private BudgetService budgetService;
     private String userId;
+    private String viewerId;
     private String token;
     private String username;
     private SharedPreferences mPref;
@@ -67,6 +69,7 @@ public class BudgetFragment extends Fragment {
         //SharedPreferences Permissions
         mPref = requireActivity().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = mPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
+        viewerId = mPref.getString(LoginActivity.VIEWERKEY, userId);
         token = mPref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
         subject = new DataSubject<>();
         btnEditBudget = view.findViewById(R.id.btnEditBudget);
@@ -102,7 +105,10 @@ public class BudgetFragment extends Fragment {
             public void updateData(BudgetModels data) {
                 double totalBudget = data.getTotalBudget();
                 double totalSpent = data.getTotalSpent();
-                budgetProgressBar.setProgress((int) (totalSpent/totalBudget * 100));
+                ObjectAnimator.ofInt(budgetProgressBar, "progress", (int) (totalSpent/totalBudget * 100))
+                        .setDuration(1000)
+                        .start();
+//                budgetProgressBar.setProgress((int) (totalSpent/totalBudget * 100));
             }
         });
         setupBudgetModels();
@@ -114,7 +120,7 @@ public class BudgetFragment extends Fragment {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                budgetService.getBudgetCategories(userId, handler, subject);
+                budgetService.getBudgetCategories(viewerId, handler, subject);
             }
         });
     }

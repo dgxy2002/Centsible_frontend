@@ -37,6 +37,7 @@ import com.example.andyapp.adapters.LogBd_RecyclerViewAdapter;
 import com.example.andyapp.models.CategoryAllocation;
 import com.example.andyapp.models.LogBudgetModel;
 import com.example.andyapp.models.LogBudgetModels;
+import com.example.andyapp.models.PostCategoryAllocation;
 import com.example.andyapp.queries.BudgetService;
 
 import java.util.ArrayList;
@@ -133,12 +134,18 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
                 //TODO Save new budget to db, check for invalid budget input, go to new screen
                 Toast.makeText(LogBudget.this, "Applying Changes", Toast.LENGTH_SHORT).show();
                 ArrayList<LogBudgetModel> models = logBudgetModels.getLogBudgetModels();
-                ArrayList<CategoryAllocation> categoryAllocations = new ArrayList<>();
+                ArrayList<PostCategoryAllocation> postCategoryAllocations = new ArrayList<>();
                 for(LogBudgetModel model : models){
                     Log.d(TAG, "Category " + model.getCategory() + " Amount " + model.getBudget());
-//                    categoryAllocations.add(new CategoryAllocation());
+                    postCategoryAllocations.add(new PostCategoryAllocation(userId, model.getCategory(), Double.parseDouble(model.getBudget())));
                 }
-
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        budgetService.updateBudgetData(postCategoryAllocations);
+                    }
+                });
             }
         });
 

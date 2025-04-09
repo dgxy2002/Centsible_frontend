@@ -1,5 +1,6 @@
 package com.example.andyapp.adapters;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -47,11 +48,14 @@ public class Bd_RecyclerViewAdapter extends RecyclerView.Adapter<Bd_RecyclerView
         holder.imageView.setImageResource(model.getImage());
         holder.catView.setText(model.getCategory());
         holder.amtView.setText(String.format("%.2f / %.2f", model.getSpent(), model.getBudget()));
-        holder.progressBar.setMax(100);
-        holder.progressBar.setProgress((int) ((model.getSpent() / model.getBudget()) * 100));
+//        holder.progressBar.setMax(100);
+//        holder.progressBar.setProgress((int) ((model.getSpent() / model.getBudget()) * 100));
         int[] colors = context.getResources().getIntArray(R.array.category_colors);
         holder.progressBar.setProgressTintList(ColorStateList.valueOf(colors[position % 4]));
         holder.progressBar.setProgressBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.progress_bg)));
+        ObjectAnimator.ofInt(holder.progressBar, "progress", (int) ((model.getSpent() / model.getBudget()) * 100))
+                .setDuration(1000)
+                .start();
 //        ViewGroup.LayoutParams pgblayout = holder.progressBar.getLayoutParams();
 //        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 //        pgblayout.width = (int) ((budgetModels.get(position).getBudget()/ totalBudget) * 3000);

@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LoginActivity;
+import com.example.andyapp.NavigationDrawerActivity;
 import com.example.andyapp.PieChartExpenseObserver;
 import com.example.andyapp.adapters.Exp_RecyclerViewAdapter;
 import com.example.andyapp.models.GetCategoryExpenseModel;
@@ -128,16 +129,11 @@ public class ExpenseFragment extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(requireActivity(), LogExpense.class);
+                Intent intent = new Intent(requireActivity(), NavigationDrawerActivity.class);
+                intent.putExtra(NavigationDrawerActivity.FRAGMENT_TAG, "LogExpense");
                 startActivity(intent);
             }
         });
-        //Configure Pie Chart
-//        PieDataSet pieDataSet = getDataSet();
-//        formatPieDataSet(pieDataSet, colors, black, font);
-//        PieData pieData = new PieData(pieDataSet);
-//        pieChart.setData(pieData);
-//        formatPieChart(pieChart, black);
         //Configure RecyclerView
         adapter = new Exp_RecyclerViewAdapter(view.getContext(), getCategoryExpenseModels);
         recyclerView.setAdapter(adapter);
@@ -148,7 +144,7 @@ public class ExpenseFragment extends Fragment {
         return view;
     }
 
-    private void updateExpenseObservers(){
+    private void updateExpenseObservers() {
         Log.d(TAG, "USERID" + viewerId);
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Looper looper = Looper.getMainLooper();
@@ -157,40 +153,8 @@ public class ExpenseFragment extends Fragment {
             @Override
             public void run() {
                 ExpenseService expenseService = new ExpenseService(requireContext());
-                getCategoryExpenseModels =  expenseService.fetchTotalExpensesByCategory(viewerId, handler, subject);
+                getCategoryExpenseModels = expenseService.fetchTotalExpensesByCategory(viewerId, handler, subject);
             }
         });
     }
-//    private PieDataSet getDataSet(){
-//        //add code to get Data Later
-//        entries.add(new PieEntry(800f, "Shopping"));
-//        entries.add(new PieEntry(1200f, "Transport"));
-//        entries.add(new PieEntry(600f, "Food"));
-//        entries.add(new PieEntry(700f, "Education"));
-//        return new PieDataSet(entries, "Expenses");
-//    }
-//    private void formatPieDataSet(PieDataSet pieDataSet, ArrayList<Integer> colors, int black, Typeface font){
-//        pieDataSet.setSliceSpace(3f);
-//        pieDataSet.setColors(colors);
-//        pieDataSet.setValueTypeface(font);
-//        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-//        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-//        pieDataSet.setValueLinePart1OffsetPercentage(100f); // Offset of the first part of the line
-//        pieDataSet.setValueLinePart1Length(0.4f);           // Length of the first part of the line
-//        pieDataSet.setValueLinePart2Length(0.6f);           // Length of the second part of the line
-//        pieDataSet.setValueLineColor(black);
-//        pieDataSet.setValueTextSize(12f);     // Size of the value text
-//        pieDataSet.setValueTextColor(black); // Color of the value text
-//    }
-//    private void formatPieChart(PieChart pieChart, int black){
-//        pieChart.setEntryLabelColor(black);
-//        pieChart.setExtraOffsets(20, 20, 20, 20);
-//        pieChart.setNoDataText("Log Your Expenses");
-//        pieChart.getDescription().setEnabled(false);
-//        pieChart.getLegend().setEnabled(false);
-//        pieChart.setHoleRadius(40f);
-//        pieChart.animateY(1000);
-//        pieChart.invalidate();
-//    }
-
 }
