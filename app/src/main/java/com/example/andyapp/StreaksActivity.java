@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -36,14 +36,15 @@ import retrofit2.Response;
 public class StreaksActivity extends AppCompatActivity {
 
     private GridView calendarGridView;
-    private TextView textMonthYear;
-    private TextView dayCountText;
-    private TextView streakNumberText;
-    private TextView congratsMessage;
+    private TextView textMonthYear, dayCountText, streakNumberText, congratsMessage;
     private ImageButton btnBack;
     private LocalDate currentDate;
 
+    private SharedPreferences mypref;
+    private String userid, token;
     private Set<LocalDate> completedDates = new HashSet<>();
+
+    private static final String TAG = "STREAKS_LOG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +61,17 @@ public class StreaksActivity extends AppCompatActivity {
         initViews();
         currentDate = LocalDate.now();
 
+        // Load shared prefs using the same method your friend uses
+        mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        userid = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
+        token = mypref.getString(LoginActivity.TOKENKEY, "None");
+
+        Log.d(TAG, "UserID: " + userid);
+        Log.d(TAG, "Token: " + token);
+
         loadExpenseDatesFromBackend();
         updateCalendar();
-        setListeners();
+        setupListeners();
     }
 
     private void initViews() {
@@ -74,7 +83,7 @@ public class StreaksActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_back);
     }
 
-    private void setListeners() {
+    private void setupListeners() {
         findViewById(R.id.buttonPreviousMonth).setOnClickListener(v -> {
             currentDate = currentDate.minusMonths(1);
             updateCalendar();
@@ -91,25 +100,20 @@ public class StreaksActivity extends AppCompatActivity {
     }
 
     private void loadExpenseDatesFromBackend() {
-        SharedPreferences prefs = this.getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
-        String userId = prefs.getString(LoginActivity.USERKEY, "");
-        String token = prefs.getString(LoginActivity.TOKENKEY, "");
-
-        if (userId.isEmpty() || token.isEmpty()) {
-            Toast.makeText(this, "Missing user ID or token. Check log in credentials.", Toast.LENGTH_SHORT).show();
+        if (userid == null || userid.isEmpty() || token == null || token.equals("None")) {
+            Toast.makeText(this, "Missing user ID or token. Please log in again.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         ApiService api = RetrofitClient.getApiService();
-        api.getUserExpenses(token, userId).enqueue(new Callback<List<Expense>>() {
+        api.getUserExpenses(token, userid).enqueue(new Callback<List<Expense>>() {
             @Override
             public void onResponse(Call<List<Expense>> call, Response<List<Expense>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     completedDates.clear();
                     for (Expense expense : response.body()) {
                         try {
-                            LocalDate date = expense.getCreatedDate();
-                            completedDates.add(date);
+                            completedDates.add(expense.getCreatedDate());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -129,9 +133,7 @@ public class StreaksActivity extends AppCompatActivity {
     }
 
     private void updateCalendar() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.US);
-        textMonthYear.setText(currentDate.format(formatter));
-
+        textMonthYear.setText(currentDate.format(DateTimeFormatter.ofPattern("MMMM yyyy", Locale.US)));
         List<LocalDate> monthDays = CalendarUtils.getMonthDates(currentDate);
         CalendarAdapter adapter = new CalendarAdapter(this, monthDays, completedDates);
         calendarGridView.setAdapter(adapter);
@@ -146,17 +148,14 @@ public class StreaksActivity extends AppCompatActivity {
     private void updateMonthStats() {
         int count = 0;
         for (LocalDate date : completedDates) {
-            if (date.getMonth() == currentDate.getMonth() &&
-                    date.getYear() == currentDate.getYear()) {
+            if (date.getMonth() == currentDate.getMonth() && date.getYear() == currentDate.getYear()) {
                 count++;
             }
         }
 
-        // Update UI
         dayCountText.setText(String.valueOf(count));
         streakNumberText.setText(String.valueOf(count));
 
-        // Week-based message
         if (count < 1) {
             congratsMessage.setText("Let’s get back to it! Good practices take time.");
         } else if (count <= 6) {
