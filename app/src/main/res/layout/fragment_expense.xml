@@ -19,10 +19,10 @@
     </com.github.mikephil.charting.charts.PieChart>
 
     <com.google.android.material.card.MaterialCardView
+        app:shapeAppearance="@style/TopRoundedCardView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         app:cardBackgroundColor="@color/backgroundaccent"
-        app:cardCornerRadius="50dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,8 +38,8 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/fredoka_regular"
                 android:text="Top Categories"
                 android:textColor="@color/black"
@@ -55,15 +55,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/sortLayout"
                 app:layout_constraintVertical_bias="1.0" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btnAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:layout_marginBottom="124dp"
+                android:layout_marginEnd="36dp"
+                android:layout_marginBottom="80dp"
                 android:backgroundTint="#CFB0F5"
                 android:src="@drawable/plus_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -74,24 +74,25 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
-                android:layout_marginEnd="30dp"
-                app:boxStrokeWidth="2dp"
+                android:layout_marginEnd="16dp"
                 android:background="@null"
                 app:boxCornerRadiusBottomEnd="20dp"
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
+                app:boxStrokeWidth="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView4"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView4">
+                app:layout_constraintTop_toTopOf="@+id/textView4"
+                app:layout_constraintVertical_bias="0.56">
 
                 <AutoCompleteTextView
                     android:id="@+id/dropdownSort"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/varela_round"
-                    android:text="Sort By"
-                    android:inputType="none"/>
+                    android:inputType="none"
+                    android:text="Sort By" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

@@ -31,12 +31,12 @@ public class InvitationsRecyclerViewAdapter extends RecyclerView.Adapter<Invitat
     ArrayList<InvitationModel> invitationModels;
     SharedPreferences mPref;
     private InvitationService invitationService;
-    private String userId;
+    private String inviteeUsername;
 
-    public InvitationsRecyclerViewAdapter(ArrayList<InvitationModel> invitationModels, Context context, String userId) {
+    public InvitationsRecyclerViewAdapter(ArrayList<InvitationModel> invitationModels, Context context, String inviteeUsername) {
         this.invitationModels = invitationModels;
         this.context = context;
-        this.userId = userId;
+        this.inviteeUsername = inviteeUsername;
         this.invitationService = new InvitationService(context);
     }
 
@@ -56,8 +56,8 @@ public class InvitationsRecyclerViewAdapter extends RecyclerView.Adapter<Invitat
         holder.btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String inviterId = model.getInviterId();
-                invitationService.respondToInvitation(userId, inviterId, true);
+                String inviterUsername = model.getInviterName();
+                invitationService.respondToInvitation(inviteeUsername, inviterUsername, true);
                 invitationModels.remove(model);
                 notifyItemRemoved(position);
             }
@@ -66,7 +66,7 @@ public class InvitationsRecyclerViewAdapter extends RecyclerView.Adapter<Invitat
             @Override
             public void onClick(View view) {
                 String inviterId = model.getInviterId();
-                invitationService.respondToInvitation(userId, inviterId, false);
+                invitationService.respondToInvitation(inviteeUsername, inviterId, false);
                 invitationModels.remove(model);
                 notifyItemRemoved(position);
             }

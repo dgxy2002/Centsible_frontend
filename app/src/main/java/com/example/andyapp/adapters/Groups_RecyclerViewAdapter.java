@@ -65,6 +65,8 @@ public class Groups_RecyclerViewAdapter extends RecyclerView.Adapter<Groups_Recy
                 editor.putString(LoginActivity.VIEWERKEY, connectionId);
                 editor.apply();
                 Intent intent = new Intent(context, NavigationDrawerActivity.class);
+                intent.putExtra(NavigationDrawerActivity.CONNECTION_NAME_TAG, model.getName());
+                intent.putExtra(NavigationDrawerActivity.FRAGMENT_TAG, "ViewExpense");
                 context.startActivity(intent);
             }
         });

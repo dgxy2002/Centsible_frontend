@@ -3,6 +3,7 @@ package com.example.andyapp.queries;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LogBudget;
@@ -12,12 +13,14 @@ import com.example.andyapp.models.BudgetModels;
 import com.example.andyapp.models.CategoryAllocation;
 import com.example.andyapp.models.LogBudgetModel;
 import com.example.andyapp.models.LogBudgetModels;
+import com.example.andyapp.models.PostCategoryAllocation;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,13 +43,14 @@ public class BudgetService {
                 if (response.isSuccessful() && response.body()!=null){
                     ArrayList<CategoryAllocation> data = response.body();
                     for(CategoryAllocation model: data){
-
                         String category = model.getCategory();
                         double budget = model.getAllocatedAmount();
-                        double spent = model.getSpentAmount(); //replace later
-                        Log.d(TAG, category);
-                        Log.d(TAG, String.valueOf(budget));
-                        budgetModels.addBudgetModel(new BudgetModel(R.drawable.dining, spent, budget, category));
+                        if (budget != 0){
+                            double spent = model.getSpentAmount(); //replace later
+                            Log.d(TAG, category);
+                            Log.d(TAG, String.valueOf(budget));
+                            budgetModels.addBudgetModel(new BudgetModel(R.drawable.dining, spent, budget, category));
+                        }
                     }
                     handler.post(new Runnable() {
                         @Override
@@ -82,9 +86,7 @@ public class BudgetService {
             public void onResponse(Call<ArrayList<CategoryAllocation>> call, Response<ArrayList<CategoryAllocation>> response) {
                 if (response.isSuccessful() && response.body()!=null){
                     ArrayList<CategoryAllocation> data = response.body();
-                    Log.d(TAG, "im here");
                     for (int i = 0; i < categories.size(); i++){
-                        Log.d(TAG, "Im here");
                         logBudgetModels.addLogBudgetModel(new LogBudgetModel(i, categories.get(i), R.drawable.othercategory, "0"));
                     }
                     for(CategoryAllocation model: data){
@@ -120,6 +122,38 @@ public class BudgetService {
             }
         });
         return logBudgetModels;
+    }
+
+    public void updateBudgetData(ArrayList<PostCategoryAllocation> dataModels){
+        api.updateBudget(dataModels).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body()!=null){
+                    try {
+                        String message = response.body().string();
+                        Log.d(TAG, message);
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        Log.e(TAG, e.toString());
+                    }
+
+                }else{
+                    try{
+                        Log.e(TAG, response.errorBody().string());
+                    } catch (IOException e) {
+                        Log.e(TAG, e.toString());
+                        Log.e(TAG, "Response Code: " + response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                if (t.getMessage() != null){
+                    Log.d(TAG, t.getMessage());
+                }
+            }
+        });
     }
 
 

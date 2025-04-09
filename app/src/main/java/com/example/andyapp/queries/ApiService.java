@@ -1,7 +1,9 @@
 package com.example.andyapp.queries;
 
 import com.example.andyapp.models.CategoryAllocation;
+import com.example.andyapp.models.FetchIncome;
 import com.example.andyapp.models.NotificationResponse;
+import com.example.andyapp.models.PostCategoryAllocation;
 import com.example.andyapp.queries.mongoModels.Expense;
 import com.example.andyapp.queries.mongoModels.LoginModel;
 import com.example.andyapp.queries.mongoModels.UserModel;
@@ -36,6 +38,9 @@ public interface ApiService {
     @GET("expenses/user/{userId}")
     Call<List<Expense>> getUserExpenses(@Header("Authorization") String token,@Path("userId") String userId);
 
+    @GET("incomes/user/{userId}/month/{month}")
+    Call<ArrayList<FetchIncome>>getIncomeForMonth(@Path("userId") String userId, @Path("month")String month);
+
     @GET("users/{userId}/notifications")
     Call<List<NotificationResponse>> getNotifications(
             @Header("Authorization") String token,
@@ -59,7 +64,7 @@ public interface ApiService {
 
     //Log a new Budget
     @POST("category-allocations")
-    Call<ResponseBody>updateBudget(@Body ArrayList<CategoryAllocation> dataModels);
+    Call<ResponseBody>updateBudget(@Body ArrayList<PostCategoryAllocation> dataModels);
 
     //Invite a connection
     @POST("users/{inviterUsername}/invite/{inviteeUsername}")
@@ -71,12 +76,13 @@ public interface ApiService {
 
     //Respond to an Invitation
     @FormUrlEncoded
-    @PUT("users/{userId}/respond-invitation/{inviterId}")
-    Call<ResponseBody>respondInvitation(@Path("userId") String userId, @Path("inviterId") String inviterId, @Field("accept") boolean accept);
+    @PUT("users/{inviteeUsername}/respond-invitation/{inviterUsername}")
+    Call<ResponseBody>respondInvitation(@Path("inviteeUsername") String inviteeUsername, @Path("inviterUsername") String inviterUsername, @Field("accept") boolean accept);
 
     //Delete a connection
     @DELETE("users/{userId}/connections/{connectionId}")
     Call<ResponseBody>removeConnection(@Path("userId") String userId, @Path("connectionId") String connectionId);
+
 }
 
 
