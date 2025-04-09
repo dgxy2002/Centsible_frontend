@@ -43,7 +43,7 @@ import java.util.concurrent.Executors;
  * create an instance of this fragment.
  */
 public class BudgetFragment extends Fragment {
-    private int budgetProgress = 25;
+    private int budgetProgress = 0;
 
     private ArrayList<BudgetModel> budgetModels;
     private FloatingActionButton btnEditBudget;

@@ -17,19 +17,12 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     ArrayList<UsernameModel> username = new ArrayList<>();
 
-    int[] profilePictures = {R.drawable.person_icon, R.drawable.person_icon, R.drawable.person_icon,R.drawable.person_icon,
-            R.drawable.person_icon,R.drawable.person_icon,R.drawable.person_icon,R.drawable.person_icon,
-            R.drawable.person_icon,R.drawable.person_icon,};
-    int[] arrowUpDown = {R.drawable.arrow_up, R.drawable.arrow_up, R.drawable.arrow_up, R.drawable.arrow_up,
-            R.drawable.arrow_up, R.drawable.arrow_up, R.drawable.arrow_up, R.drawable.arrow_up,
-            R.drawable.arrow_up, R.drawable.arrow_up,};
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_leaderboard);
         RecyclerView recyclerView = findViewById(R.id.leaderboard_recycler_view);
         setUpUsername();
         UsernameModelRCV adapter = new UsernameModelRCV(this, username);
@@ -56,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i< usernameNames.length; i++){
             username.add(new UsernameModel(usernameNames[i],
-                    pointsList[i], numberUpDown[i], profilePictures[i], arrowUpDown[i]));
+                    pointsList[i], numberUpDown[i], R.drawable.avatar, R.drawable.arrow_up));
 
         }
 
