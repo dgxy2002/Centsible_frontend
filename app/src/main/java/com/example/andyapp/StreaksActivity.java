@@ -24,6 +24,8 @@ import com.example.andyapp.utils.CalendarUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -61,7 +63,6 @@ public class StreaksActivity extends AppCompatActivity {
         initViews();
         currentDate = LocalDate.now();
 
-        // Load shared prefs using the same method your friend uses
         mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userid = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         token = mypref.getString(LoginActivity.TOKENKEY, "None");
@@ -113,7 +114,7 @@ public class StreaksActivity extends AppCompatActivity {
                     completedDates.clear();
                     for (Expense expense : response.body()) {
                         try {
-                            completedDates.add(expense.getCreatedDate());
+                            completedDates.add(expense.getParsedCreatedDate());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -147,16 +148,26 @@ public class StreaksActivity extends AppCompatActivity {
 
     private void updateMonthStats() {
         int count = 0;
-        for (LocalDate date : completedDates) {
-            if (date.getMonth() == currentDate.getMonth() && date.getYear() == currentDate.getYear()) {
-                count++;
-            }
+        LocalDate today = LocalDate.now();
+        LocalDate current = today;
+
+        // Sort the dates
+        List<LocalDate> sortedDates = new ArrayList<>(completedDates);
+        Collections.sort(sortedDates, Collections.reverseOrder()); // Descending order
+
+        Set<LocalDate> dateSet = new HashSet<>(sortedDates);
+
+        while (dateSet.contains(current)) {
+            count++;
+            current = current.minusDays(1);
         }
 
+        // Update UI
         dayCountText.setText(String.valueOf(count));
         streakNumberText.setText(String.valueOf(count));
 
-        if (count < 1) {
+        // Show congrats based on streak
+        if (count == 0) {
             congratsMessage.setText("Let’s get back to it! Good practices take time.");
         } else if (count <= 6) {
             congratsMessage.setText("Keep up the good work! 💪");
@@ -165,4 +176,5 @@ public class StreaksActivity extends AppCompatActivity {
             congratsMessage.setText("🎉 You've kept a Perfect Streak for " + weeks + " straight " + (weeks == 1 ? "week" : "weeks") + ". Wow!");
         }
     }
+
 }

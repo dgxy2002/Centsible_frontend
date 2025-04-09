@@ -35,7 +35,7 @@ public class ExpenseService {
     public void postExpense(Expense expense) {
         Log.d("API_REQUEST", "Sending Expense: " +
                 "Title: " + expense.getTitle() + ", Amount: " + expense.getAmount() + ", UserID: " + expense.getUserID() +
-                ", Category: " + expense.getCategory() + ", CreatedDate: " + expense.getCreatedDate());
+                ", Category: " + expense.getCategory() + ", CreatedDate: " + expense.getParsedCreatedDate());
         apiService.createExpense(expense).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

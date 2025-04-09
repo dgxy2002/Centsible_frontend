@@ -12,8 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.andyapp.R;
 import com.example.andyapp.models.TransactionItem;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
 
@@ -24,7 +28,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     }
 
     public static class TransactionViewHolder extends RecyclerView.ViewHolder {
-        TextView amount, description;
+        TextView amount, description, date;
         ImageView icon;
 
         public TransactionViewHolder(@NonNull View itemView) {
@@ -32,6 +36,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             amount = itemView.findViewById(R.id.transactionAmount);
             description = itemView.findViewById(R.id.transactionDescription);
             icon = itemView.findViewById(R.id.transactionIcon);
+            date = itemView.findViewById(R.id.transactionDate); // Ensure this ID exists in item_transaction.xml
         }
     }
 
@@ -49,6 +54,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         holder.amount.setText(item.amount);
         holder.description.setText(item.description);
         holder.icon.setImageResource(getIconForType(item.type));
+        holder.date.setText(formatDate(item.date)); // 💡
     }
 
     @Override
@@ -56,12 +62,10 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         return transactions.size();
     }
 
-    // Expose current visible items (for share/export)
     public List<TransactionItem> getItems() {
         return new ArrayList<>(transactions);
     }
 
-    //  Allow list refresh (for filtering)
     public void updateData(List<TransactionItem> newItems) {
         transactions.clear();
         transactions.addAll(newItems);
@@ -81,7 +85,31 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             case "entertainment":
                 return R.drawable.game_icon;
             default:
-                return R.drawable.dollar_icon; // fallback icon
+                return R.drawable.dollar_icon;
         }
+    }
+
+    private String formatDate(String raw) {
+        if (raw == null || raw.trim().isEmpty()) return "Unknown date";
+
+        String[] patterns = {
+                "yyyy-MM-dd",
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+                "yyyy-MM-dd'T'HH:mm:ssXXX",
+                "yyyy-MM-dd'T'HH:mm:ss"
+        };
+
+        for (String pattern : patterns) {
+            try {
+                SimpleDateFormat iso = new SimpleDateFormat(pattern, Locale.getDefault());
+                Date date = iso.parse(raw);
+                SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+                return output.format(date);
+            } catch (ParseException e) {
+                // ignore
+            }
+        }
+        return "Unknown date";
     }
 }

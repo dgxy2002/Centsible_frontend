@@ -44,17 +44,17 @@ public class ActivityActivity extends AppCompatActivity {
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // to change the font of the Activity header, toolbar cannot change directly in xml
-        Typeface typeface = ResourcesCompat.getFont(this, R.font.fredoka_medium);
-        for (int i = 0; i < toolbar.getChildCount(); i++) {
-            View view = toolbar.getChildAt(i);
-            if (view instanceof TextView) {
-                TextView tv = (TextView) view;
-                if (tv.getText().equals(toolbar.getTitle())) {
-                    tv.setTypeface(typeface);
-                    break;
-                }
-            }
-        }
+        //Typeface typeface = ResourcesCompat.getFont(this, R.font.fredoka_medium);
+//        for (int i = 0; i < toolbar.getChildCount(); i++) {
+//            View view = toolbar.getChildAt(i);
+//            if (view instanceof TextView) {
+//                TextView tv = (TextView) view;
+//                if (tv.getText().equals(toolbar.getTitle())) {
+//                    tv.setTypeface(typeface);
+//                    break;
+//                }
+//            }
+//        }
 
 
         toolbar.setNavigationOnClickListener(view -> {

@@ -12,7 +12,7 @@
         android:gravity="center"
         android:textSize="16sp"
         android:textColor="@color/black"
-        android:background="@color/background"
+        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

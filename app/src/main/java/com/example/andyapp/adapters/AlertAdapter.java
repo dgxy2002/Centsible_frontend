@@ -1,5 +1,6 @@
 package com.example.andyapp.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import java.util.Locale;
 public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> {
 
     private List<AlertItem> alertList;
+    private static final String TAG = "ALERT_DATE_PARSE";
 
     public AlertAdapter(List<AlertItem> alertList) {
         this.alertList = alertList;
@@ -49,16 +51,41 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> 
 
         holder.title.setText(alert.getTitle());
 
-        // Split the subtitle into sender and datetime
         String[] parts = alert.getSubtitle().split("\n");
         if (parts.length >= 2) {
             holder.sender.setText(parts[0]);
-            holder.date.setText(formatDate(parts[1])); // ISO to readable format
+            holder.date.setText(formatDate(parts[1]));
         } else {
             holder.sender.setText("");
             holder.date.setText("");
         }
+
+        // Set icon based on alert type
+        holder.icon.setImageResource(getIconForAlertType(alert.getType()));
     }
+
+    private int getIconForAlertType(String type) {
+        if (type == null) return R.drawable.baseline_notifications_24;
+
+        switch (type.toLowerCase()) {
+            case "Food":
+                return R.drawable.baseline_fastfood_24;
+            case "warning":
+                return R.drawable.warning_icon;
+            case "Money Request":
+                return R.drawable.money_receive;
+            case "notification":
+                return R.drawable.baseline_notifications_24;
+            case "transport":
+                return R.drawable.baseline_directions_bus_24;
+            case "expense":
+                return R.drawable.dollar_icon;
+            default:
+                return R.drawable.baseline_notifications_24;
+        }
+    }
+
+
 
     @Override
     public int getItemCount() {
@@ -79,9 +106,17 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> 
     }
 
     private String formatDate(String raw) {
+        if (raw == null || raw.trim().isEmpty()) return "";
+
+        // Remove "On " if it exists
+        if (raw.startsWith("On ")) {
+            raw = raw.substring(3).trim();
+        }
+
         String[] patterns = {
-                "yyyy-MM-dd'T'HH:mm:ss.SSS",    // Full ISO with milliseconds
-                "yyyy-MM-dd'T'HH:mm:ss"          // ISO without milliseconds
+                "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                "yyyy-MM-dd'T'HH:mm:ss",
+                "yyyy-MM-dd"
         };
 
         for (String pattern : patterns) {
@@ -90,11 +125,13 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> 
                 Date date = iso.parse(raw);
                 SimpleDateFormat display = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
                 return "On " + display.format(date);
-            } catch (ParseException ignored) {
+            } catch (ParseException e) {
+                Log.d("ALERT_DATE_PARSE", "Pattern failed: " + pattern + " | raw: " + raw);
             }
         }
 
-        return "not working"; // fallback if all formats fail
+        Log.w("ALERT_DATE_PARSE", "Date parsing failed for raw string: " + raw);
+        return "Unknown Date";
     }
 
 }

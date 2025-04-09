@@ -33,7 +33,6 @@
             android:text="Streaks"
             android:textColor="@color/centsible_text_primary"
             android:textSize="20sp"
-            android:textStyle="bold"
             android:fontFamily="@font/varela_round"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -14,11 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:background="@color/background"
-        android:elevation="4dp"
+        android:elevation="0dp"
         app:title="Activity"
         app:titleCentered="true"
-        app:titleTextAppearance="@style/AppTheme.AppBarOverlay"
-        app:titleTextColor="@color/centsible_text_primary"
+        app:titleTextAppearance="@style/ToolbarTitleLarge"
+        app:titleTextColor="@color/black"
         app:navigationIcon="@drawable/arrow_back"
          />
 

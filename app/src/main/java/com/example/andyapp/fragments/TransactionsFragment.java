@@ -50,12 +50,10 @@ public class TransactionsFragment extends Fragment {
         adapter = new TransactionAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
-        // Use consistent sharedPrefs
         mypref = requireContext().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         token = mypref.getString(LoginActivity.TOKENKEY, "None");
 
-        Log.d(TAG, "Fetched from SharedPreferences:");
         Log.d(TAG, "User ID: " + userId);
         Log.d(TAG, "Token: " + token);
 
@@ -73,14 +71,14 @@ public class TransactionsFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Expense>> call, Response<List<Expense>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Expense> expenses = response.body();
                     allItems.clear();
 
-                    for (Expense e : expenses) {
+                    for (Expense e : response.body()) {
                         allItems.add(new TransactionItem(
                                 "- $" + e.getAmount(),
                                 e.getTitle() + " — " + e.getCategory(),
-                                e.getCategory().toLowerCase().trim()
+                                e.getCategory().toLowerCase().trim(),
+                                e.getCreatedDateRaw() // This must be String date like "2024-12-31"
                         ));
                     }
 
@@ -92,8 +90,7 @@ public class TransactionsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Expense>> call, Throwable t) {
-                Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                t.printStackTrace(); // View in Logcat
+                Log.e("NETWORK_ERROR", "Failure: " + t.getMessage(), t);
             }
         });
     }
@@ -117,15 +114,6 @@ public class TransactionsFragment extends Fragment {
                     }
                 })
                 .show();
-    }
-
-    public String getShareableText() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("📊 Transaction History:\n\n");
-        for (TransactionItem item : adapter.getItems()) {
-            builder.append(item.amount).append(" — ").append(item.description).append("\n");
-        }
-        return builder.toString();
     }
 
     public List<String> getShareableLines() {
