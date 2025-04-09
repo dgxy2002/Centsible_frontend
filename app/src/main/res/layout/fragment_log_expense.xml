@@ -59,7 +59,7 @@
             app:boxStrokeColor="@color/primary_purple">
 
             <AutoCompleteTextView
-                android:id="@+id/dropdownPay"
+                android:id="@+id/dropdownType"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/poppins_semibold"

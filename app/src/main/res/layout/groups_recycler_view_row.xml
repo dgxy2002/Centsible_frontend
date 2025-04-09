@@ -43,7 +43,7 @@
                 android:fontFamily="@font/varela_round"
                 android:text="Sean"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 app:layout_constraintStart_toEndOf="@id/avatarView"
                 app:layout_constraintTop_toTopOf="parent" />
 

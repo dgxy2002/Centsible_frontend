@@ -1,6 +1,7 @@
 package com.example.andyapp.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LineChartObserver;
 import com.example.andyapp.LoginActivity;
+import com.example.andyapp.NavigationDrawerActivity;
 import com.example.andyapp.R;
 import com.example.andyapp.adapters.IncomeRecyclerViewAdapter;
 import com.example.andyapp.models.FetchIncome;
@@ -33,6 +35,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -53,6 +56,7 @@ public class IncomeFragment extends Fragment {
     private DataSubject<FetchIncomes> subject;
     private IncomeService incomeService;
     private SharedPreferences mPref;
+    private FloatingActionButton btnLogIncome;
     String userId;
 
     @Override
@@ -72,9 +76,20 @@ public class IncomeFragment extends Fragment {
         lineChart = view.findViewById(R.id.incomeLineChart);
         lineChartObserver = new LineChartObserver(lineChart, requireContext());
         recyclerView = view.findViewById(R.id.incomeRecycler);
+        btnLogIncome = view.findViewById(R.id.btnAddIncome);
         subject = new DataSubject<>();
         fetchIncomes = new FetchIncomes(new ArrayList<>());
         incomeService = new IncomeService(requireContext());
+
+        //Configure btnLogIncome
+        btnLogIncome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(requireContext(), NavigationDrawerActivity.class);
+                intent.putExtra(NavigationDrawerActivity.FRAGMENT_TAG, "LogExpense");
+                startActivity(intent);
+            }
+        });
 
         //Configure RecyclerView
         adapter = new IncomeRecyclerViewAdapter(requireContext(), new ArrayList<>());
@@ -97,9 +112,8 @@ public class IncomeFragment extends Fragment {
                 LocalDate currentDate = LocalDate.now();
                 int month = currentDate.getMonthValue();
                 int year = currentDate.getYear();
-                incomeService.fetchIncomesByMonth(userId, String.valueOf(month), String.valueOf(year), subject, handler);
+                incomeService.fetchIncomesByMonth(userId, month, year, subject, handler);
             }
         });
-
     }
 }

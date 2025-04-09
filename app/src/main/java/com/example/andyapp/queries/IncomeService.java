@@ -6,10 +6,14 @@ import android.util.Log;
 
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.models.FetchIncome;
+import com.example.andyapp.models.PostIncome;
+import com.example.andyapp.utils.SortIncomeByDay;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,9 +29,9 @@ public class IncomeService {
         this.context = context;
     }
 
-    public void fetchIncomesByMonth(String userId, String month, String year, DataSubject<FetchIncomes> subject, Handler handler){
+    public void fetchIncomesByMonth(String userId, int month, int year, DataSubject<FetchIncomes> subject, Handler handler){
         FetchIncomes fetchIncomes = new FetchIncomes(new ArrayList<>());
-        api.getIncomeForMonth(userId, month).enqueue(new Callback<ArrayList<FetchIncome>>() {
+        api.getIncomeForMonth(userId, year, month).enqueue(new Callback<ArrayList<FetchIncome>>() {
             @Override
             public void onResponse(Call<ArrayList<FetchIncome>> call, Response<ArrayList<FetchIncome>> response) {
                 if (response.isSuccessful() && response.body() != null){
@@ -44,6 +48,36 @@ public class IncomeService {
 
             @Override
             public void onFailure(Call<ArrayList<FetchIncome>> call, Throwable t) {
+                if (t.getMessage() != null){
+                    Log.e(TAG, t.getMessage());
+                }
+            }
+        });
+    }
+
+    public void postIncome(PostIncome data){
+        api.postIncome(data).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    String message = null;
+                    try {
+                        message = response.body().string();
+                        Log.d(TAG, message);
+                    } catch (IOException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                } else{
+                    try {
+                        Log.d(TAG, response.errorBody().string());
+                        Log.d(TAG, "response code" + response.code());
+                    } catch (IOException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 if (t.getMessage() != null){
                     Log.e(TAG, t.getMessage());
                 }
