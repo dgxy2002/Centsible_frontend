@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     user.getUsername(),
                     pointsText,
                     "+0",
-                    R.drawable.person_icon,
+                    R.drawable.avatar,
                     R.drawable.arrow_up,
                     user.getUserId()
             ));

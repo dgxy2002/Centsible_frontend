@@ -44,6 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
                 android:fontFamily="@font/varela_round"
+                android:textColor="@color/black"
                 android:text="Dining"
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/incomeIconView"

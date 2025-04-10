@@ -44,6 +44,7 @@
                 android:textSize="18sp"
                 android:fontFamily="@font/varela_round"
                 android:text="Dining"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/iconView"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/amtView"
