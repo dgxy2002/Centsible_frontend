@@ -10,9 +10,9 @@
 
     <ImageView
         android:id="@+id/loginLogo"
-        android:layout_width="238dp"
-        android:layout_height="238dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="96dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
