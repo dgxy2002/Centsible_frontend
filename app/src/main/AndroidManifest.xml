@@ -27,15 +27,19 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <!-- Entry Point -->
-        <activity
-            android:name=".MainActivityContent"
-            android:exported="true">
+        <!-- Auth Activities -->
+        <activity android:name=".LoginActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SignUpActivity" android:exported="true" />
+
+        <!-- Entry Point -->
+        <activity
+            android:name=".MainActivityContent"
+            android:exported="true"/>
 
         <!-- Core App Activities -->
         <activity android:name=".Dashboard" android:exported="true" />
@@ -47,9 +51,6 @@
         <activity android:name=".LogBudget" android:exported="true" />
         <activity android:name=".LogBudgetCategoryActivity" android:exported="false" />
 
-        <!-- Auth Activities -->
-        <activity android:name=".LoginActivity" android:exported="true" />
-        <activity android:name=".SignUpActivity" android:exported="true" />
 
     </application>
 </manifest>
