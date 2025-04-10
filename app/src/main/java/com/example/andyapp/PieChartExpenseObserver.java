@@ -18,21 +18,7 @@ import java.util.ArrayList;
 public class PieChartExpenseObserver implements DataObserver<GetCategoryExpenseModels>{
     Context context;
     PieChart pieChart;
-
     ArrayList<Integer> colors = new ArrayList<>();
-    int[] colorResIds = {
-            R.color.pie1, R.color.pie2, R.color.pie3, R.color.pie4,
-            R.color.pie5, R.color.pie6, R.color.pie7, R.color.pie8
-    };
-
-    public PieChartExpenseObserver(PieChart pieChart, Context context) {
-        this.pieChart = pieChart;
-        this.context = context;
-        for (int colorResId : colorResIds) {
-            colors.add(ContextCompat.getColor(context, colorResId));
-        }
-    }
-
     @Override
     public void updateData(GetCategoryExpenseModels data) {
         ArrayList<GetCategoryExpenseModel> expenseModels = data.getCategoryExpensesModels();
@@ -48,6 +34,18 @@ public class PieChartExpenseObserver implements DataObserver<GetCategoryExpenseM
         PieData pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
         formatPieChart(pieChart);
+    }
+    int[] colorResIds = {
+            R.color.pie1, R.color.pie2, R.color.pie3, R.color.pie4,
+            R.color.pie5, R.color.pie6, R.color.pie7, R.color.pie8
+    };
+
+    public PieChartExpenseObserver(PieChart pieChart, Context context) {
+        this.pieChart = pieChart;
+        this.context = context;
+        for (int colorResId : colorResIds) {
+            colors.add(ContextCompat.getColor(context, colorResId));
+        }
     }
 
     private void formatPieDataSet(PieDataSet pieDataSet){

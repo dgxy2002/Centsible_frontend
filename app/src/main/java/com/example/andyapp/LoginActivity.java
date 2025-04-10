@@ -47,21 +47,23 @@ public class LoginActivity extends AppCompatActivity {
     RequestUser requestUser;
     SharedPreferences sharedPreferences;
 
-    class LoginResponse{
-        private String userId;
+    class LoginResponse {
+        private String id;
+        private String username;
         private String token;
         private String message;
 
-        public String getUserId() {
-            return userId;
+        public String getId() {
+            return id;
         }
-
-        public String getToken() {
-            return token;
+        public String getUsername() {
+            return username;
         }
-
         public String getMessage() {
             return message;
+        }
+        public String getToken() {
+            return token;
         }
     }
 
@@ -101,17 +103,18 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         if ( response.body() != null ) {
                             LoginResponse resp = response.body();
-                            String id = resp.getUserId();
+                            String userId = resp.getId();
+                            String username = resp.getUsername();
                             String message = resp.getMessage();
                             String token = resp.getToken();
                             sharedPreferences = getSharedPreferences(PREFTAG, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString(TOKENKEY, "Bearer " +token);
-                            editor.putString(USERKEY, id);
-                            editor.putString(VIEWERKEY, id);
+                            editor.putString(USERKEY, userId);
+                            editor.putString(VIEWERKEY, userId);
                             editor.putString(USERNAMEKEY, username);
                             editor.apply();
-                            Log.d(TAG, String.format("userID: %s, message: %s, token: %s", id, message, token));
+                            Log.d(TAG, String.format("userId: %s, username, %s, message: %s, token: %s", userId, username, message, token));
                             Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
                             startActivity(intent);
                         }else{

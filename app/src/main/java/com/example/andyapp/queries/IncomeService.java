@@ -29,7 +29,7 @@ public class IncomeService {
         this.context = context;
     }
 
-    public void fetchIncomesByMonth(String userId, int month, int year, DataSubject<FetchIncomes> subject, Handler handler){
+    public FetchIncomes fetchIncomesByMonth(String userId, int month, int year, DataSubject<FetchIncomes> subject, Handler handler){
         FetchIncomes fetchIncomes = new FetchIncomes(new ArrayList<>());
         api.getIncomeForMonth(userId, year, month).enqueue(new Callback<ArrayList<FetchIncome>>() {
             @Override
@@ -53,6 +53,7 @@ public class IncomeService {
                 }
             }
         });
+        return fetchIncomes;
     }
 
     public void postIncome(PostIncome data){

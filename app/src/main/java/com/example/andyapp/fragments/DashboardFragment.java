@@ -33,8 +33,8 @@ public class DashboardFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Toast.makeText(getContext(), "Displaying fragment", Toast.LENGTH_SHORT).show();
-                Log.w("debugging", "Displaying fragment");
+//                Toast.makeText(getContext(), "Displaying fragment", Toast.LENGTH_SHORT).show();
+//                Log.w("debugging", "Displaying fragment");
                 viewPagerDashboard.setCurrentItem(tab.getPosition());
             }
 

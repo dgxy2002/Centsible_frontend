@@ -83,7 +83,6 @@ public class LineChartObserver implements DataObserver<FetchIncomes>{
             //Insert Logic for rendering data
             String createdDate = model.getCreatedDate();
             int day = Integer.parseInt(createdDate.substring(8, 10));
-            Log.d(TAG, String.valueOf(day));
             float incomeAmount = (float) model.getAmount();
             totalIncome += incomeAmount;
             entries.add(new Entry(day, totalIncome));

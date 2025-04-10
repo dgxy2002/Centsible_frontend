@@ -17,9 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LineChartObserver;
@@ -28,8 +32,13 @@ import com.example.andyapp.NavigationDrawerActivity;
 import com.example.andyapp.R;
 import com.example.andyapp.adapters.IncomeRecyclerViewAdapter;
 import com.example.andyapp.models.FetchIncome;
+import com.example.andyapp.models.GetCategoryExpenseModel;
 import com.example.andyapp.queries.FetchIncomes;
 import com.example.andyapp.queries.IncomeService;
+import com.example.andyapp.utils.SortExpenseByAmount;
+import com.example.andyapp.utils.SortExpenseByName;
+import com.example.andyapp.utils.SortIncomeByDay;
+import com.example.andyapp.utils.SortIncomeByName;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -57,7 +66,11 @@ public class IncomeFragment extends Fragment {
     private IncomeService incomeService;
     private SharedPreferences mPref;
     private FloatingActionButton btnLogIncome;
-    String userId;
+    private AutoCompleteTextView dropdownSort;
+    private String[] sortingTypes;
+    private ArrayAdapter<String> sortingAdapter;
+    private String userId;
+    private String TAG = "LOGCAT";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +86,30 @@ public class IncomeFragment extends Fragment {
         mPref = getContext().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = mPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         //Initialise views and DataSubject and data
+        dropdownSort = view.findViewById(R.id.dropdownSortIncome);
+        sortingTypes = getContext().getResources().getStringArray(R.array.sorting_income);
+        sortingAdapter = new ArrayAdapter<>(requireContext(), R.layout.dropdownitem, sortingTypes);
+        dropdownSort.setAdapter(sortingAdapter);
+        dropdownSort.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String sortingType = adapterView.getItemAtPosition(i).toString();
+                ArrayList<FetchIncome> models = fetchIncomes.getFetchIncomeArrayList();
+                switch (sortingType) {
+                    case "Latest":
+                        models.sort(new SortIncomeByDay());
+                        break;
+                    case "Oldest":
+                        models.sort(new SortIncomeByDay().reversed());
+                        break;
+                    case "A-Z":
+                        models.sort(new SortIncomeByName());
+                        break;
+                }
+                fetchIncomes.setFetchIncomeArrayList(models);
+                subject.notifyObservers(fetchIncomes);
+            }
+        });
         lineChart = view.findViewById(R.id.incomeLineChart);
         lineChartObserver = new LineChartObserver(lineChart, requireContext());
         recyclerView = view.findViewById(R.id.incomeRecycler);
@@ -112,7 +149,7 @@ public class IncomeFragment extends Fragment {
                 LocalDate currentDate = LocalDate.now();
                 int month = currentDate.getMonthValue();
                 int year = currentDate.getYear();
-                incomeService.fetchIncomesByMonth(userId, month, year, subject, handler);
+                fetchIncomes = incomeService.fetchIncomesByMonth(userId, month, year, subject, handler);
             }
         });
     }
