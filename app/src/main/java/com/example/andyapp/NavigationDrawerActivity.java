@@ -184,6 +184,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         btnBarRight.setEnabled(true);
         btnBarRight.setVisibility(View.VISIBLE);
         toolbarTitle.setText("Insights");
+        btnBarRight.setScaleType(ImageView.ScaleType.FIT_CENTER);
         btnBarRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

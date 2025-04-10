@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:background="@color/background"
         app:tabIndicatorFullWidth="true"
+        app:tabTextAppearance="@style/tab_text"
         app:tabIndicatorColor="@color/primary_purple"
         app:tabTextColor="@color/black"
         />

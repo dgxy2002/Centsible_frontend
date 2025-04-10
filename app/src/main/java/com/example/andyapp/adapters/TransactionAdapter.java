@@ -75,7 +75,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     private int getIconForType(String type) {
         switch (type.toLowerCase()) {
             case "food":
-                return R.drawable.baseline_fastfood_24;
+                return R.drawable.dining;
             case "transport":
                 return R.drawable.baseline_directions_bus_24;
             case "income":

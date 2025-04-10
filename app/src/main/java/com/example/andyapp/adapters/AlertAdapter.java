@@ -69,7 +69,7 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> 
 
         switch (type.toLowerCase()) {
             case "Food":
-                return R.drawable.baseline_fastfood_24;
+                return R.drawable.dining;
             case "warning":
                 return R.drawable.warning_icon;
             case "Money Request":
