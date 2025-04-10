@@ -24,6 +24,16 @@ public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerVi
     ArrayList<GetCategoryExpenseModel> getCategoryExpenseModels;
     double totalExpense;
 
+    public void updateData(GetCategoryExpenseModels data){
+        this.getCategoryExpenseModels = data.getCategoryExpensesModels(); // Update list
+        Log.d("LOGCAT", "Updating with size: " + getCategoryExpenseModels.size());
+        this.totalExpense = 0;
+        for (GetCategoryExpenseModel model : this.getCategoryExpenseModels) {
+            this.totalExpense += model.getAmount();
+        }
+        notifyDataSetChanged();
+    }
+
     public Exp_RecyclerViewAdapter(Context context, GetCategoryExpenseModels data){
         this.context = context;
         this.getCategoryExpenseModels = data.getCategoryExpensesModels();
@@ -58,15 +68,7 @@ public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerVi
         return getCategoryExpenseModels.size();
     }
 
-    public void updateData(GetCategoryExpenseModels data){
-        this.getCategoryExpenseModels = data.getCategoryExpensesModels(); // Update list
-        Log.d("LOGCAT", "Updating with size: " + getCategoryExpenseModels.size());
-        this.totalExpense = 0;
-        for (GetCategoryExpenseModel model : this.getCategoryExpenseModels) {
-            this.totalExpense += model.getAmount();
-        }
-        notifyDataSetChanged();
-    }
+
 
     private void setBarColor(View barView, int position){
         Drawable background =  barView.getBackground();
