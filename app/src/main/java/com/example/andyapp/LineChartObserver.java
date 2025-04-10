@@ -3,6 +3,9 @@ package com.example.andyapp;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;

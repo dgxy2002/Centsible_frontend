@@ -18,18 +18,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LineChartObserver;
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.NavigationDrawerActivity;
 import com.example.andyapp.R;
+import com.example.andyapp.VerticalTextView;
 import com.example.andyapp.adapters.IncomeRecyclerViewAdapter;
 import com.example.andyapp.models.FetchIncome;
 import com.example.andyapp.models.GetCategoryExpenseModel;
@@ -117,7 +121,7 @@ public class IncomeFragment extends Fragment {
         subject = new DataSubject<>();
         fetchIncomes = new FetchIncomes(new ArrayList<>());
         incomeService = new IncomeService(requireContext());
-
+        //Set Line Chart Title
         //Configure btnLogIncome
         btnLogIncome.setOnClickListener(new View.OnClickListener() {
             @Override

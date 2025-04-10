@@ -1,11 +1,11 @@
 package com.example.andyapp.models;
 
 public class CategoryAllocation {
-    private String id;
-    private String userId;
-    private String category;
-    private double allocatedAmount;
-    private double spentAmount;
+    private final String id;
+    private final String userId;
+    private final String category;
+    private final double allocatedAmount;
+    private final double spentAmount;
 
     public CategoryAllocation(String id, String userId, String category, double allocatedAmount, double spentAmount) {
         this.id = id;

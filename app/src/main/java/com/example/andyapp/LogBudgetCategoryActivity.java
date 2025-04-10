@@ -60,6 +60,27 @@ public class LogBudgetCategoryActivity extends AppCompatActivity {
         categoryTextView.setText(String.format("For: %s", categoryText));
         budgetEditText.setText(budgetAmount);
 
+        btnIncrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                budgetAmount = budgetEditText.getText().toString().substring(1);
+                double amount = Double.parseDouble(budgetAmount);
+                amount += 1;
+                budgetEditText.setText(String.valueOf(amount));
+            }
+        });
+
+        btnDecrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                budgetAmount = budgetEditText.getText().toString().substring(1);
+                double amount = Double.parseDouble(budgetAmount);
+                amount -= 1;
+                budgetEditText.setText(String.valueOf(amount));
+            }
+        });
+
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

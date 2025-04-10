@@ -23,6 +23,4 @@ public class GetCategoryExpenseModel {
         return amount;
     }
 
-
-
 }

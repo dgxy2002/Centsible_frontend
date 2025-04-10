@@ -19,18 +19,16 @@ public class NotificationService {
     private ApiService api;
     private Context context;
     private static String TAG = "LOGCAT";
-
     public NotificationService(Context context) {
         this.api = RetrofitClient.getApiService();
         this.context = context;
     }
-
     public void fetchUnreadNotificationCount(String token, String userId, Handler handler, DataObserver<Integer> btnBarRightObserver) {
         api.getUnreadCount(token, userId).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    int count = 3;
+                    int count = response.body();
                     Log.d(TAG, String.valueOf(count));
                     if (count > 0){
                         handler.post(new Runnable() {
@@ -42,7 +40,6 @@ public class NotificationService {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
                 if(t.getMessage() != null){
