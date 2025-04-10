@@ -1,5 +1,7 @@
 package com.example.andyapp.fragments;
 
+import static android.view.View.INVISIBLE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LoginActivity;
@@ -42,6 +45,7 @@ public class InvitationsFragment extends Fragment {
     String userId;
     String userName;
     String token;
+    TextView noInvitesTextView;
 
     InvitationService invitationService;
     @Override
@@ -58,6 +62,7 @@ public class InvitationsFragment extends Fragment {
         mPref = getContext().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = mPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         userName = mPref.getString(LoginActivity.USERNAMEKEY, LoginActivity.DEFAULT_USERNAME);
+        noInvitesTextView = view.findViewById(R.id.noInvitesTextView);
         recyclerView = view.findViewById(R.id.invitationsRecyclerView);
         invitationModels = new InvitationModels();
         subject = new DataSubject<>();
@@ -76,7 +81,10 @@ public class InvitationsFragment extends Fragment {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                invitationService.getInvites(userId, handler, subject);
+                invitationModels = invitationService.getInvites(userId, handler, subject);
+                if (!invitationModels.getInvitationModels().isEmpty()){
+                    noInvitesTextView.setVisibility(INVISIBLE);
+                }
             }
         });
 

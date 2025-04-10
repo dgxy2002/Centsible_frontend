@@ -29,7 +29,7 @@ public class InvitationService {
         this.api = RetrofitClient.getApiService();
     }
 
-    public void getInvites(String userId, Handler handler, DataSubject<InvitationModels> subject){
+    public InvitationModels getInvites(String userId, Handler handler, DataSubject<InvitationModels> subject){
         InvitationModels invitationModels = new InvitationModels();
         ArrayList<InvitationModel> models = invitationModels.getInvitationModels();
         api.getInvitations(userId).enqueue(new Callback<ArrayList<Map<String, String>>>() {
@@ -56,6 +56,7 @@ public class InvitationService {
                 }
             }
         });
+        return invitationModels;
     }
 
     public void respondToInvitation(String userId, String inviterId, boolean accept){

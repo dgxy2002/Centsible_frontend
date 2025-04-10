@@ -83,7 +83,7 @@
                 app:layout_constraintTop_toTopOf="@+id/incomeLogsTextView">
 
                 <AutoCompleteTextView
-                    android:id="@+id/dropdownSort"
+                    android:id="@+id/dropdownSortIncome"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/varela_round"

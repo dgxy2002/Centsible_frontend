@@ -64,6 +64,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             btnMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    resetToolBar();
                     changeFragment(new DashboardFragment());
                 }
             });

@@ -5,6 +5,7 @@ import com.example.andyapp.models.FetchIncome;
 import com.example.andyapp.models.LeaderboardUser;
 import com.example.andyapp.models.NotificationResponse;
 import com.example.andyapp.models.PostCategoryAllocation;
+import com.example.andyapp.models.PostIncome;
 import com.example.andyapp.queries.mongoModels.Expense;
 import com.example.andyapp.queries.mongoModels.LoginModel;
 import com.example.andyapp.queries.mongoModels.UserModel;
@@ -39,8 +40,11 @@ public interface ApiService {
     @GET("expenses/user/{userId}")
     Call<List<Expense>> getUserExpenses(@Header("Authorization") String token,@Path("userId") String userId);
 
-    @GET("incomes/user/{userId}/month/{month}")
-    Call<ArrayList<FetchIncome>>getIncomeForMonth(@Path("userId") String userId, @Path("month")String month);
+    @GET("incomes/user/{userId}/year/{year}/month/{month}")
+    Call<ArrayList<FetchIncome>>getIncomeForMonth(@Path("userId") String userId,@Path("year") int year, @Path("month")int month);
+
+    @POST("incomes")
+    Call<ResponseBody>postIncome(@Body PostIncome data);
 
     @GET("users/{userId}/notifications")
     Call<List<NotificationResponse>> getNotifications(

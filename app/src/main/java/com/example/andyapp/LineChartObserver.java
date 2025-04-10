@@ -2,12 +2,14 @@ package com.example.andyapp;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.andyapp.models.FetchIncome;
 import com.example.andyapp.queries.FetchIncomes;
+import com.example.andyapp.utils.SortIncomeByDay;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class LineChartObserver implements DataObserver<FetchIncomes>{
     private LineChart lineChart;
     private Context context;
+    private String TAG = "LOGCAT";
 
     public LineChartObserver(LineChart lineChart, Context context) {
         this.lineChart = lineChart;
@@ -73,10 +76,16 @@ public class LineChartObserver implements DataObserver<FetchIncomes>{
     @Override
     public void updateData(FetchIncomes data) {
         ArrayList<FetchIncome> models = data.getFetchIncomeArrayList();
+        models.sort(new SortIncomeByDay());
         ArrayList<Entry> entries = new ArrayList<>();
+        float totalIncome = 0;
         for (FetchIncome model: models){
             //Insert Logic for rendering data
-
+            String createdDate = model.getCreatedDate();
+            int day = Integer.parseInt(createdDate.substring(8, 10));
+            float incomeAmount = (float) model.getAmount();
+            totalIncome += incomeAmount;
+            entries.add(new Entry(day, totalIncome));
         }
         LineData lineData = configureDataSet(entries);
         configureChart();

@@ -34,7 +34,9 @@ import com.example.andyapp.LogExpense;
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.NavigationDrawerActivity;
 import com.example.andyapp.R;
+import com.example.andyapp.models.PostIncome;
 import com.example.andyapp.queries.ExpenseService;
+import com.example.andyapp.queries.IncomeService;
 import com.example.andyapp.queries.RetrofitClient;
 import com.example.andyapp.queries.mongoModels.PostExpense;
 
@@ -70,8 +72,9 @@ public class LogExpenseFragment extends Fragment {
     TextView amountView;
     EditText descEditText;
     AutoCompleteTextView dropdownCat;
-    AutoCompleteTextView dropdownPay;
+    AutoCompleteTextView dropdownType;
     ExpenseService expenseService;
+    IncomeService incomeService;
     SharedPreferences myPref;
     String token;
     String userId;
@@ -96,8 +99,9 @@ public class LogExpenseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Initialise Views
         expenseService = new ExpenseService(requireContext());
+        incomeService = new IncomeService(requireContext());
         dropdownCat = view.findViewById(R.id.dropdownCategories);
-        dropdownPay = view.findViewById(R.id.dropdownPay);
+        dropdownType = view.findViewById(R.id.dropdownType);
         amountView = view.findViewById(R.id.amountView);
         btnSubmit = view.findViewById(R.id.btnSubmit);
         btnDelete = view.findViewById(R.id.buttoncross);
@@ -124,7 +128,7 @@ public class LogExpenseFragment extends Fragment {
         String[] transactions = getResources().getStringArray(R.array.transaction_types);
         catAdapter = new ArrayAdapter<String>(requireContext(), R.layout.dropdownitem, categories);
         payAdapter = new ArrayAdapter<String>(requireContext(), R.layout.dropdownitem, transactions);
-        dropdownPay.setAdapter(payAdapter);
+        dropdownType.setAdapter(payAdapter);
         dropdownCat.setAdapter(catAdapter);
         dropdownCat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -134,7 +138,7 @@ public class LogExpenseFragment extends Fragment {
                 Toast.makeText(requireContext(), "Item: " + item, Toast.LENGTH_SHORT).show();
             }
         });
-        dropdownPay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        dropdownType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
@@ -181,41 +185,71 @@ public class LogExpenseFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Enter onSubmit Logic here, category, description, amount, dateCreated
-                PostExpense expense = getPostExpense();
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        LogExpenseFragment.PostExpenseService service = RetrofitClient.getRetrofit().create(LogExpenseFragment.PostExpenseService.class);
-                        service.postExpenseService(expense).enqueue(new Callback<ResponseBody>() {
-                            @Override
-                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                if (response.body() != null){
-                                    try{
-                                        String message = response.body().string();
-                                        Log.d(TAG, message);
-                                    } catch(IOException e){
-                                        Log.d(TAG, e.toString());
-                                    }
-                                }else{
-                                    try {
-                                        String error = response.errorBody().string();
-                                        Log.e(TAG, "Response code: " + response.code());
-                                        Log.e(TAG, "Error body: " + error);
-                                    } catch (IOException e) {
-                                        Log.e(TAG, "Error reading errorBody", e);
-                                    };
-                                }
-                            }
-                            @Override
-                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                if (t.getMessage() != null) {
-                                    Log.d(TAG, t.getMessage());
-                                }
-                            }
-                        });
+                btnSubmit.setEnabled(false);
+                String transaction = dropdownType.getText().toString();
+                if (transaction != null && transaction.equals("Expense")) {
+                    PostExpense expense = getPostExpense();
+                    if (expense.getAmount() == 0) {
+                        Toast.makeText(requireContext(), "Empty Amount is not allowed!", Toast.LENGTH_SHORT).show();
+                        btnSubmit.setEnabled(true);
+                        return;
                     }
-                });
+                    ExecutorService executor = Executors.newSingleThreadExecutor();
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            LogExpenseFragment.PostExpenseService service = RetrofitClient.getRetrofit().create(LogExpenseFragment.PostExpenseService.class);
+                            service.postExpenseService(expense).enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                    if (response.body() != null) {
+                                        try {
+                                            String message = response.body().string();
+                                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(requireContext(), NavigationDrawerActivity.class);
+                                            startActivity(intent);
+                                            Log.d(TAG, message);
+                                        } catch (IOException e) {
+                                            Log.d(TAG, e.toString());
+                                        }
+                                    } else {
+                                        try {
+                                            btnSubmit.setEnabled(true);
+                                            String error = response.errorBody().string();
+                                            Log.e(TAG, "Response code: " + response.code());
+                                            Log.e(TAG, "Error body: " + error);
+                                        } catch (IOException e) {
+                                            Log.e(TAG, "Error reading errorBody", e);
+                                        }
+                                        ;
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                    btnSubmit.setEnabled(true);
+                                    if (t.getMessage() != null) {
+                                        Log.d(TAG, t.getMessage());
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }else if (transaction != null && transaction.equals("Income")){
+                    ExecutorService executor = Executors.newSingleThreadExecutor();
+                    PostIncome data = getPostIncome();
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            incomeService.postIncome(data);
+                            Intent intent = new Intent(requireContext(), NavigationDrawerActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                }else{
+                    btnSubmit.setEnabled(true);
+                    Toast.makeText(requireContext(), "Please enter a transaction type!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -256,6 +290,31 @@ public class LogExpenseFragment extends Fragment {
         PostExpense expense = new PostExpense(userId, title, amtLogged, category, date);
         Log.d(TAG, expense.toString());
         return expense;
+    }
+
+    private PostIncome getPostIncome(){
+        String title = descEditText.getText().toString();
+        double amtLogged;
+        if (amount.length() == 1){
+            amtLogged = 0;
+        }else {
+            amtLogged = Double.parseDouble(amount.substring(1));
+        }
+        if (date != null){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            currentDate = LocalDate.parse(date, formatter);
+
+        }else{
+            currentDate =  LocalDate.now();
+            date = "2025-04-04";
+        }
+        if (title.isEmpty()){
+            title = "No Title";
+        }
+
+        String userId = "67ecf4e07cb6ed67c0e7e67a"; // Replace with actual user ID
+        PostIncome income = new PostIncome(title, amtLogged, date, userId);
+        return income;
     }
 
     private void openDialog(){
