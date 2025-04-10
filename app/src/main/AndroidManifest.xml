@@ -36,7 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
- 
+
         <!-- Core App Activities -->
         <activity android:name=".Dashboard" android:exported="true" />
         <activity android:name=".NavigationDrawerActivity" android:exported="true" />
