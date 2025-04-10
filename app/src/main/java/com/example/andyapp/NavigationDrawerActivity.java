@@ -4,10 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +30,11 @@ import com.example.andyapp.fragments.ExpenseFragment;
 import com.example.andyapp.fragments.GroupsFragment;
 import com.example.andyapp.fragments.InvitationsFragment;
 import com.example.andyapp.fragments.LogExpenseFragment;
+import com.example.andyapp.queries.NotificationService;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class NavigationDrawerActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
@@ -43,8 +53,11 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     public static String FRAGMENT_TAG = "FRAGMENT_TAG";
     public static String CONNECTION_NAME_TAG = "CONNECTION_NAME_TAG";
     String targetFragmentName;
+    NotificationService notificationService;
+    BtnBarRightObserver btnBarRightObserver;
 
     private static final String TAG = "LOGCAT";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +71,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         drawerNavView = findViewById(R.id.drawerNavView);
         headerView = drawerNavView.getHeaderView(0);
         resetToolBar();
-        if (targetFragmentName != null && targetFragmentName.equals("LogExpense")){
+        if (targetFragmentName != null && targetFragmentName.equals("LogExpense")) {
             toolbarTitle.setText("Log Expense");
             btnMenu.setImageResource(R.drawable.arrow_back);
             btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -70,8 +83,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             });
             changeFragment(new LogExpenseFragment());
         }
+
+        //If I navigated here via the groups page
         String connectionName = getIntent().getStringExtra(CONNECTION_NAME_TAG);
-        if (connectionName != null){
+        if (connectionName != null) {
             toolbarTitle.setText(String.format("%s's Dashboard", connectionName));
         }
         btnNavStreaks = headerView.findViewById(R.id.navStreaks);
@@ -82,11 +97,20 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        //Permissions from Shared Preferences
         mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         viewerId = mypref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
         token = mypref.getString(LoginActivity.TOKENKEY, "None");
 
+        //If there are unread notifications, change BtnBarRight ImageResource if current fragment is dashboard.
+        notificationService = new NotificationService(NavigationDrawerActivity.this);
+        btnBarRightObserver = new BtnBarRightObserver();
+        fetchUnreadNotifications(); //Make sure this comes after resetToolBar or else itll get reset
+
+        //Set up Navigation Drawer
         drawerNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -115,21 +139,20 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
 
-    public void changeFragment(Fragment fragment){
+    public void changeFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.dashboardFragmentContainer, fragment);
         transaction.commit();
     }
-
-    public void changeToolBar(int itemId){
-        if (itemId == R.id.navGroups){
+    //Logic to dynamically change the toolbar
+    public void changeToolBar(int itemId) {
+        if (itemId == R.id.navGroups) {
             toolbarTitle.setText("Groups");
             btnMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    resetToolBar();
-                    changeFragment(new GroupsFragment());
+                    drawerLayout.open();
                 }
             });
             btnBarRight.setImageResource(R.drawable.message_icon);
@@ -151,11 +174,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                     toolbarTitle.setText("Invitations");
                 }
             });
-        } else{
+        } else {
             resetToolBar();
         }
     }
-    public void resetToolBar(){
+
+    public void resetToolBar() {
         btnBarRight.setImageResource(R.drawable.bell);
         btnBarRight.setEnabled(true);
         btnBarRight.setVisibility(View.VISIBLE);
@@ -174,5 +198,31 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             }
         });
         btnMenu.setImageResource(R.drawable.hamburgermenu);
+    }
+
+    public void fetchUnreadNotifications() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Looper looper = Looper.getMainLooper();
+        Handler handler = new Handler(looper);
+        Log.d(TAG, "UserID FOR NOTIFICATIONS" + userId);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                notificationService.fetchUnreadNotificationCount(token, userId, handler, btnBarRightObserver);
+            }
+        });
+    }
+
+    class BtnBarRightObserver implements DataObserver<Integer> {
+        @Override
+        public void updateData(Integer data) {
+            Log.d(TAG, "Notifications working" + data);
+            if (getSupportFragmentManager().findFragmentById(R.id.dashboardFragmentContainer) instanceof DashboardFragment) {
+                if (data > 0) {
+                    btnBarRight.setImageResource(R.drawable.unreadnotifications);
+                    btnBarRight.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                }
+            }
+        }
     }
 }

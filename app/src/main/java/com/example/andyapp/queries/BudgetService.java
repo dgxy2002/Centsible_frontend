@@ -87,7 +87,7 @@ public class BudgetService {
                 if (response.isSuccessful() && response.body()!=null){
                     ArrayList<CategoryAllocation> data = response.body();
                     for (int i = 0; i < categories.size(); i++){
-                        logBudgetModels.addLogBudgetModel(new LogBudgetModel(i, categories.get(i), R.drawable.othercategory, "0"));
+                        logBudgetModels.addLogBudgetModel(new LogBudgetModel(i, categories.get(i), R.drawable.othercategory, "0.00"));
                     }
                     for(CategoryAllocation model: data){
                         String category = model.getCategory();

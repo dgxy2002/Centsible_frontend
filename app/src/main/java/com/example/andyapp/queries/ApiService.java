@@ -50,7 +50,7 @@ public interface ApiService {
             @Header("Authorization") String token,
             @Path("userId") String userId
     );
-
+    //Get unread notification count
     @GET("users/{userId}/notifications/unread-count")
     Call<Integer> getUnreadCount(
             @Header("Authorization") String token,
@@ -86,6 +86,7 @@ public interface ApiService {
     //Delete a connection
     @DELETE("users/{userId}/connections/{connectionId}")
     Call<ResponseBody>removeConnection(@Path("userId") String userId, @Path("connectionId") String connectionId);
+
 
 }
 

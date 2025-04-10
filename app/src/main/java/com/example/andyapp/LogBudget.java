@@ -50,7 +50,7 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
     ImageButton btnBack;
     Button btnApply;
     RecyclerView recyclerView;
-    EditText overallBdEditText;
+    TextView overallBdTextView;
     BudgetService budgetService;
     String TAG = "LOGCAT";
     static String CAT_KEY = "Category";
@@ -96,37 +96,38 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
         budgetService = new BudgetService(LogBudget.this);
 
         //Initalize Overall Budget EditText
-        overallBdEditText = findViewById(R.id.overallEditText);
-        overallBdEditText.addTextChangedListener(new TextWatcher() {
-            boolean isEditing = false;
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+        overallBdTextView = findViewById(R.id.overallTextView);
+//        overallBdTextView.addTextChangedListener(new TextWatcher() {
+//            boolean isEditing = false;
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                if (isEditing) return;
+//                isEditing = true;
+//                String input = editable.toString();
+//                if (input.contains(".")) {
+//                    int index = input.indexOf(".");
+//                    if (index + 3 < input.length()) {
+//                        input = input.substring(0, index + 3); // limit to 2dp
+//                    }
+//                }
+//                if (input.startsWith(".")) {
+//                    input = "0" + input; //Edge case whr if you start with a .
+//                }
+//                input = input.replace("$", "");
+//                overallBdEditText.setText(String.format("$%s",input));
+//                overallBdEditText.setSelection(overallBdEditText.getText().length());
+//                isEditing = false;
+//            }
+//        });
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (isEditing) return;
-                isEditing = true;
-                String input = editable.toString();
-                if (input.contains(".")) {
-                    int index = input.indexOf(".");
-                    if (index + 3 < input.length()) {
-                        input = input.substring(0, index + 3); // limit to 2dp
-                    }
-                }
-                if (input.startsWith(".")) {
-                    input = "0" + input; //Edge case whr if you start with a .
-                }
-                input = input.replace("$", "");
-                overallBdEditText.setText(String.format("$%s",input));
-                overallBdEditText.setSelection(overallBdEditText.getText().length());
-                isEditing = false;
-            }
-        });
         btnApply = findViewById(R.id.btnApplyLogBudget);
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +167,7 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
         subject.registerObserver(recyclerViewAdapter);
+        subject.registerObserver(new TextViewObserver());
         setUpLogBudgetModels();
     }
 
@@ -192,5 +194,17 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
         intent.putExtra(BD_KEY, "$" + budget);
         intent.putExtra(ID_KEY, id);
         launcher.launch(intent);
+    }
+
+    class TextViewObserver implements DataObserver<LogBudgetModels>{
+        @Override
+        public void updateData(LogBudgetModels data) {
+            double overallBudget = 0;
+            ArrayList<LogBudgetModel> models = data.getLogBudgetModels();
+            for(LogBudgetModel model: models){
+                overallBudget += Double.parseDouble(model.getBudget());
+            }
+            overallBdTextView.setText(String.valueOf(overallBudget));
+        }
     }
 }
