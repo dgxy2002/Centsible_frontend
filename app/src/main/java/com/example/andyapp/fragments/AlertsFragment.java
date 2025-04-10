@@ -52,7 +52,7 @@ public class AlertsFragment extends Fragment {
         adapter = new AlertAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
-        // Load userId/token using unified style
+        // Load userId/token using sean's sharedpref
         mypref = requireContext().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         token = mypref.getString(LoginActivity.TOKENKEY, "None");

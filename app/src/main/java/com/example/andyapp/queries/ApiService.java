@@ -2,6 +2,7 @@ package com.example.andyapp.queries;
 
 import com.example.andyapp.models.CategoryAllocation;
 import com.example.andyapp.models.FetchIncome;
+import com.example.andyapp.models.LeaderboardUser;
 import com.example.andyapp.models.NotificationResponse;
 import com.example.andyapp.models.PostCategoryAllocation;
 import com.example.andyapp.queries.mongoModels.Expense;
@@ -82,6 +83,16 @@ public interface ApiService {
     //Delete a connection
     @DELETE("users/{userId}/connections/{connectionId}")
     Call<ResponseBody>removeConnection(@Path("userId") String userId, @Path("connectionId") String connectionId);
+
+    @GET("users/{userId}/score")
+    Call<Integer> getUserScore(
+            @Header("Authorization") String token,
+            @Path("userId") String userId
+    );
+
+    @GET("users/{userId}/get-leaderboard")
+    Call<List<LeaderboardUser>> getLeaderboard(@Path("userId") String userId);
+
 
 }
 

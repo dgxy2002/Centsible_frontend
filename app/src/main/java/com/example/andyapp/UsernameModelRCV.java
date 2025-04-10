@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class UsernameModelRCV extends RecyclerView.Adapter<UsernameModelRCV.MyViewHolder> {
     private final Context context;
-    private final ArrayList<UsernameModel> usernameModels;
+    private ArrayList<UsernameModel> usernameModels;
 
     public UsernameModelRCV(Context context, ArrayList<UsernameModel> usernameModels){
         this.context = context;
@@ -23,17 +23,16 @@ public class UsernameModelRCV extends RecyclerView.Adapter<UsernameModelRCV.MyVi
 
     @NonNull
     @Override
-    public UsernameModelRCV.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recycler_view_row, parent, false);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_row, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UsernameModelRCV.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         UsernameModel model = usernameModels.get(position);
 
-        holder.rank.setText(String.format("%02d", position + 4)); // Start from 04
+        holder.rank.setText(String.format("%02d", position + 4));
         holder.name.setText(model.getName());
         holder.points.setText(model.getNumber_points());
         holder.pointsChange.setText(model.getPointsUpDown());
@@ -44,6 +43,11 @@ public class UsernameModelRCV extends RecyclerView.Adapter<UsernameModelRCV.MyVi
     @Override
     public int getItemCount() {
         return usernameModels.size();
+    }
+
+    public void updateData(ArrayList<UsernameModel> newList) {
+        this.usernameModels = newList;
+        notifyDataSetChanged();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
