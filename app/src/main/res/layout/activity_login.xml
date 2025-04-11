@@ -105,6 +105,7 @@
         android:backgroundTint="@color/backgroundaccent"
         android:gravity="center"
         android:text="Log in"
+        android:textColor="@color/black"
         android:textAllCaps="false"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
