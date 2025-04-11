@@ -2,8 +2,8 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="150dp"
-    android:layout_height="150dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardBackgroundColor="#F8D9EC"
     app:cardCornerRadius="8dp">
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Entertainment"
-            android:textStyle="bold"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:fontFamily="@font/varela_round"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,18 +41,21 @@
             android:id="@+id/catBudgetTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="16dp"
             android:background="@null"
             android:ems="10"
+            android:fontFamily="@font/varela_round"
             android:gravity="center"
             android:inputType="text"
             android:text="$0.00"
-            android:fontFamily="@font/varela_round"
+            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logBdImageView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
 <!--<androidx.cardview.widget.CardView-->
