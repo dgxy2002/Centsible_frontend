@@ -167,7 +167,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             btnBarRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(NavigationDrawerActivity.this, "Bringing you to invitations", Toast.LENGTH_SHORT).show();
                     btnMenu.setImageResource(R.drawable.arrow_back);
                     btnMenu.setOnClickListener(new View.OnClickListener() {
                         @Override

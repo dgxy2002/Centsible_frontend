@@ -74,6 +74,7 @@ public class IncomeFragment extends Fragment {
     private String[] sortingTypes;
     private ArrayAdapter<String> sortingAdapter;
     private String userId;
+    private String viewerId;
     private String TAG = "LOGCAT";
 
     @Override
@@ -89,6 +90,7 @@ public class IncomeFragment extends Fragment {
         //Permissions
         mPref = getContext().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = mPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
+        viewerId = mPref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
         //Initialise views and DataSubject and data
         dropdownSort = view.findViewById(R.id.dropdownSortIncome);
         sortingTypes = getContext().getResources().getStringArray(R.array.sorting_income);
@@ -153,7 +155,7 @@ public class IncomeFragment extends Fragment {
                 LocalDate currentDate = LocalDate.now();
                 int month = currentDate.getMonthValue();
                 int year = currentDate.getYear();
-                fetchIncomes = incomeService.fetchIncomesByMonth(userId, month, year, subject, handler);
+                fetchIncomes = incomeService.fetchIncomesByMonth(viewerId, month, year, subject, handler);
             }
         });
     }
