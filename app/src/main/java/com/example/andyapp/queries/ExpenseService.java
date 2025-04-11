@@ -11,6 +11,7 @@ import com.example.andyapp.R;
 import com.example.andyapp.models.GetCategoryExpenseModel;
 import com.example.andyapp.models.GetCategoryExpenseModels;
 import com.example.andyapp.queries.mongoModels.Expense;
+import com.example.andyapp.utils.GetIcons;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,7 +75,8 @@ public class ExpenseService {
                     for (String key: data.keySet()){
                         Log.d(TAG, key);
                         double amount = data.get(key);
-                        GetCategoryExpenseModel categoryExpenseModel = new GetCategoryExpenseModel(key, amount, R.drawable.dining);
+                        int image = new GetIcons().getIcon(key);
+                        GetCategoryExpenseModel categoryExpenseModel = new GetCategoryExpenseModel(key, amount, image);
                         ArrayList<GetCategoryExpenseModel> model =  categoryExpenseModels.getCategoryExpensesModels();
                         model.add(categoryExpenseModel);
                     }

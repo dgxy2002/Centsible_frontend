@@ -11,17 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/logBdImageView"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="@color/pie3"
-            android:scaleType="fitXY"
-            android:src="@drawable/othercategory"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/logBudgetCardView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            app:strokeColor="#F8D9EC"
+            app:cardBackgroundColor="#F8D9EC"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logBdCategoryView" />
+            app:layout_constraintTop_toBottomOf="@+id/logBdCategoryView">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <ImageView
+                    android:id="@+id/logBdImageView"
+                    android:layout_width="41dp"
+                    android:layout_height="41dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/educationicon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/logBdCategoryView"
@@ -55,7 +70,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logBdImageView" />
+            app:layout_constraintTop_toBottomOf="@+id/logBudgetCardView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
 <!--<androidx.cardview.widget.CardView-->

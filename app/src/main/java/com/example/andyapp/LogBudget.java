@@ -204,7 +204,7 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
             for(LogBudgetModel model: models){
                 overallBudget += Double.parseDouble(model.getBudget());
             }
-            overallBdTextView.setText(String.valueOf(overallBudget));
+            overallBdTextView.setText(String.format("$%s", String.valueOf(overallBudget)));
         }
     }
 }

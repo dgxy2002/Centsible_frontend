@@ -14,6 +14,7 @@ import com.example.andyapp.models.CategoryAllocation;
 import com.example.andyapp.models.LogBudgetModel;
 import com.example.andyapp.models.LogBudgetModels;
 import com.example.andyapp.models.PostCategoryAllocation;
+import com.example.andyapp.utils.GetIcons;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -47,9 +48,10 @@ public class BudgetService {
                         double budget = model.getAllocatedAmount();
                         if (budget != 0){
                             double spent = model.getSpentAmount(); //replace later
-                            Log.d(TAG, category);
-                            Log.d(TAG, String.valueOf(budget));
-                            budgetModels.addBudgetModel(new BudgetModel(R.drawable.dining, spent, budget, category));
+//                            Log.d(TAG, category);
+//                            Log.d(TAG, String.valueOf(budget));
+                            int image = new GetIcons().getIcon(category);
+                            budgetModels.addBudgetModel(new BudgetModel(image, spent, budget, category));
                         }
                     }
                     handler.post(new Runnable() {
@@ -87,7 +89,9 @@ public class BudgetService {
                 if (response.isSuccessful() && response.body()!=null){
                     ArrayList<CategoryAllocation> data = response.body();
                     for (int i = 0; i < categories.size(); i++){
-                        logBudgetModels.addLogBudgetModel(new LogBudgetModel(i, categories.get(i), R.drawable.othercategory, "0.00"));
+                        String category = categories.get(i);
+                        int image = new GetIcons().getIcon(category);
+                        logBudgetModels.addLogBudgetModel(new LogBudgetModel(i, category, image, "0.00"));
                     }
                     for(CategoryAllocation model: data){
                         String category = model.getCategory();
