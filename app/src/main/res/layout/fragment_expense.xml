@@ -92,6 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/varela_round"
+                    android:textColor="@color/black"
                     android:inputType="none"
                     android:text="Sort By" />
             </com.google.android.material.textfield.TextInputLayout>
