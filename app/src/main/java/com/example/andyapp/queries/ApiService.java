@@ -51,13 +51,16 @@ public interface ApiService {
             @Header("Authorization") String token,
             @Path("userId") String userId
     );
-
+    //Get unread notifications
     @GET("users/{userId}/notifications/unread-count")
     Call<Integer> getUnreadCount(
             @Header("Authorization") String token,
             @Path("userId") String userId
     );
-
+    //Send nudge notification
+    @POST("users/{fromUsername}/nudge/{toUsername}")
+    Call<ResponseBody>sendNudge(@Path("fromUsername") String forUsername, @Path("toUsername") String toUsername);
+    //Get all outgoing connections
     @GET("users/{userId}/connections")
     Call<ArrayList<Map<String, String>>> getConnections(
             @Path("userId") String userId

@@ -35,6 +35,7 @@ import com.example.andyapp.adapters.Groups_RecyclerViewAdapter;
 import com.example.andyapp.models.GroupsModel;
 import com.example.andyapp.models.GroupsModels;
 import com.example.andyapp.queries.GroupsService;
+import com.example.andyapp.queries.NotificationService;
 import com.example.andyapp.queries.RetrofitClient;
 import com.example.andyapp.queries.mongoModels.Connections;
 
@@ -188,4 +189,5 @@ public class GroupsFragment extends Fragment {
             }
         });
     }
+
 }

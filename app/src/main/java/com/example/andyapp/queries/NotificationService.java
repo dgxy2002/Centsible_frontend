@@ -8,9 +8,11 @@ import android.widget.ImageButton;
 import com.example.andyapp.DataObserver;
 import com.example.andyapp.DataSubject;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,5 +49,39 @@ public class NotificationService {
                 }
             }
         });
+    }
+
+    public void sendNudge(String fromUsername, String toUsername, Handler handler){
+        api.sendNudge(fromUsername, toUsername).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    try {
+                        String message = response.body().string();
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d(TAG, message);
+                            }
+                        });
+                    } catch (IOException e) {
+                        Log.e(TAG, e.toString());
+                    }
+                } else{
+                    if(response.errorBody() != null){
+                        Log.d(TAG, response.errorBody().toString());
+                        Log.d(TAG, "Response Code: " + response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                if (t.getMessage() != null){
+                    Log.e(TAG, t.getMessage());
+                }
+            }
+        });
+
     }
 }

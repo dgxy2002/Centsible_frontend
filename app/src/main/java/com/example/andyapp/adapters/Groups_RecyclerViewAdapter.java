@@ -7,6 +7,8 @@ import com.example.andyapp.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +24,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.andyapp.RecyclerViewSpacingDecorator;
 import com.example.andyapp.models.GroupsModel;
 import com.example.andyapp.models.GroupsModels;
+import com.example.andyapp.queries.NotificationService;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Groups_RecyclerViewAdapter extends RecyclerView.Adapter<Groups_RecyclerViewAdapter.MyViewHolder> implements DataObserver<GroupsModels> {
     Context context;
     ArrayList<GroupsModel> groupsModels;
     SharedPreferences mPref;
+    NotificationService notificationService;
 
     public Groups_RecyclerViewAdapter(ArrayList<GroupsModel> groupsModels, Context context) {
         this.groupsModels = groupsModels;
         this.context = context;
+        this.notificationService = new NotificationService(context);
     }
 
     @NonNull
@@ -45,23 +52,32 @@ public class Groups_RecyclerViewAdapter extends RecyclerView.Adapter<Groups_Recy
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        SharedPreferences mPref = context.getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        mPref = context.getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         GroupsModel model = groupsModels.get(position);
+        String connectionId = model.getUserId();
+        String fromUsername = mPref.getString(LoginActivity.USERNAMEKEY, LoginActivity.DEFAULT_USERNAME);
+        String toUsername = model.getName();
         holder.imageView.setImageResource(model.getImage());
         holder.nameView.setText(model.getName());
         holder.relationView.setText("Connection");
         holder.btnNudge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = model.getName();
-                Toast.makeText(context, "Name: " + name, Toast.LENGTH_SHORT).show();
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                Looper looper = Looper.getMainLooper();
+                Handler handler = new Handler(looper);
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        notificationService.sendNudge(fromUsername, toUsername, handler);
+                    }
+                });
             }
         });
         holder.groupsBtnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences.Editor editor = mPref.edit();
-                String connectionId = model.getUserId();
                 editor.putString(LoginActivity.VIEWERKEY, connectionId);
                 editor.apply();
                 Intent intent = new Intent(context, NavigationDrawerActivity.class);
