@@ -78,6 +78,7 @@
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
+                app:boxStrokeColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/incomeLogsTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/incomeLogsTextView">
