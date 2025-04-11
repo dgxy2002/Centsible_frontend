@@ -63,23 +63,24 @@ public class LogExpenseFragment extends Fragment {
     private String category = "";
     private String date;
 
-    ArrayAdapter<String> payAdapter;
-    ArrayAdapter<String> catAdapter;
-    ImageButton btnSubmit;
-    ImageButton btnDelete;
-    ImageButton btnDate;
-    ImageButton btnBack;
-    TextView amountView;
-    EditText descEditText;
-    AutoCompleteTextView dropdownCat;
-    AutoCompleteTextView dropdownType;
-    ExpenseService expenseService;
-    IncomeService incomeService;
-    SharedPreferences myPref;
-    String token;
-    String userId;
-    LocalDate currentDate;
-    String TAG = "LOGCAT";
+    private ArrayAdapter<String> payAdapter;
+    private ArrayAdapter<String> catAdapter;
+    private ImageButton btnSubmit;
+    private ImageButton btnDelete;
+    private ImageButton btnDate;
+    private ImageButton btnBack;
+    private TextView amountView;
+    private EditText descEditText;
+    private AutoCompleteTextView dropdownCat;
+    private AutoCompleteTextView dropdownType;
+    private ExpenseService expenseService;
+    private IncomeService incomeService;
+    private SharedPreferences myPref;
+    private String token;
+    private String userId;
+    private LocalDate currentDate;
+    private String TAG = "LOGCAT";
+    private SharedPreferences mPref;
 
     AppCompatButton[] btnArray = new AppCompatButton[11];
     interface PostExpenseService{
@@ -97,6 +98,9 @@ public class LogExpenseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //SharedPreferences permissions
+        mPref = requireContext().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        userId = mPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         //Initialise Views
         expenseService = new ExpenseService(requireContext());
         incomeService = new IncomeService(requireContext());
@@ -285,8 +289,6 @@ public class LogExpenseFragment extends Fragment {
         if (title.isEmpty()){
             title = "No Title";
         }
-
-        String userId = "67ecf4e07cb6ed67c0e7e67a"; // Replace with actual user ID
         PostExpense expense = new PostExpense(userId, title, amtLogged, category, date);
         Log.d(TAG, expense.toString());
         return expense;
@@ -312,7 +314,6 @@ public class LogExpenseFragment extends Fragment {
             title = "No Title";
         }
 
-        String userId = "67ecf4e07cb6ed67c0e7e67a"; // Replace with actual user ID
         PostIncome income = new PostIncome(title, amtLogged, date, userId);
         return income;
     }
