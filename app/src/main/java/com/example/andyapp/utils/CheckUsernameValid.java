@@ -1,7 +1,7 @@
 package com.example.andyapp.utils;
 
-public class CheckUsernameValid {
-    public static String validUsername(String username){
+public class CheckUsernameValid implements UsernameChecker{
+    public String validUsername(String username){
         if (isValidCharacters(username) && isValidLength(username)){
             return "valid";
         } else if (!isValidLength(username)){

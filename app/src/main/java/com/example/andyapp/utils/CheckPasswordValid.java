@@ -1,7 +1,7 @@
 package com.example.andyapp.utils;
 
-public class CheckPasswordValid {
-    public static String validPassword(String password){
+public class CheckPasswordValid implements PasswordChecker{
+    public String validPassword(String password){
         if (isValidLength(password) & isValidCharacters(password)){
             return "valid";
         }else{

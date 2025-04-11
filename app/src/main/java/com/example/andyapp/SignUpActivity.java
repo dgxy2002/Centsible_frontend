@@ -76,8 +76,8 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                String passwordValidity = CheckPasswordValid.validPassword(password);
-                String usernameValidity = CheckUsernameValid.validUsername(username);
+                String passwordValidity = new CheckPasswordValid().validPassword(password);
+                String usernameValidity = new CheckUsernameValid().validUsername(username);
                 if (passwordValidity.equals("valid") && usernameValidity.equals("valid")) {
                     invalidPasswordTextView.setVisibility(View.INVISIBLE);
                     invalidUsernameTextView.setVisibility(View.INVISIBLE);
