@@ -133,7 +133,7 @@ public class IncomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(requireContext(), NavigationDrawerActivity.class);
-                intent.putExtra(NavigationDrawerActivity.FRAGMENT_TAG, "LogExpense");
+                intent.putExtra(NavigationDrawerActivity.FRAGMENT_TAG, "LogIncome");
                 startActivity(intent);
             }
         });

@@ -84,6 +84,17 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 }
             });
             changeFragment(new LogExpenseFragment());
+        } else if (targetFragmentName != null && targetFragmentName.equals("LogIncome")) {
+            toolbarTitle.setText("Log Income");
+            btnMenu.setImageResource(R.drawable.arrow_back);
+            btnMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    resetToolBar();
+                    changeFragment(new DashboardFragment());
+                }
+            });
+            changeFragment(new LogExpenseFragment());
         }
 
         //If I navigated here via the groups page
