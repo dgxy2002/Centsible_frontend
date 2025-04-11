@@ -46,7 +46,7 @@
         android:ems="10"
         android:fontFamily="@font/varela_round"
         android:hint="Password"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:paddingStart="15dp"
         android:paddingTop="3dp"
         android:paddingBottom="3dp"

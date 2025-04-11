@@ -13,6 +13,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.andyapp.R;
 import com.example.andyapp.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DashboardFragment#newInstance} factory method to
@@ -49,6 +51,22 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        // Connect TabLayout with ViewPager2
+        new TabLayoutMediator(tabLayout, viewPagerDashboard,
+                (tab, position) -> {
+                    switch (position) {
+                        case 0:
+                            tab.setText("EXPENSES");
+                            break;
+                        case 1:
+                            tab.setText("INCOME");
+                            break;
+                        case 2:
+                            tab.setText("BUDGET");
+                            break;
+                    }
+                }
+        ).attach();
         // Inflate the layout for this fragment
         return view;
     }

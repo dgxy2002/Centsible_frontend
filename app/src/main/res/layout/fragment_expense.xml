@@ -18,6 +18,18 @@
 
     </com.github.mikephil.charting.charts.PieChart>
 
+    <ImageView
+        android:id="@+id/expenseProfilePicture"
+        android:layout_height="85dp"
+        android:layout_width="85dp"
+        android:src="@drawable/avatar"
+        app:layout_constraintStart_toStartOf="@+id/expensePieChart"
+        app:layout_constraintEnd_toEndOf="@id/expensePieChart"
+        app:layout_constraintTop_toTopOf="@id/expensePieChart"
+        app:layout_constraintBottom_toBottomOf="@id/expensePieChart"
+        />
+
+
     <com.google.android.material.card.MaterialCardView
         app:shapeAppearance="@style/TopRoundedCardView"
         android:layout_width="match_parent"

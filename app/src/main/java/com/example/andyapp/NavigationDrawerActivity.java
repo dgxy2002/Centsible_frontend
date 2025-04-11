@@ -144,6 +144,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                     Intent intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
                     startActivity(intent);
                 } else if (itemid == R.id.navGroups) {
+                    changeToolBar(itemid);
                     changeFragment(new GroupsFragment());
                 } else if (itemid == R.id.navSettings) {
                     Toast.makeText(NavigationDrawerActivity.this, "settings", Toast.LENGTH_SHORT).show();
@@ -183,6 +184,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             resetToolBar();
+                            toolbarTitle.setText("Groups");
+                            btnMenu.setImageResource(R.drawable.hamburgermenu);
+                            btnBarRight.setImageResource(R.drawable.message_icon);
                             changeFragment(new GroupsFragment());
                         }
                     });

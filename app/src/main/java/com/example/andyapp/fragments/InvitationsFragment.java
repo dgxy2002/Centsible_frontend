@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.andyapp.DataObserver;
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.R;
@@ -71,6 +72,7 @@ public class InvitationsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         subject.registerObserver(adapter);
+        subject.registerObserver(new NoInvitesTextViewObserver());
         setUpInvitationModels();
     }
 
@@ -82,11 +84,17 @@ public class InvitationsFragment extends Fragment {
             @Override
             public void run() {
                 invitationModels = invitationService.getInvites(userId, handler, subject);
-                if (!invitationModels.getInvitationModels().isEmpty()){
-                    noInvitesTextView.setVisibility(INVISIBLE);
-                }
+
             }
         });
+    }
 
+    class NoInvitesTextViewObserver implements DataObserver<InvitationModels>{
+        @Override
+        public void updateData(InvitationModels data) {
+            if (!invitationModels.getInvitationModels().isEmpty()){
+                noInvitesTextView.setVisibility(INVISIBLE);
+            }
+        }
     }
 }

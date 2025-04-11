@@ -20,7 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
+import com.example.andyapp.DataObserver;
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.NavigationDrawerActivity;
@@ -56,10 +58,7 @@ public class ExpenseFragment extends Fragment {
         Call<HashMap<String, Double>>getExpenses(@Path("userId") String userId);
     }
 
-    int[] colorResIds = {
-            R.color.pie1, R.color.pie2, R.color.pie3, R.color.pie4,
-            R.color.pie5, R.color.pie6, R.color.pie7, R.color.pie8
-    };
+    int[] colorResIds;
 
 
     GetCategoryExpenseModels getCategoryExpenseModels;
@@ -69,6 +68,7 @@ public class ExpenseFragment extends Fragment {
     PieChartExpenseObserver pieChartObserver;
     RecyclerView recyclerView;
     ImageButton btnAdd;
+    ImageView profilePicView;
     private Exp_RecyclerViewAdapter adapter;
     AutoCompleteTextView dropdownSorting;
     DataSubject<GetCategoryExpenseModels> subject;
@@ -84,11 +84,20 @@ public class ExpenseFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_expense, container, false);
+        //Get Permissions Information
+        myPref = requireActivity().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        userId = myPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
+        viewerId = myPref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
+        token = myPref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
         //Initialise Variables/Views
         colors = new ArrayList<>();
+        colorResIds = requireContext().getResources().getIntArray(R.array.category_colors);
         for (int colorResId : colorResIds) {
-            colors.add(ContextCompat.getColor(requireActivity(), colorResId));
+            colors.add(colorResId);
         }
+        //Initialise Profile Picture
+        profilePicView = view.findViewById(R.id.expenseProfilePicture);
+        profilePicView.setVisibility(View.INVISIBLE);
         //Initialise dropdown menu
         String[] sortingTypes = requireActivity().getResources().getStringArray(R.array.sorting_types);
         sortingAdapter = new ArrayAdapter<>(requireActivity(), R.layout.dropdownitem, sortingTypes);
@@ -114,11 +123,7 @@ public class ExpenseFragment extends Fragment {
                 subject.notifyObservers(getCategoryExpenseModels);
             }
         });
-        //Get Permissions Information
-        myPref = requireActivity().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
-        userId = myPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
-        viewerId = myPref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
-        token = myPref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
+
 
         getCategoryExpenseModels = new GetCategoryExpenseModels(new ArrayList<GetCategoryExpenseModel>());
         subject = new DataSubject<GetCategoryExpenseModels>();
@@ -144,6 +149,7 @@ public class ExpenseFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         subject.registerObserver(adapter);
         subject.registerObserver(pieChartObserver);
+        subject.registerObserver(new ProfilePictureObserver());
         updateExpenseObservers();
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         return view;
@@ -161,5 +167,13 @@ public class ExpenseFragment extends Fragment {
                 getCategoryExpenseModels = expenseService.fetchTotalExpensesByCategory(viewerId, handler, subject);
             }
         });
+    }
+
+    class ProfilePictureObserver implements DataObserver<GetCategoryExpenseModels>{
+        @Override
+        public void updateData(GetCategoryExpenseModels data) {
+            profilePicView.setImageResource(R.drawable.avatar); //Replace with SharedPref ViewerImage
+            profilePicView.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -39,10 +39,10 @@ public class InvitationService {
                     ArrayList<Map<String, String>> invites = response.body();
                     for(Map<String, String> invite: invites){
                         for (Map.Entry<String, String> entry : invite.entrySet()) {
-                            String inviterId = entry.getValue();
-                            String inviterUsername = entry.getKey();
-                            Log.d("LOGCAT", "Invite Username: " + inviterUsername + ", Invite UserId: " + inviterId);
-                            models.add(new InvitationModel(R.drawable.avatar, inviterId, inviterUsername));
+                            String inviterId = entry.getKey();
+                            String inviterUsername = entry.getValue();
+                            Log.d("LOGCAT", "Inviter Username: " + inviterUsername + ", Invite UserId: " + inviterId);
+                            models.add(new InvitationModel(R.drawable.avatar, inviterUsername, inviterId));
                         }
                     }
                     subject.notifyObservers(invitationModels);

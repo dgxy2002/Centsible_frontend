@@ -113,7 +113,7 @@ public class IncomeFragment extends Fragment {
                         break;
                 }
                 fetchIncomes.setFetchIncomeArrayList(models);
-                subject.notifyObservers(fetchIncomes);
+                adapter.updateData(fetchIncomes);
             }
         });
         lineChart = view.findViewById(R.id.incomeLineChart);
