@@ -35,6 +35,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/varela_round"
+        android:textColor="@color/black"
         android:text="Insights"
         android:textSize="20sp" />
 
