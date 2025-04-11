@@ -75,8 +75,8 @@ public class TransactionsFragment extends Fragment {
 
                     for (Expense e : response.body()) {
                         allItems.add(new TransactionItem(
-                                "- $" + e.getAmount(),
-                                e.getTitle() + " — " + e.getCategory(),
+                                "$" + e.getAmount(),
+                                e.getCategory() + ": " + e.getTitle(),
                                 e.getCategory().toLowerCase().trim(),
                                 e.getCreatedDateRaw() // This must be String date like "2024-12-31"
                         ));
