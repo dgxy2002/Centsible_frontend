@@ -74,8 +74,9 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/backgroundaccent"
+                android:layout_marginEnd="10dp"
+                android:background="@null"
+                android:autoSizeTextType="uniform"
                 app:boxCornerRadiusBottomEnd="20dp"
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
@@ -91,7 +92,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/varela_round"
-                    android:textColor="@color/black"
                     android:inputType="none"
                     android:text="Sort By" />
             </com.google.android.material.textfield.TextInputLayout>

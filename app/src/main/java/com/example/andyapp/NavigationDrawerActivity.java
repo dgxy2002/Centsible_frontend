@@ -42,6 +42,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     ImageButton btnBarRight;
     NavigationView drawerNavView;
     String userId;
+    String username;
     String viewerId;
     String token;
     Intent intent;
@@ -50,6 +51,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     ImageButton btnNavStreaks;
     View headerView;
     TextView toolbarTitle;
+    TextView drawerHeaderTextView;
     public static String FRAGMENT_TAG = "FRAGMENT_TAG";
     public static String CONNECTION_NAME_TAG = "CONNECTION_NAME_TAG";
     String targetFragmentName;
@@ -89,6 +91,18 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         if (connectionName != null) {
             toolbarTitle.setText(String.format("%s's Dashboard", connectionName));
         }
+
+        //Permissions from Shared Preferences
+        mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
+        viewerId = mypref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
+        username = mypref.getString(LoginActivity.USERNAMEKEY, LoginActivity.DEFAULT_USERNAME);
+        token = mypref.getString(LoginActivity.TOKENKEY, "None");
+
+        drawerHeaderTextView = headerView.findViewById(R.id.headerTextView);
+        drawerHeaderTextView.setText(String.format("%s's Menu", username));
+
+
         btnNavStreaks = headerView.findViewById(R.id.navStreaks);
         btnNavStreaks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,12 +112,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             }
         });
 
-
-        //Permissions from Shared Preferences
-        mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
-        userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
-        viewerId = mypref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
-        token = mypref.getString(LoginActivity.TOKENKEY, "None");
 
         //If there are unread notifications, change BtnBarRight ImageResource if current fragment is dashboard.
         notificationService = new NotificationService(NavigationDrawerActivity.this);
@@ -159,7 +167,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             btnBarRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(NavigationDrawerActivity.this, "Bringing you to invitations", Toast.LENGTH_SHORT).show();
                     btnMenu.setImageResource(R.drawable.arrow_back);
                     btnMenu.setOnClickListener(new View.OnClickListener() {
                         @Override

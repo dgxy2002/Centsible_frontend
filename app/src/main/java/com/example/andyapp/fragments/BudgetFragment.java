@@ -76,6 +76,9 @@ public class BudgetFragment extends Fragment {
         budgetProgressBar = view.findViewById(R.id.budgetProgressBar);
         budgetProgressBar.setProgress(budgetProgress);
         overallBudgetTextView = view.findViewById(R.id.textView5);
+        if (!userId.equals(viewerId)) {
+            btnEditBudget.setVisibility(View.INVISIBLE);
+        }
         btnEditBudget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
