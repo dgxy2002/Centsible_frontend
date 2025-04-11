@@ -124,7 +124,11 @@ public class IncomeFragment extends Fragment {
         fetchIncomes = new FetchIncomes(new ArrayList<>());
         incomeService = new IncomeService(requireContext());
         //Set Line Chart Title
+
         //Configure btnLogIncome
+        if (!userId.equals(viewerId)) {
+            btnLogIncome.setVisibility(View.INVISIBLE);
+        }
         btnLogIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

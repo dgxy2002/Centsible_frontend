@@ -116,6 +116,7 @@ public class ExpenseFragment extends Fragment {
         });
         //Get Permissions Information
         myPref = requireActivity().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
+        userId = myPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         viewerId = myPref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
         token = myPref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
 
@@ -125,6 +126,10 @@ public class ExpenseFragment extends Fragment {
         pieChartObserver = new PieChartExpenseObserver(pieChart, requireContext());
         recyclerView = view.findViewById(R.id.expenserecycler);
         btnAdd = view.findViewById(R.id.btnAdd);
+        //Set BtnAdd Visbility
+        if (!userId.equals(viewerId)) {
+            btnAdd.setVisibility(View.INVISIBLE);
+        }
         //Initialise Button Listeners
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
