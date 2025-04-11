@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.andyapp.R;
 import com.example.andyapp.models.TransactionItem;
+import com.example.andyapp.utils.GetIcons;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,7 +44,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     @NonNull
     @Override
     public TransactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_transaction, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.transaction_recycler_view_row, parent, false);
         return new TransactionViewHolder(view);
     }
 
@@ -53,7 +54,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         holder.amount.setText(item.amount);
         holder.description.setText(item.description);
-        holder.icon.setImageResource(getIconForType(item.type));
+        holder.icon.setImageResource(new GetIcons().getIcon(item.type.substring(0,1).toUpperCase() + item.type.substring(1)));
         holder.date.setText(formatDate(item.date)); // 💡
     }
 
