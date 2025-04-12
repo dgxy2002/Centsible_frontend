@@ -12,7 +12,6 @@
         android:layout_height="330dp"
         android:background="@color/background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -31,7 +30,7 @@
 
 
     <com.google.android.material.card.MaterialCardView
-        app:shapeAppearance="@style/TopRoundedCardView"
+        android:id="@+id/expenseCardView"
         android:layout_width="match_parent"
         android:layout_height="450dp"
         app:cardBackgroundColor="@color/backgroundaccent"
@@ -39,7 +38,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expensePieChart"
+        app:layout_constraintTop_toBottomOf="@id/expensePieChart"
+        app:shapeAppearance="@style/TopRoundedCardView"
         app:strokeColor="@color/black">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,10 +65,8 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sortLayout"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/sortLayout" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btnAdd"
@@ -87,14 +85,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
                 android:layout_marginEnd="10dp"
-                android:background="@null"
                 android:autoSizeTextType="uniform"
+                android:background="@null"
                 app:boxCornerRadiusBottomEnd="20dp"
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
-                app:boxStrokeWidth="2dp"
                 app:boxStrokeColor="@color/black"
+                app:boxStrokeWidth="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView4"
@@ -105,9 +103,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/varela_round"
-                    android:textColor="@color/black"
                     android:inputType="none"
-                    android:text="Sort By" />
+                    android:text="Sort By"
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

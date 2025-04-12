@@ -47,7 +47,7 @@ public class Bd_RecyclerViewAdapter extends RecyclerView.Adapter<Bd_RecyclerView
         BudgetModel model = budgetModels.get(position);
         holder.imageView.setImageResource(model.getImage());
         holder.catView.setText(model.getCategory());
-        holder.amtView.setText(String.format("%.2f / %.2f", model.getSpent(), model.getBudget()));
+        holder.amtView.setText(String.format("$%.2f / $%.2f", model.getSpent(), model.getBudget()));
 //        holder.progressBar.setMax(100);
 //        holder.progressBar.setProgress((int) ((model.getSpent() / model.getBudget()) * 100));
         int[] colors = context.getResources().getIntArray(R.array.category_colors);

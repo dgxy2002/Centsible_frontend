@@ -56,11 +56,12 @@ public class LogBd_RecyclerViewAdapter extends RecyclerView.Adapter<LogBd_Recycl
         String category = logBudgetModel.getCategory();
         int icon = logBudgetModel.getIcon();
         String budget = logBudgetModel.getBudget();
+        double budgetDecimal = Double.parseDouble(budget);
         int id = logBudgetModel.getId();
         //Initialise Views
         holder.imageView.setImageResource(icon);
         holder.categoryTextView.setText(category);
-        holder.budgetTextView.setText("$" + budget);
+        holder.budgetTextView.setText(String.format("$%.2f", budgetDecimal));
     }
 
     @Override

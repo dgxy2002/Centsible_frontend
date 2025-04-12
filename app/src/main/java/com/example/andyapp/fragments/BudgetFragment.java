@@ -98,7 +98,7 @@ public class BudgetFragment extends Fragment {
             @Override
             public void updateData(BudgetModels data) {
                 double totalBudget = data.getTotalBudget();
-                String formattedBudget = String.format("%.2f", totalBudget);
+                String formattedBudget = String.format("$%.2f", totalBudget);
                 overallBudgetTextView.setText(formattedBudget);
             }
         });

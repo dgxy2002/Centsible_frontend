@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,6 +59,7 @@ public class ActivityActivity extends AppCompatActivity {
 
 
         toolbar.setNavigationOnClickListener(view -> {
+            Log.d("LOGCAT", "IM here");
             Intent intent = new Intent(ActivityActivity.this, NavigationDrawerActivity.class);
             startActivity(intent);
             finish();

@@ -24,7 +24,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/fredoka_medium"
+        android:fontFamily="@font/varela_round"
         android:gravity="center"
         android:text="$0.00"
         android:textColor="@color/black"

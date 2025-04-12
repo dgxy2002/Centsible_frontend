@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +38,7 @@ import com.example.andyapp.queries.ExpenseService;
 import com.example.andyapp.utils.SortExpenseByAmount;
 import com.example.andyapp.utils.SortExpenseByName;
 import com.github.mikephil.charting.charts.PieChart;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,12 +81,9 @@ public class ExpenseFragment extends Fragment {
     String token;
     String TAG = "LOGCAT";
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_expense, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         //Get Permissions Information
         myPref = requireActivity().getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = myPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
@@ -123,8 +123,6 @@ public class ExpenseFragment extends Fragment {
                 subject.notifyObservers(getCategoryExpenseModels);
             }
         });
-
-
         getCategoryExpenseModels = new GetCategoryExpenseModels(new ArrayList<GetCategoryExpenseModel>());
         subject = new DataSubject<GetCategoryExpenseModels>();
         pieChart = view.findViewById(R.id.expensePieChart);
@@ -152,7 +150,13 @@ public class ExpenseFragment extends Fragment {
         subject.registerObserver(new ProfilePictureObserver());
         updateExpenseObservers();
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        return view;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_expense, container, false);
     }
 
     private void updateExpenseObservers() {
