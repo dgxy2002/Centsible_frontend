@@ -39,7 +39,7 @@ public class IncomeRecyclerViewAdapter extends RecyclerView.Adapter<IncomeRecycl
     public void onBindViewHolder(@NonNull IncomeRecyclerViewAdapter.MyViewHolder holder, int position) {
         FetchIncome model = fetchIncomeArrayList.get(position);
         holder.iconView.setImageResource(R.drawable.dining);
-        holder.amountView.setText(String.valueOf(model.getAmount()));
+        holder.amountView.setText(String.format("$%s", model.getAmount()));
         holder.dateView.setText(model.getCreatedDate());
         holder.titleView.setText(model.getTitle());
     }

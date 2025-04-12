@@ -30,6 +30,7 @@ import com.example.andyapp.fragments.ExpenseFragment;
 import com.example.andyapp.fragments.GroupsFragment;
 import com.example.andyapp.fragments.InvitationsFragment;
 import com.example.andyapp.fragments.LogExpenseFragment;
+import com.example.andyapp.fragments.SettingsFragment;
 import com.example.andyapp.queries.NotificationService;
 import com.google.android.material.navigation.NavigationView;
 
@@ -147,7 +148,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                     changeToolBar(itemid);
                     changeFragment(new GroupsFragment());
                 } else if (itemid == R.id.navSettings) {
-                    Toast.makeText(NavigationDrawerActivity.this, "settings", Toast.LENGTH_SHORT).show();
+                    changeFragment(new SettingsFragment());
                 } else if (itemid == R.id.navLogout) {
                     Intent intent = new Intent(NavigationDrawerActivity.this, LoginActivity.class);
                     startActivity(intent);
