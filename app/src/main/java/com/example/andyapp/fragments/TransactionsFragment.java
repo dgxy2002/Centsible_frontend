@@ -22,8 +22,13 @@ import com.example.andyapp.queries.ApiService;
 import com.example.andyapp.queries.RetrofitClient;
 import com.example.andyapp.queries.mongoModels.Expense;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,9 +83,25 @@ public class TransactionsFragment extends Fragment {
                                 "$" + e.getAmount(),
                                 e.getCategory() + ": " + e.getTitle(),
                                 e.getCategory().toLowerCase().trim(),
-                                e.getCreatedDateRaw() // This must be String date like "2024-12-31"
+                                e.getCreatedDateRaw() // Assuming format is "yyyy-MM-dd"
                         ));
                     }
+
+                    // ✅ Sort by date descending
+                    Collections.sort(allItems, new Comparator<TransactionItem>() {
+                        @Override
+                        public int compare(TransactionItem t1, TransactionItem t2) {
+                            try {
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                                Date d1 = sdf.parse(t1.getDate());
+                                Date d2 = sdf.parse(t2.getDate());
+                                return d2.compareTo(d1); // Descending
+                            } catch (Exception e) {
+                                Log.e(TAG, "Date parse error", e);
+                                return 0;
+                            }
+                        }
+                    });
 
                     adapter.updateData(allItems);
                 } else {

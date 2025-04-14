@@ -7,6 +7,7 @@ public class NotificationResponse {
     private String senderUsername;
     private String createdAt;
     private boolean read;
+    private String type;
 
     public String getId() { return id; }
     public String getUserId() { return userId; }
@@ -14,4 +15,6 @@ public class NotificationResponse {
     public String getSenderUsername() { return senderUsername; }
     public String getCreatedAt() { return createdAt; }
     public boolean isRead() { return read; }
+
+    public String getType() { return type; }
 }

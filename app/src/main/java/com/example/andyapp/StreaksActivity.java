@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.andyapp.adapters.CalendarAdapter;
 import com.example.andyapp.queries.ApiService;
@@ -24,12 +25,7 @@ import com.example.andyapp.utils.CalendarUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +33,7 @@ import retrofit2.Response;
 
 public class StreaksActivity extends AppCompatActivity {
 
-    private GridView calendarGridView;
+    private RecyclerView calendarRecyclerView;
     private TextView textMonthYear, dayCountText, streakNumberText, congratsMessage;
     private ImageButton btnBack;
     private LocalDate currentDate;
@@ -76,7 +72,7 @@ public class StreaksActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        calendarGridView = findViewById(R.id.calendarGridView);
+        calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         textMonthYear = findViewById(R.id.textMonthYear);
         dayCountText = findViewById(R.id.textDayCount);
         streakNumberText = findViewById(R.id.streakNumber);
@@ -136,12 +132,10 @@ public class StreaksActivity extends AppCompatActivity {
     private void updateCalendar() {
         textMonthYear.setText(currentDate.format(DateTimeFormatter.ofPattern("MMMM yyyy", Locale.US)));
         List<LocalDate> monthDays = CalendarUtils.getMonthDates(currentDate);
-        CalendarAdapter adapter = new CalendarAdapter(this, monthDays, completedDates);
-        calendarGridView.setAdapter(adapter);
 
-        adapter.setOnDateClickListener(date -> {
-            Toast.makeText(this, "Clicked: " + date.toString(), Toast.LENGTH_SHORT).show();
-        });
+        CalendarAdapter adapter = new CalendarAdapter(this, monthDays, completedDates);
+        calendarRecyclerView.setLayoutManager(new GridLayoutManager(this, 7));
+        calendarRecyclerView.setAdapter(adapter);
 
         updateMonthStats();
     }
@@ -151,9 +145,8 @@ public class StreaksActivity extends AppCompatActivity {
         LocalDate today = LocalDate.now();
         LocalDate current = today;
 
-        // Sort the dates
         List<LocalDate> sortedDates = new ArrayList<>(completedDates);
-        Collections.sort(sortedDates, Collections.reverseOrder()); // Descending order
+        Collections.sort(sortedDates, Collections.reverseOrder());
 
         Set<LocalDate> dateSet = new HashSet<>(sortedDates);
 
@@ -162,11 +155,9 @@ public class StreaksActivity extends AppCompatActivity {
             current = current.minusDays(1);
         }
 
-        // Update UI
         dayCountText.setText(String.valueOf(count));
         streakNumberText.setText(String.valueOf(count));
 
-        // Show congrats based on streak
         if (count == 0) {
             congratsMessage.setText("Let’s get back to it! Good practices take time.");
         } else if (count <= 6) {
@@ -176,5 +167,4 @@ public class StreaksActivity extends AppCompatActivity {
             congratsMessage.setText("🎉 You've kept a Perfect Streak for " + weeks + " straight " + (weeks == 1 ? "week" : "weeks") + ". Wow!");
         }
     }
-
 }

@@ -20,6 +20,10 @@
     <color name="primary_purple">#D8BFF5</color>
     <color name="delete_red">#F44336</color>
     <color name="logbudget_pink">#FAD3E4</color>
+    <color name="warning_tint">#FFF0F0</color>
+    <color name="streak_active">#B388FF</color>
+
+
 
     <array name="category_colors">
         <item>@color/pie1</item>

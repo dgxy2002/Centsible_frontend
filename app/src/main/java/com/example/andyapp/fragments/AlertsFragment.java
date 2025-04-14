@@ -107,10 +107,22 @@ public class AlertsFragment extends Fragment {
                     if (response.isSuccessful() && response.body() != null) {
                         allAlerts.clear();
                         for (NotificationResponse notif : response.body()) {
+                            Log.d(TAG, "Alert: " + notif.getMessage() + " | Type: " + notif.getType());
+
+                            String type = notif.getType();
+                            if (type == null) {
+                                // manual fallback as there is no type returned from backend
+                                if (notif.getMessage() != null && notif.getMessage().toLowerCase().startsWith("warning")) {
+                                    type = "warning";
+                                } else {
+                                    type = "notification";
+                                }
+                            }
+
                             allAlerts.add(new AlertItem(
                                     notif.getMessage(),
                                     "By " + notif.getSenderUsername() + "\nOn " + notif.getCreatedAt(),
-                                    "notification",
+                                    type,
                                     notif.isRead()
                             ));
                         }

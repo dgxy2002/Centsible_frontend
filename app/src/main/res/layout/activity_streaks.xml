@@ -335,14 +335,14 @@
             </LinearLayout>
 
             <!-- Calendar Grid -->
-            <GridView
-                android:id="@+id/calendarGridView"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/calendarRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:horizontalSpacing="4dp"
-                android:numColumns="7"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="4dp" />
+                android:clipToPadding="false"
+                android:paddingBottom="8dp"
+                tools:listitem="@layout/calendar_cell" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
