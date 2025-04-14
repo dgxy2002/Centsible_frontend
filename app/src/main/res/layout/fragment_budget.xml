@@ -59,7 +59,7 @@
         android:layout_marginTop="25dp"
         android:backgroundTint="@color/backgroundaccent"
         app:layout_constraintTop_toBottomOf="@+id/budgetProgressBar"
-        app:strokeColor="@color/black">
+        app:strokeColor="@color/backgroundaccent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

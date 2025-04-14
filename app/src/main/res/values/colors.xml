@@ -16,14 +16,10 @@
     <color name="progress_bg">#828282</color>
     <color name="gradient_start">#F4BFDF</color>
     <color name="gradient_end">#D8BFF5</color>
-    <color name="mtrl_textinput_default_box_stroke_color">#D8BFF5</color>
     <color name="primary_purple">#D8BFF5</color>
     <color name="delete_red">#F44336</color>
     <color name="logbudget_pink">#FAD3E4</color>
-    <color name="warning_tint">#FFF0F0</color>
-    <color name="streak_active">#B388FF</color>
-
-
+    <color name="soft_lavender_grey">#D3CDEA</color>
 
     <array name="category_colors">
         <item>@color/pie1</item>

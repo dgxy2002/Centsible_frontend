@@ -59,8 +59,9 @@ public class InvitationService {
         return invitationModels;
     }
 
-    public void respondToInvitation(String userId, String inviterId, boolean accept){
-        api.respondInvitation(userId, inviterId, accept).enqueue(new Callback<ResponseBody>() {
+    public void respondToInvitation(String inviteeUsername, String inviterUsername, boolean accept){
+        Log.d(TAG, inviteeUsername + inviterUsername);
+        api.respondInvitation(inviteeUsername, inviterUsername, accept).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -71,6 +72,14 @@ public class InvitationService {
                     } catch (IOException e) {
                         Log.d(TAG, e.toString());
                     }
+                }else{
+                    try {
+                        Log.d(TAG, response.errorBody().string());
+                        Log.d(TAG, "Response Code:" + response.code());
+                    } catch (IOException e) {
+                        Log.e(TAG, e.toString());
+                    }
+
                 }
             }
 
