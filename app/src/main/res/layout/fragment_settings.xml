@@ -90,8 +90,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/varela_round"
                     android:textColor="@color/black"
-                    android:text="First Name "
-                    android:hint="First Name" />
+                    android:hint="Eg. John" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -108,16 +107,15 @@
                     android:id="@+id/lastNameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Last Name"
                     android:fontFamily="@font/varela_round"
-                    android:hint="Last Name" />
+                    android:hint="Eg. Doe" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/birthdayLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +128,6 @@
                     android:fontFamily="@font/varela_round"
                     android:textColor="@color/black"
                     android:inputType="none"
-                    android:text="Birthday"
                     android:hint="Birthday" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -139,7 +136,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -150,12 +147,55 @@
                     android:id="@+id/bioEditText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Biography"
+                    android:hint="Tell us about yourself!"
                     android:inputType="textMultiLine"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/varela_round"
-                    android:text="I'm using this app because I want to develop good financial habits." />
+                    android:fontFamily="@font/varela_round"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="First Name"
+                android:textSize="18sp"
+                android:fontFamily="@font/varela_round"
+                android:textColor="@color/centsible_text_secondary"
+                app:layout_constraintBottom_toTopOf="@+id/firstNameLayout"
+                app:layout_constraintStart_toStartOf="@+id/firstNameLayout" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Name"
+                android:textSize="18sp"
+                android:fontFamily="@font/varela_round"
+                android:textColor="@color/centsible_text_secondary"
+                app:layout_constraintBottom_toTopOf="@+id/lastNameLayout"
+                app:layout_constraintStart_toStartOf="@+id/lastNameLayout" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Birthday"
+                android:textSize="18sp"
+                android:fontFamily="@font/varela_round"
+                android:textColor="@color/centsible_text_secondary"
+                app:layout_constraintBottom_toTopOf="@+id/birthdayLayout"
+                app:layout_constraintStart_toStartOf="@+id/birthdayLayout" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Biography"
+                android:textSize="18sp"
+                android:fontFamily="@font/varela_round"
+                android:textColor="@color/centsible_text_secondary"
+                app:layout_constraintBottom_toTopOf="@+id/bioLayout"
+                app:layout_constraintStart_toStartOf="@+id/bioLayout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 

@@ -68,7 +68,7 @@ public class InvitationsFragment extends Fragment {
         invitationModels = new InvitationModels();
         subject = new DataSubject<>();
         invitationService = new InvitationService(requireContext());
-        adapter = new InvitationsRecyclerViewAdapter(invitationModels.getInvitationModels(), requireContext(), userId);
+        adapter = new InvitationsRecyclerViewAdapter(invitationModels.getInvitationModels(), requireContext(), userName);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         subject.registerObserver(adapter);
