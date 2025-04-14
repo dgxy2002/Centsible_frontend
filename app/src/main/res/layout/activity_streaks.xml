@@ -60,6 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
+                android:layout_marginTop="8dp"
                 android:text="day streak!"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
@@ -335,14 +336,14 @@
             </LinearLayout>
 
             <!-- Calendar Grid -->
-            <GridView
-                android:id="@+id/calendarGridView"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/calendarRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:horizontalSpacing="4dp"
-                android:numColumns="7"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="4dp" />
+                android:clipToPadding="false"
+                android:paddingBottom="8dp"
+                tools:listitem="@layout/calendar_cell" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.andyapp.R;
@@ -51,6 +52,7 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> 
 
         holder.title.setText(alert.getTitle());
 
+        // Split subtitle
         String[] parts = alert.getSubtitle().split("\n");
         if (parts.length >= 2) {
             holder.sender.setText(parts[0]);
@@ -60,32 +62,37 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> 
             holder.date.setText("");
         }
 
-        // Set icon based on alert type
+        // Set icon
         holder.icon.setImageResource(getIconForAlertType(alert.getType()));
+
+        // Tint background for warning
+        if ("warning".equalsIgnoreCase(alert.getType())) {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.warning_tint));
+        } else {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.transparent));
+        }
     }
 
     private int getIconForAlertType(String type) {
         if (type == null) return R.drawable.baseline_notifications_24;
 
         switch (type.toLowerCase()) {
-            case "Food":
+            case "food":
                 return R.drawable.dining;
             case "warning":
                 return R.drawable.warning_icon;
-            case "Money Request":
+            case "money request":
                 return R.drawable.money_receive;
             case "notification":
-                return R.drawable.baseline_notifications_24;
+                return R.drawable.bell_icon_new;
             case "transport":
                 return R.drawable.baseline_directions_bus_24;
             case "expense":
                 return R.drawable.dollar_icon;
             default:
-                return R.drawable.baseline_notifications_24;
+                return R.drawable.bell_icon_new;
         }
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -108,10 +115,7 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> 
     private String formatDate(String raw) {
         if (raw == null || raw.trim().isEmpty()) return "";
 
-        // Remove "On " if it exists
-        if (raw.startsWith("On ")) {
-            raw = raw.substring(3).trim();
-        }
+        if (raw.startsWith("On ")) raw = raw.substring(3).trim();
 
         String[] patterns = {
                 "yyyy-MM-dd'T'HH:mm:ss.SSS",
@@ -126,12 +130,11 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> 
                 SimpleDateFormat display = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
                 return "On " + display.format(date);
             } catch (ParseException e) {
-                Log.d("ALERT_DATE_PARSE", "Pattern failed: " + pattern + " | raw: " + raw);
+                Log.d(TAG, "Pattern failed: " + pattern + " | raw: " + raw);
             }
         }
 
-        Log.w("ALERT_DATE_PARSE", "Date parsing failed for raw string: " + raw);
+        Log.w(TAG, "Date parsing failed for raw string: " + raw);
         return "Unknown Date";
     }
-
 }

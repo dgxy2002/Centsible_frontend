@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.andyapp.adapters.CalendarAdapter;
 import com.example.andyapp.queries.ApiService;
@@ -24,12 +25,7 @@ import com.example.andyapp.utils.CalendarUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +33,7 @@ import retrofit2.Response;
 
 public class StreaksActivity extends AppCompatActivity {
 
-    private GridView calendarGridView;
+    private RecyclerView calendarRecyclerView;
     private TextView textMonthYear, dayCountText, streakNumberText, congratsMessage;
     private ImageButton btnBack;
     private LocalDate currentDate;
@@ -71,12 +67,11 @@ public class StreaksActivity extends AppCompatActivity {
         Log.d(TAG, "Token: " + token);
 
         loadExpenseDatesFromBackend();
-        updateCalendar();
         setupListeners();
     }
 
     private void initViews() {
-        calendarGridView = findViewById(R.id.calendarGridView);
+        calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
         textMonthYear = findViewById(R.id.textMonthYear);
         dayCountText = findViewById(R.id.textDayCount);
         streakNumberText = findViewById(R.id.streakNumber);
@@ -87,12 +82,12 @@ public class StreaksActivity extends AppCompatActivity {
     private void setupListeners() {
         findViewById(R.id.buttonPreviousMonth).setOnClickListener(v -> {
             currentDate = currentDate.minusMonths(1);
-            updateCalendar();
+            updateMonthStats();
         });
 
         findViewById(R.id.buttonNextMonth).setOnClickListener(v -> {
             currentDate = currentDate.plusMonths(1);
-            updateCalendar();
+            updateMonthStats();
         });
 
         btnBack.setOnClickListener(view -> {
@@ -119,7 +114,7 @@ public class StreaksActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                    updateCalendar();
+                    updateMonthStats();
                 } else {
                     Toast.makeText(StreaksActivity.this, "Failed to load expense dates", Toast.LENGTH_SHORT).show();
                 }
@@ -133,40 +128,56 @@ public class StreaksActivity extends AppCompatActivity {
         });
     }
 
-    private void updateCalendar() {
-        textMonthYear.setText(currentDate.format(DateTimeFormatter.ofPattern("MMMM yyyy", Locale.US)));
-        List<LocalDate> monthDays = CalendarUtils.getMonthDates(currentDate);
-        CalendarAdapter adapter = new CalendarAdapter(this, monthDays, completedDates);
-        calendarGridView.setAdapter(adapter);
-
-        adapter.setOnDateClickListener(date -> {
-            Toast.makeText(this, "Clicked: " + date.toString(), Toast.LENGTH_SHORT).show();
-        });
-
-        updateMonthStats();
-    }
-
     private void updateMonthStats() {
         int count = 0;
         LocalDate today = LocalDate.now();
-        LocalDate current = today;
 
-        // Sort the dates
         List<LocalDate> sortedDates = new ArrayList<>(completedDates);
-        Collections.sort(sortedDates, Collections.reverseOrder()); // Descending order
+        Collections.sort(sortedDates);
 
-        Set<LocalDate> dateSet = new HashSet<>(sortedDates);
+        List<List<LocalDate>> streakGroups = new ArrayList<>();
+        List<LocalDate> currentStreak = new ArrayList<>();
 
-        while (dateSet.contains(current)) {
-            count++;
-            current = current.minusDays(1);
+        for (int i = 0; i < sortedDates.size(); i++) {
+            LocalDate curr = sortedDates.get(i);
+
+            if (i == 0 || curr.minusDays(1).equals(sortedDates.get(i - 1))) {
+                currentStreak.add(curr);
+            } else {
+                if (currentStreak.size() >= 3) {
+                    streakGroups.add(new ArrayList<>(currentStreak));
+                }
+                currentStreak.clear();
+                currentStreak.add(curr);
+            }
         }
 
-        // Update UI
+        if (currentStreak.size() >= 3) {
+            streakGroups.add(currentStreak);
+        }
+
+        Set<LocalDate> visibleStreakDates = new HashSet<>();
+
+        if (!streakGroups.isEmpty()) {
+            List<LocalDate> latestStreak = streakGroups.get(streakGroups.size() - 1);
+            count = latestStreak.size();
+
+            for (LocalDate date : latestStreak) {
+                if (date.getMonth() == currentDate.getMonth() && date.getYear() == currentDate.getYear()) {
+                    visibleStreakDates.add(date);
+                }
+            }
+        }
+
+        // Update calendar
+        CalendarAdapter adapter = new CalendarAdapter(this, CalendarUtils.getMonthDates(currentDate), visibleStreakDates);
+        calendarRecyclerView.setLayoutManager(new GridLayoutManager(this, 7));
+        calendarRecyclerView.setAdapter(adapter);
+
+        // UI update
         dayCountText.setText(String.valueOf(count));
         streakNumberText.setText(String.valueOf(count));
 
-        // Show congrats based on streak
         if (count == 0) {
             congratsMessage.setText("Let’s get back to it! Good practices take time.");
         } else if (count <= 6) {
@@ -176,5 +187,7 @@ public class StreaksActivity extends AppCompatActivity {
             congratsMessage.setText("🎉 You've kept a Perfect Streak for " + weeks + " straight " + (weeks == 1 ? "week" : "weeks") + ". Wow!");
         }
     }
+
+
 
 }
