@@ -71,6 +71,7 @@ public class SettingsFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 launcher.launch(intent);
                 Toast.makeText(requireContext(), "Changing pfp", Toast.LENGTH_SHORT).show();
+
             }
         });
         editImageView.setOnClickListener(new View.OnClickListener() {

@@ -40,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/expensePieChart"
         app:shapeAppearance="@style/TopRoundedCardView"
-        app:strokeColor="@color/black">
+        app:strokeColor="@color/backgroundaccent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

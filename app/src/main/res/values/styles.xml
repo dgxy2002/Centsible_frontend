@@ -47,4 +47,9 @@
         <item name="fontFamily">@font/varela_round</item>
     </style>
 
+    <style name="My.TextLayout" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/delete_red</item>
+    </style>
+
+
 </resources>
