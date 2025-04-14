@@ -67,7 +67,6 @@ public class StreaksActivity extends AppCompatActivity {
         Log.d(TAG, "Token: " + token);
 
         loadExpenseDatesFromBackend();
-        updateCalendar();
         setupListeners();
     }
 
@@ -83,12 +82,12 @@ public class StreaksActivity extends AppCompatActivity {
     private void setupListeners() {
         findViewById(R.id.buttonPreviousMonth).setOnClickListener(v -> {
             currentDate = currentDate.minusMonths(1);
-            updateCalendar();
+            updateMonthStats();
         });
 
         findViewById(R.id.buttonNextMonth).setOnClickListener(v -> {
             currentDate = currentDate.plusMonths(1);
-            updateCalendar();
+            updateMonthStats();
         });
 
         btnBack.setOnClickListener(view -> {
@@ -115,7 +114,7 @@ public class StreaksActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                    updateCalendar();
+                    updateMonthStats();
                 } else {
                     Toast.makeText(StreaksActivity.this, "Failed to load expense dates", Toast.LENGTH_SHORT).show();
                 }
@@ -129,32 +128,53 @@ public class StreaksActivity extends AppCompatActivity {
         });
     }
 
-    private void updateCalendar() {
-        textMonthYear.setText(currentDate.format(DateTimeFormatter.ofPattern("MMMM yyyy", Locale.US)));
-        List<LocalDate> monthDays = CalendarUtils.getMonthDates(currentDate);
-
-        CalendarAdapter adapter = new CalendarAdapter(this, monthDays, completedDates);
-        calendarRecyclerView.setLayoutManager(new GridLayoutManager(this, 7));
-        calendarRecyclerView.setAdapter(adapter);
-
-        updateMonthStats();
-    }
-
     private void updateMonthStats() {
         int count = 0;
         LocalDate today = LocalDate.now();
-        LocalDate current = today;
 
         List<LocalDate> sortedDates = new ArrayList<>(completedDates);
-        Collections.sort(sortedDates, Collections.reverseOrder());
+        Collections.sort(sortedDates);
 
-        Set<LocalDate> dateSet = new HashSet<>(sortedDates);
+        List<List<LocalDate>> streakGroups = new ArrayList<>();
+        List<LocalDate> currentStreak = new ArrayList<>();
 
-        while (dateSet.contains(current)) {
-            count++;
-            current = current.minusDays(1);
+        for (int i = 0; i < sortedDates.size(); i++) {
+            LocalDate curr = sortedDates.get(i);
+
+            if (i == 0 || curr.minusDays(1).equals(sortedDates.get(i - 1))) {
+                currentStreak.add(curr);
+            } else {
+                if (currentStreak.size() >= 3) {
+                    streakGroups.add(new ArrayList<>(currentStreak));
+                }
+                currentStreak.clear();
+                currentStreak.add(curr);
+            }
         }
 
+        if (currentStreak.size() >= 3) {
+            streakGroups.add(currentStreak);
+        }
+
+        Set<LocalDate> visibleStreakDates = new HashSet<>();
+
+        if (!streakGroups.isEmpty()) {
+            List<LocalDate> latestStreak = streakGroups.get(streakGroups.size() - 1);
+            count = latestStreak.size();
+
+            for (LocalDate date : latestStreak) {
+                if (date.getMonth() == currentDate.getMonth() && date.getYear() == currentDate.getYear()) {
+                    visibleStreakDates.add(date);
+                }
+            }
+        }
+
+        // Update calendar
+        CalendarAdapter adapter = new CalendarAdapter(this, CalendarUtils.getMonthDates(currentDate), visibleStreakDates);
+        calendarRecyclerView.setLayoutManager(new GridLayoutManager(this, 7));
+        calendarRecyclerView.setAdapter(adapter);
+
+        // UI update
         dayCountText.setText(String.valueOf(count));
         streakNumberText.setText(String.valueOf(count));
 
@@ -167,4 +187,7 @@ public class StreaksActivity extends AppCompatActivity {
             congratsMessage.setText("🎉 You've kept a Perfect Streak for " + weeks + " straight " + (weeks == 1 ? "week" : "weeks") + ". Wow!");
         }
     }
+
+
+
 }
