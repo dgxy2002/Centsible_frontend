@@ -42,6 +42,10 @@ public class LoginActivity extends AppCompatActivity {
     public static final String USERNAMEKEY = "USERNAMEKEY";
     public static final String DEFAULT_USERID = "67ecf4e07cb6ed67c0e7e67a";
     public static final String DEFAULT_USERNAME = "hugo";
+    public static final String NOT_API_KEY = "227166733379629";
+    public static final String NOT_API_SECRET = "gnZXu0awAPwBRPfrjNXCmyS5uo4";
+    public static final String NOT_CLOUD_NAME = "dipmlrzfc";
+
 
     private String TAG = "LOGCAT";
     RequestUser requestUser;

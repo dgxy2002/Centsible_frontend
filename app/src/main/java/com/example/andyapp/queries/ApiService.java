@@ -6,6 +6,7 @@ import com.example.andyapp.models.LeaderboardUser;
 import com.example.andyapp.models.NotificationResponse;
 import com.example.andyapp.models.PostCategoryAllocation;
 import com.example.andyapp.models.PostIncome;
+import com.example.andyapp.models.UserSettings;
 import com.example.andyapp.queries.mongoModels.Expense;
 import com.example.andyapp.queries.mongoModels.LoginModel;
 import com.example.andyapp.queries.mongoModels.UserModel;
@@ -15,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,8 +26,10 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -100,7 +105,15 @@ public interface ApiService {
     @GET("users/{userId}/get-leaderboard")
     Call<List<LeaderboardUser>> getLeaderboard(@Path("userId") String userId);
 
+    @GET("users/{username}/profile")
+    Call<UserSettings>getSettings(@Path("username") String username);
 
+    @PUT("users/{username}/profile")
+    Call<ResponseBody>updateSettings(@Path("username") String username, @Body Map<String, Object> userSettings);
+
+    @Multipart
+    @POST("users/{username}/upload-profile-image")
+    Call<ResponseBody>updateProfilePhoto(@Path("username") String username, @Part MultipartBody.Part file);
 }
 
 

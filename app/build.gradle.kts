@@ -39,8 +39,10 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+    implementation(libs.logging.interceptor)
     implementation(libs.recyclerview.swipedecorator)
     implementation(libs.retrofit)
     implementation(libs.gson)

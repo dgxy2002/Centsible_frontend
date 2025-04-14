@@ -5,7 +5,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static final String BASE_URL = "https://five0-001.onrender.com/api/";
-
     private static Retrofit retrofit;
     private static final ApiService api = getRetrofit().create(ApiService.class);
 

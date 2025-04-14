@@ -122,6 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/varela_round"
+                    android:textColor="@color/centsible_text_secondary"
                     android:textColorHint="@color/centsible_text_secondary"
                     android:hint="Eg. Doe" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -147,6 +148,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/varela_round"
+                    android:textColor="@color/centsible_text_secondary"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:longClickable="false"
                     android:hint="Eg. 12/05/2002" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -164,7 +171,7 @@
                 app:boxCornerRadiusTopStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 android:textColorHint="@color/centsible_text_secondary"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/settingsBtnApply"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/birthdayLayout">
@@ -175,7 +182,7 @@
                     android:layout_height="match_parent"
                     android:hint="Tell us about yourself!"
                     android:inputType="textMultiLine"
-                    android:textColor="@color/black"
+                    android:textColor="@color/centsible_text_secondary"
                     android:fontFamily="@font/varela_round"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -222,6 +229,22 @@
                 android:textColor="@color/centsible_text_secondary"
                 app:layout_constraintBottom_toTopOf="@+id/bioLayout"
                 app:layout_constraintStart_toStartOf="@+id/bioLayout" />
+            <Button
+                android:id="@+id/settingsBtnApply"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_marginHorizontal="10dp"
+                android:backgroundTint="@color/pie3"
+                android:textColor="@color/centsible_text_secondary"
+                android:fontFamily="@font/varela_round"
+                android:textSize="16sp"
+                android:text="Apply"
+                app:layout_constraintTop_toBottomOf="@+id/bioLayout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            </Button>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
