@@ -185,7 +185,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         });
     }
 
-
     public void changeFragment(Fragment fragment) {
         checkQuests();
         FragmentManager fragmentManager = getSupportFragmentManager();
