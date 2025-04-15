@@ -108,10 +108,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             int maxSteps = 7; // 7 days per week, max position in row = 6
             float fraction1 = (float) curr / maxSteps;
             float fraction2 = (float) (curr - 1) / maxSteps;
-
             int startColor = Color.parseColor("#F4BFDF"); // light pink
             int endColor = Color.parseColor("#D8BFF5");   // light purple
-
             int color1 = interpolateHSVColor(startColor, endColor, fraction1);
             int color2 = interpolateHSVColor(startColor, endColor, fraction2);
 

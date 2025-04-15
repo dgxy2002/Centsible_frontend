@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.example.andyapp.fragments.DashboardFragment;
 import com.example.andyapp.fragments.ExpenseFragment;
 import com.example.andyapp.fragments.GroupsFragment;
@@ -47,14 +49,17 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     String username;
     String viewerId;
     String token;
-    Intent intent;
-    int fragmentState;
+    String imageUrl;
     SharedPreferences mypref;
     ImageButton btnNavStreaks;
     View headerView;
     TextView toolbarTitle;
     TextView drawerHeaderTextView;
     ImageView drawerHeaderImageView;
+    MenuItem logQuest;
+    MenuItem nudgeQuest;
+    MenuItem budgetQuest;
+    Menu menu;
     public static String FRAGMENT_TAG = "FRAGMENT_TAG";
     public static String CONNECTION_NAME_TAG = "CONNECTION_NAME_TAG";
     String targetFragmentName;
@@ -77,7 +82,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         drawerNavView = findViewById(R.id.drawerNavView);
         headerView = drawerNavView.getHeaderView(0);
         userService = new UserService(this);
+        //Configure Tool Bar
         resetToolBar();
+
         if (targetFragmentName != null && targetFragmentName.equals("LogExpense")) {
             toolbarTitle.setText("Log Expense");
             btnMenu.setImageResource(R.drawable.arrow_back);
@@ -112,14 +119,26 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         viewerId = mypref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
+        imageUrl = mypref.getString(LoginActivity.VIEWERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
         username = mypref.getString(LoginActivity.USERNAMEKEY, LoginActivity.DEFAULT_USERNAME);
         token = mypref.getString(LoginActivity.TOKENKEY, "None");
+
+        //Configure Quest Icons
+        menu = drawerNavView.getMenu();
+        logQuest = menu.findItem(R.id.navQuest);
+        nudgeQuest = menu.findItem(R.id.navQuest2);
+        budgetQuest = menu.findItem(R.id.navQuest3);
+        checkQuests();
 
         drawerHeaderTextView = headerView.findViewById(R.id.headerTextView);
         drawerHeaderTextView.setText(String.format("%s's Menu", username));
 
         drawerHeaderImageView = headerView.findViewById(R.id.drawerHeaderImageView);
-        userService.getUserImage(userId, new Handler(Looper.getMainLooper()), drawerHeaderImageView);
+        Glide.with(this)
+                .load(imageUrl)
+                .circleCrop()
+                .into(drawerHeaderImageView);
+        drawerHeaderImageView.setVisibility(View.VISIBLE);
 
 
         btnNavStreaks = headerView.findViewById(R.id.navStreaks);
@@ -242,6 +261,27 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 notificationService.fetchUnreadNotificationCount(token, userId, handler, btnBarRightObserver);
             }
         });
+    }
+
+    public void checkQuests(){
+        Looper looper = getMainLooper();
+        Handler handler = new Handler(looper);
+        userService.getUserQuest(userId, handler, new QuestObserver(logQuest), new QuestObserver(nudgeQuest), new QuestObserver(budgetQuest));
+    }
+
+    class QuestObserver implements DataObserver<Boolean>{
+        private final MenuItem menuItem;
+        public QuestObserver(MenuItem menuItem) {
+            this.menuItem = menuItem;
+        }
+        @Override
+        public void updateData(Boolean data) {
+            if (data){
+                menuItem.setIcon(R.drawable.checkbox_full);
+            } if (!data){
+                menuItem.setIcon(R.drawable.checkbox_empty);
+            }
+        }
     }
 
     class BtnBarRightObserver implements DataObserver<Integer> {

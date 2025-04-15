@@ -23,8 +23,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.R;
@@ -59,9 +61,11 @@ public class GroupsFragment extends Fragment {
     String userId;
     String token;
     String username;
+    String imageUrl;
     SharedPreferences mypref;
     Button btnConnect;
     EditText usernameEditText;
+    ImageView avatarView;
     GroupsService groupsService;
     DataSubject<GroupsModels> subject;
     private final String TAG = "LOGCAT";
@@ -80,6 +84,7 @@ public class GroupsFragment extends Fragment {
         usernameEditText = view.findViewById(R.id.addFriendEditText);
         groupsRecycler = view.findViewById(R.id.groupsRecycler);
         nameView = view.findViewById(R.id.nameView);
+        avatarView = view.findViewById(R.id.avatarView);
         spacingDecorator = new RecyclerViewSpacingDecorator(40);
         subject = new DataSubject<>();
         groupsRecycler.addItemDecoration(spacingDecorator);
@@ -88,12 +93,14 @@ public class GroupsFragment extends Fragment {
         userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         token = mypref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
         username = mypref.getString(LoginActivity.USERNAMEKEY, LoginActivity.DEFAULT_USERNAME);
-        Log.d(TAG, String.format("USERID IN GROUPS %s", userId));
-        Log.d(TAG, String.format("TOKEN IN GROUPS %s", token));
+        imageUrl = mypref.getString(LoginActivity.VIEWERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
+//        Log.d(TAG, String.format("USERID IN GROUPS %s", userId));
+//        Log.d(TAG, String.format("TOKEN IN GROUPS %s", token));
         //Set Up GroupsService for model querying
         groupsService = new GroupsService(requireContext());
         //Set Up Views
         nameView.setText(String.format("%s%s",username.substring(0, 1).toUpperCase(),username.substring(1)));
+        Glide.with(requireContext()).load(imageUrl).circleCrop().into(avatarView);
         //Set Up Buttons
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override

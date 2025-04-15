@@ -9,6 +9,7 @@ import com.example.andyapp.DataSubject;
 import com.example.andyapp.R;
 import com.example.andyapp.models.InvitationModel;
 import com.example.andyapp.models.InvitationModels;
+import com.example.andyapp.queries.mongoModels.UserModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,25 +34,24 @@ public class InvitationService {
     public InvitationModels getInvites(String userId, Handler handler, DataSubject<InvitationModels> subject){
         InvitationModels invitationModels = new InvitationModels();
         ArrayList<InvitationModel> models = invitationModels.getInvitationModels();
-        api.getInvitations(userId).enqueue(new Callback<ArrayList<Map<String, String>>>() {
+        api.getInvitations(userId).enqueue(new Callback<ArrayList<UserModel>>() {
             @Override
-            public void onResponse(Call<ArrayList<Map<String, String>>> call, Response<ArrayList<Map<String, String>>> response) {
+            public void onResponse(Call<ArrayList<UserModel>> call, Response<ArrayList<UserModel>> response) {
                 if (response.isSuccessful() && response.body() != null){
-                    ArrayList<Map<String, String>> invites = response.body();
-                    for(Map<String, String> invite: invites){
-                        for (Map.Entry<String, String> entry : invite.entrySet()) {
-                            String inviterId = entry.getKey();
-                            String inviterUsername = entry.getValue();
-                            Log.d("LOGCAT", "Inviter Username: " + inviterUsername + ", Invite UserId: " + inviterId);
-                            models.add(new InvitationModel(R.drawable.avatar, inviterUsername, inviterId));
-                        }
+                    ArrayList<UserModel> invites = response.body();
+                    for(UserModel invite: invites){
+                        String inviterId = invite.getId();
+                        String inviterUsername = invite.getUsername();
+                        String imageUrl = invite.getImageUrl();
+                        Log.d("LOGCAT", "Inviter Username: " + inviterUsername + ", Invite UserId: " + inviterId);
+                        models.add(new InvitationModel(imageUrl, inviterUsername, inviterId));
                     }
                     subject.notifyObservers(invitationModels);
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Map<String, String>>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<UserModel>> call, Throwable t) {
                 if (t.getMessage() != null){
                     Log.d(TAG, t.getMessage());
                 }

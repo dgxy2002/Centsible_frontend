@@ -15,10 +15,11 @@
         android:id="@+id/navStreaks"
         android:layout_width="60dp"
         android:layout_height="80dp"
+        android:background="@null"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@null"
+        app:layout_constraintStart_toEndOf="@+id/headerTextView"
         app:srcCompat="@drawable/fire_icon_expense" />
 
     <TextView
@@ -31,15 +32,23 @@
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/drawerHeaderImageView" />
+        app:layout_constraintStart_toStartOf="@+id/drawerHeaderCardView" />
 
-    <ImageView
-        android:id="@+id/drawerHeaderImageView"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/drawerHeaderCardView"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        app:cardCornerRadius="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="40dp"
-        android:src="@drawable/avatar"
+        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+    <ImageView
+        android:id="@+id/drawerHeaderImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/avatar"
+        />
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

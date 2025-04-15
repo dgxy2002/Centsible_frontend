@@ -174,8 +174,6 @@ public class SettingsFragment extends Fragment {
                 String firstName = firstNameEditText.getText().toString();
                 String lastName = lastNameEditText.getText().toString();
                 String birthday = birthdayEditText.getText().toString();
-//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//                LocalDate birthdayLocalDate = LocalDate.parse(birthday, formatter);
                 String biography = bioEditText.getText().toString();
                 Map<String, Object> settings = new HashMap<>();
                 if(!firstName.isEmpty()){

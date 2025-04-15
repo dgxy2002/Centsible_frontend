@@ -86,7 +86,7 @@ public interface ApiService {
 
     //Get Pending Invitations
     @GET("users/{userId}/pending-invitations")
-    Call<ArrayList<Map<String, String>>>getInvitations(@Path("userId") String userId);
+    Call<ArrayList<UserModel>>getInvitations(@Path("userId") String userId);
 
     //Respond to an Invitation
     @FormUrlEncoded

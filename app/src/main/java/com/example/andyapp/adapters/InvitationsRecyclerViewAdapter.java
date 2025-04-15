@@ -1,4 +1,5 @@
 package com.example.andyapp.adapters;
+import com.bumptech.glide.Glide;
 import com.example.andyapp.DataObserver;
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.NavigationDrawerActivity;
@@ -33,6 +34,7 @@ public class InvitationsRecyclerViewAdapter extends RecyclerView.Adapter<Invitat
     SharedPreferences mPref;
     private InvitationService invitationService;
     private String inviteeUsername;
+    private String TAG = "LOGCAT";
 
     public InvitationsRecyclerViewAdapter(ArrayList<InvitationModel> invitationModels, Context context, String inviteeUsername) {
         this.invitationModels = invitationModels;
@@ -52,7 +54,9 @@ public class InvitationsRecyclerViewAdapter extends RecyclerView.Adapter<Invitat
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         InvitationModel model = invitationModels.get(position);
-        holder.avatarView.setImageResource(model.getImage());
+        Glide.with(context).load(model.getImage()).circleCrop().into(holder.avatarView);
+        Log.d(TAG, model.getImage());
+        holder.avatarView.setVisibility(View.VISIBLE);
         holder.nameView.setText(model.getInviterName());
         holder.btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override

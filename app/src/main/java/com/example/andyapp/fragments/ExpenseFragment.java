@@ -74,6 +74,7 @@ public class ExpenseFragment extends Fragment {
     private ExpRecyclerViewAdapter adapter;
     AutoCompleteTextView dropdownSorting;
     DataSubject<GetCategoryExpenseModels> subject;
+    String imageUrl;
     SharedPreferences myPref;
     String userId;
     String viewerId;
@@ -88,6 +89,7 @@ public class ExpenseFragment extends Fragment {
         userId = myPref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         viewerId = myPref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
         token = myPref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
+        imageUrl = myPref.getString(LoginActivity.VIEWERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
         //Initialise Variables/Views
         colors = new ArrayList<>();
         colorResIds = requireContext().getResources().getIntArray(R.array.category_colors);
@@ -175,10 +177,11 @@ public class ExpenseFragment extends Fragment {
     class ProfilePictureObserver implements DataObserver<GetCategoryExpenseModels>{
         @Override
         public void updateData(GetCategoryExpenseModels data) {
-            UserService userService = new UserService(requireContext());
-            Looper looper = Looper.getMainLooper();
-            Handler handler = new Handler(looper);
-            userService.getUserImage(userId, handler, profilePicView);
+            Glide.with(requireContext())
+                    .load(imageUrl)
+                    .circleCrop()
+                    .into(profilePicView);
+            profilePicView.setVisibility(View.VISIBLE);
         }
     }
 }

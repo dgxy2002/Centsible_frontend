@@ -23,7 +23,7 @@
         <item
             android:id="@+id/navQuest"
             android:icon="@drawable/checkbox_empty"
-            android:title="Log an Expense!">
+            android:title="Log an Expense or Income!">
 
         </item>
         <item
@@ -35,7 +35,7 @@
         <item
             android:id="@+id/navQuest3"
             android:icon="@drawable/checkbox_full"
-            android:title="Keep Budget for a Month!">
+            android:title="View a connection's dashboard!">
         </item>
     </group>
     <item

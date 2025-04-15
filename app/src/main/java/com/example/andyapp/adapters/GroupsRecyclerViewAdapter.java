@@ -83,6 +83,7 @@ public class GroupsRecyclerViewAdapter extends RecyclerView.Adapter<GroupsRecycl
             public void onClick(View view) {
                 SharedPreferences.Editor editor = mPref.edit();
                 editor.putString(LoginActivity.VIEWERKEY, connectionId);
+                editor.putString(LoginActivity.VIEWERIMAGEKEY, imageUrl);
                 editor.apply();
                 Intent intent = new Intent(context, NavigationDrawerActivity.class);
                 intent.putExtra(NavigationDrawerActivity.CONNECTION_NAME_TAG, model.getName());

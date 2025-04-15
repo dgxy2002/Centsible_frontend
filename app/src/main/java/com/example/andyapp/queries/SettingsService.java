@@ -1,11 +1,13 @@
 package com.example.andyapp.queries;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 
 import com.example.andyapp.DataSubject;
+import com.example.andyapp.LoginActivity;
 import com.example.andyapp.R;
 import com.example.andyapp.models.UserSettings;
 
@@ -26,10 +28,12 @@ public class SettingsService {
     private ApiService api;
     private Context context;
     private String TAG = "LOGCAT";
+    private SharedPreferences mPref;
 
     public SettingsService(Context context) {
         this.api = RetrofitClient.getApiService();
         this.context = context;
+        this.mPref = context.getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
     }
 
     public void getSettings(String username, Handler handler, DataSubject<UserSettings> subject){
@@ -98,7 +102,9 @@ public class SettingsService {
                 if (response.isSuccessful() && response.body()!= null){
                     try {
                         String url = response.body().string();
-                        Log.d(TAG, url);
+                        SharedPreferences.Editor editor = mPref.edit();
+                        editor.putString(LoginActivity.VIEWERIMAGEKEY, url);
+                        editor.apply();
                     } catch (IOException e) {
                         Log.d(TAG, e.toString());
                     }

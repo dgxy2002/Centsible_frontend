@@ -1,18 +1,18 @@
 package com.example.andyapp.models;
 
 public class InvitationModel {
-    private int image;
+    private String imageUrl;
     private String inviterName;
     private String inviterId;
 
-    public InvitationModel(int image, String inviterName, String inviterId) {
-        this.image = image;
+    public InvitationModel(String imageUrl, String inviterName, String inviterId) {
+        this.imageUrl = imageUrl;
         this.inviterName = inviterName;
         this.inviterId = inviterId;
     }
 
-    public int getImage() {
-        return image;
+    public String getImage() {
+        return imageUrl;
     }
 
     public String getInviterName() {
