@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.github.muddz.styleabletoast.StyleableToast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,7 +68,7 @@ public class TransactionsFragment extends Fragment {
 
     private void fetchExpensesFromBackend() {
         if (userId.isEmpty() || token.equals("None")) {
-            Toast.makeText(getContext(), "Missing user ID or token. Please log in again.", Toast.LENGTH_SHORT).show();
+            StyleableToast.makeText(getContext(), "Missing user ID or token. Please log in again.", R.style.custom_toast).show();
             return;
         }
 
@@ -105,7 +106,7 @@ public class TransactionsFragment extends Fragment {
 
                     adapter.updateData(allItems);
                 } else {
-                    Toast.makeText(getContext(), "Failed to load expenses (server error)", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(getContext(), "Failed to load expenses (server error)", R.style.custom_toast).show();
                 }
             }
 

@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.github.muddz.styleabletoast.StyleableToast;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -114,14 +115,14 @@ public class LogExpense extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
                 category = item;
-                Toast.makeText(LogExpense.this, "Item: " + item, Toast.LENGTH_SHORT).show();
+                StyleableToast.makeText(LogExpense.this, "Item: " + item, R.style.custom_toast).show();
             }
         });
         dropdownPay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(LogExpense.this, "Item: " + item, Toast.LENGTH_SHORT).show();
+                StyleableToast.makeText(LogExpense.this, "Item: " + item, R.style.custom_toast).show();
             }
         });
         //Configure EditText

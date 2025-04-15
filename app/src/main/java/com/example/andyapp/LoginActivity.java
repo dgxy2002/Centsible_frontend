@@ -16,7 +16,6 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.andyapp.queries.RetrofitClient;
 import com.example.andyapp.queries.mongoModels.LoginModel;
-import com.example.andyapp.queries.mongoModels.UserModel;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.github.muddz.styleabletoast.StyleableToast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,7 +67,7 @@ public class AlertsFragment extends Fragment {
 
     private void fetchUnreadNotificationCount() {
         if (userId.isEmpty() || token.equals("None")) {
-            Toast.makeText(getContext(), "Missing ID or token", Toast.LENGTH_SHORT).show();
+            StyleableToast.makeText(getContext(), "Missing ID or token", R.style.custom_toast).show();
             return;
         }
 
@@ -79,14 +80,14 @@ public class AlertsFragment extends Fragment {
                     if (response.isSuccessful() && response.body() != null) {
                         int count = response.body();
                         if (count > 0) {
-                            Toast.makeText(getContext(), "🔴 " + count + " unread alert(s)", Toast.LENGTH_SHORT).show();
+                            StyleableToast.makeText(getContext(), "🔴 " + count + " unread alert(s)", R.style.custom_toast).show();
                         }
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Integer> call, Throwable t) {
-                    Toast.makeText(getContext(), "Failed to load unread count", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(getContext(), "Failed to load unread count", R.style.custom_toast).show();
                 }
             });
         });
@@ -94,7 +95,7 @@ public class AlertsFragment extends Fragment {
 
     private void fetchNotificationsFromBackend() {
         if (userId.isEmpty() || token.equals("None")) {
-            Toast.makeText(getContext(), "Missing ID or token", Toast.LENGTH_SHORT).show();
+            StyleableToast.makeText(getContext(), "Missing ID or token", R.style.custom_toast).show();
             return;
         }
 
@@ -128,13 +129,13 @@ public class AlertsFragment extends Fragment {
                         }
                         adapter.updateData(allAlerts);
                     } else {
-                        Toast.makeText(getContext(), "Failed to load alerts", Toast.LENGTH_SHORT).show();
+                        StyleableToast.makeText(getContext(), "Failed to load alerts", R.style.custom_toast).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<NotificationResponse>> call, Throwable t) {
-                    Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    StyleableToast.makeText(getContext(), "Network error: " + t.getMessage(), R.style.custom_toast).show();
                     t.printStackTrace();
                 }
             });

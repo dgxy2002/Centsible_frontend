@@ -1,4 +1,5 @@
 package com.example.andyapp.adapters;
+import com.bumptech.glide.Glide;
 import com.example.andyapp.DataObserver;
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.NavigationDrawerActivity;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,7 @@ public class GroupsRecyclerViewAdapter extends RecyclerView.Adapter<GroupsRecycl
     ArrayList<GroupsModel> groupsModels;
     SharedPreferences mPref;
     NotificationService notificationService;
+    private String TAG = "LOGCAT";
 
     public GroupsRecyclerViewAdapter(ArrayList<GroupsModel> groupsModels, Context context) {
         this.groupsModels = groupsModels;
@@ -55,7 +58,10 @@ public class GroupsRecyclerViewAdapter extends RecyclerView.Adapter<GroupsRecycl
         String connectionId = model.getUserId();
         String fromUsername = mPref.getString(LoginActivity.USERNAMEKEY, LoginActivity.DEFAULT_USERNAME);
         String toUsername = model.getName();
-        holder.imageView.setImageResource(model.getImage());
+        String imageUrl = model.getImageUrl();
+        Glide.with(context)
+                .load(imageUrl)
+                .into(holder.imageView);
         holder.nameView.setText(model.getName());
         holder.relationView.setText("Connection");
         holder.btnNudge.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +100,9 @@ public class GroupsRecyclerViewAdapter extends RecyclerView.Adapter<GroupsRecycl
     @Override
     public void updateData(GroupsModels data) {
         this.groupsModels = data.getGroupsModels();
+        for(GroupsModel model: groupsModels){
+            Log.d(TAG, model.getImageUrl());
+        }
         notifyDataSetChanged();
     }
 

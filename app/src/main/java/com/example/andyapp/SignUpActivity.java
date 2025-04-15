@@ -24,6 +24,7 @@ import com.example.andyapp.utils.CheckUsernameValid;
 import java.io.IOException;
 import java.util.Map;
 
+import io.github.muddz.styleabletoast.StyleableToast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,7 +92,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 String message = messageMap.get("message");
                                 if (message != null) {
                                     Log.d(TAG, message);
-                                    Toast.makeText(SignUpActivity.this, "message", Toast.LENGTH_SHORT).show();
+                                    StyleableToast.makeText(SignUpActivity.this, "message", R.style.custom_toast).show();
                                     Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                 }

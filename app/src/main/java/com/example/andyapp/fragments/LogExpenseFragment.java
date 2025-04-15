@@ -46,6 +46,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.github.muddz.styleabletoast.StyleableToast;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -139,14 +140,14 @@ public class LogExpenseFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
                 category = item;
-                Toast.makeText(requireContext(), "Item: " + item, Toast.LENGTH_SHORT).show();
+                StyleableToast.makeText(requireContext(), "Item: " + item, R.style.custom_toast).show();
             }
         });
         dropdownType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(requireContext(), "Item: " + item, Toast.LENGTH_SHORT).show();
+                StyleableToast.makeText(requireContext(), "Item: " + item, R.style.custom_toast).show();
             }
         });
         //Configure EditText
@@ -194,7 +195,7 @@ public class LogExpenseFragment extends Fragment {
                 if (transaction != null && transaction.equals("Expense")) {
                     PostExpense expense = getPostExpense();
                     if (expense.getAmount() == 0) {
-                        Toast.makeText(requireContext(), "Empty Amount is not allowed!", Toast.LENGTH_SHORT).show();
+                        StyleableToast.makeText(requireContext(), "Empty Amount is not allowed!", R.style.custom_toast).show();
                         btnSubmit.setEnabled(true);
                         return;
                     }
@@ -209,7 +210,7 @@ public class LogExpenseFragment extends Fragment {
                                     if (response.body() != null) {
                                         try {
                                             String message = response.body().string();
-                                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                                            StyleableToast.makeText(requireContext(), message, R.style.custom_toast).show();
                                             Intent intent = new Intent(requireContext(), NavigationDrawerActivity.class);
                                             startActivity(intent);
                                             Log.d(TAG, message);
@@ -252,7 +253,7 @@ public class LogExpenseFragment extends Fragment {
                     });
                 }else{
                     btnSubmit.setEnabled(true);
-                    Toast.makeText(requireContext(), "Please enter a transaction type!", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(requireContext(), "Please enter a transaction type!", R.style.custom_toast).show();
                 }
             }
         });

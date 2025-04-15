@@ -36,14 +36,18 @@
 
             <TextView
                 android:id="@+id/nameView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/varela_round"
                 android:text="Sean"
+                android:maxLines="1"
+                android:autoSizeTextType="uniform"
                 android:textColor="@color/black"
                 android:textSize="25sp"
+                app:layout_constraintEnd_toStartOf="@+id/groupsBtnView"
                 app:layout_constraintStart_toEndOf="@id/avatarView"
                 app:layout_constraintTop_toTopOf="parent" />
 

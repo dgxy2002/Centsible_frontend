@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.muddz.styleabletoast.StyleableToast;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,12 +38,11 @@ public class GroupsService {
                 if (response.body() != null){
                     ArrayList<Map<String, String>> connections = response.body();
                     for(Map<String, String> connection: connections){
-                        for (Map.Entry<String, String> entry : connection.entrySet()) {
-                            String userId = entry.getKey();
-                            String username = entry.getValue();
-                            Log.d("LOGCAT", "Username: " + username + ", UserId: " + userId);
-                            groupsModels.addGroupModel(new GroupsModel(username, userId, R.drawable.avatar));
-                        }
+                        String userId = connection.get("userId");
+                        String username = connection.get("username");
+                        String imageUrl = connection.get("imageUrl");
+                        Log.d("LOGCAT", "Username: " + username + ", UserId: " + userId);
+                        groupsModels.addGroupModel(new GroupsModel(username, userId, imageUrl));
                     }
                     handler.post(new Runnable() {
                         @Override
@@ -77,7 +77,7 @@ public class GroupsService {
                 if (response.isSuccessful() && response.body()!= null){
                     try {
                         String message = response.body().string();
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                        StyleableToast.makeText(context, message, R.style.custom_toast).show();
                         Log.d(TAG, message);
                     } catch (IOException e) {
                         Log.d(TAG, e.toString());
@@ -109,7 +109,7 @@ public class GroupsService {
                     try{
                         String message = response.body().string();
                         Log.d(TAG, message);
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                        StyleableToast.makeText(context, message, R.style.custom_toast).show();
                     } catch (IOException e) {
                         Log.e(TAG, e.toString());
                     }

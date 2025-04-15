@@ -178,10 +178,19 @@ public class SettingsFragment extends Fragment {
 //                LocalDate birthdayLocalDate = LocalDate.parse(birthday, formatter);
                 String biography = bioEditText.getText().toString();
                 Map<String, Object> settings = new HashMap<>();
-                settings.put("firstname", firstName);
-                settings.put("lastname", lastName);
-                settings.put("birthdate", birthday);
-                settings.put("biography", biography);
+                if(!firstName.isEmpty()){
+                    settings.put("firstname", firstName);
+                }
+                if(!lastName.isEmpty()){
+                    settings.put("lastname", lastName);
+                }
+                if(!birthday.isEmpty()){
+                    settings.put("birthdate", birthday);
+                }
+                if(!biography.isEmpty()){
+                    settings.put("biography", biography);
+                }
+                Log.d(TAG, firstName + lastName + birthday + biography);
                 settingsService.uploadSettings(username, settings);
             }
         });

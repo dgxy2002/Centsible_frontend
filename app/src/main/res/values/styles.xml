@@ -51,5 +51,18 @@
         <item name="boxStrokeColor">@color/delete_red</item>
     </style>
 
+    <style name="custom_toast">
+        <item name="stTextBold">false</item>
+        <item name="stTextColor">@color/black</item>
+        <item name="stFont">@font/varela_round</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/primary_purple</item>
+        <item name="stStrokeColor">@color/primary_purple</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/centsiblelogo</item>
+        <item name="stLength">SHORT</item> LONG or SHORT
+        <item name="stRadius">10dp</item>
+    </style>
+
 
 </resources>

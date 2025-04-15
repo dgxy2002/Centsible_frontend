@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import io.github.muddz.styleabletoast.StyleableToast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -97,7 +98,7 @@ public class StreaksActivity extends AppCompatActivity {
 
     private void loadExpenseDatesFromBackend() {
         if (userid == null || userid.isEmpty() || token == null || token.equals("None")) {
-            Toast.makeText(this, "Missing user ID or token. Please log in again.", Toast.LENGTH_SHORT).show();
+            StyleableToast.makeText(this, "Missing user ID or token. Please log in again.", R.style.custom_toast).show();
             return;
         }
 
@@ -116,13 +117,13 @@ public class StreaksActivity extends AppCompatActivity {
                     }
                     updateMonthStats();
                 } else {
-                    Toast.makeText(StreaksActivity.this, "Failed to load expense dates", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(StreaksActivity.this, "Failed to load expense dates", R.style.custom_toast).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Expense>> call, Throwable t) {
-                Toast.makeText(StreaksActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                StyleableToast.makeText(StreaksActivity.this, "Network error: " + t.getMessage(), R.style.custom_toast).show();
                 t.printStackTrace();
             }
         });

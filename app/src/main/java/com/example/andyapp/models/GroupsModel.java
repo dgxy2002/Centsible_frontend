@@ -2,11 +2,11 @@ package com.example.andyapp.models;
 public class GroupsModel {
     String name;
     String userId;
-    int image;
-    public GroupsModel(String name, String userId, int image) {
+    String imageUrl ;
+    public GroupsModel(String name, String userId, String imageUrl) {
         this.name = name;
         this.userId = userId;
-        this.image = image;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -15,7 +15,7 @@ public class GroupsModel {
     public String getUserId() {
         return userId;
     }
-    public int getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

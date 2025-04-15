@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.github.muddz.styleabletoast.StyleableToast;
+
 public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickInterface{
     LogBudgetModels logBudgetModels;
     LogBudgetRecyclerViewAdapter recyclerViewAdapter;
@@ -128,7 +130,7 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
             @Override
             public void onClick(View view) {
                 //TODO Save new budget to db, check for invalid budget input, go to new screen
-                Toast.makeText(LogBudget.this, "Applying Changes", Toast.LENGTH_SHORT).show();
+                StyleableToast.makeText(LogBudget.this, "Applying Changes", R.style.custom_toast).show();
                 ArrayList<LogBudgetModel> models = logBudgetModels.getLogBudgetModels();
                 ArrayList<PostCategoryAllocation> postCategoryAllocations = new ArrayList<>();
                 for(LogBudgetModel model : models){

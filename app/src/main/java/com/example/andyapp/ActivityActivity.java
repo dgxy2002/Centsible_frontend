@@ -33,6 +33,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import io.github.muddz.styleabletoast.StyleableToast;
+
 public class ActivityActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
@@ -146,7 +148,7 @@ public class ActivityActivity extends AppCompatActivity {
             startActivity(intent);
 
         } catch (IOException e) {
-            Toast.makeText(this, "Error writing PDF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            StyleableToast.makeText(this, "Error writing PDF: " + e.getMessage(), R.style.custom_toast).show();
             e.printStackTrace();
         }
     }

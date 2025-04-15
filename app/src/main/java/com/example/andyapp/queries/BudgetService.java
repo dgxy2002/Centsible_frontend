@@ -21,6 +21,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import io.github.muddz.styleabletoast.StyleableToast;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -136,7 +137,7 @@ public class BudgetService {
                     try {
                         String message = response.body().string();
                         Log.d(TAG, message);
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                        StyleableToast.makeText(context, message, R.style.custom_toast).show();
                     } catch (IOException e) {
                         Log.e(TAG, e.toString());
                     }

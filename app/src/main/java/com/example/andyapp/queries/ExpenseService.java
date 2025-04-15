@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.github.muddz.styleabletoast.StyleableToast;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,12 +45,12 @@ public class ExpenseService {
                     if (response.isSuccessful()) {
                         String responseBody = response.body() != null ? response.body().string() : "No response";
                         Log.d("API_SUCCESS", "Server Response: " + responseBody);
-                        Toast.makeText(context, "Success: " + responseBody, Toast.LENGTH_SHORT).show();
+                        StyleableToast.makeText(context, "Success: " + responseBody, R.style.custom_toast).show();
                     } else {
                         // Log full error details
                         String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error details";
                         Log.e("API_ERROR", "Response Code: " + response.code() + " - " + errorBody);
-                        Toast.makeText(context, "Failed: " + response.code() + " - " + errorBody, Toast.LENGTH_SHORT).show();
+                        StyleableToast.makeText(context, "Failed: " + response.code() + " - " + errorBody, R.style.custom_toast).show();
                     }
                 } catch (Exception e) {
                     Log.e("API_ERROR", "Error reading response body", e);
@@ -59,7 +60,7 @@ public class ExpenseService {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("NETWORK_ERROR", "Request failed: " + t.getMessage());
-                Toast.makeText(context, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                StyleableToast.makeText(context, "Network error: " + t.getMessage(), R.style.custom_toast).show();
             }
         });
     }
