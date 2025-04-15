@@ -4,87 +4,87 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:paddingHorizontal="12dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="32dp"
-        app:cardElevation="0dp"
-        android:layout_marginBottom="12dp"
-        app:cardBackgroundColor="@color/white">
+        android:layout_marginBottom="10dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:strokeColor="@color/pie3"
+        app:strokeWidth="1dp"
+        app:shapeAppearanceOverlay="@style/CircleCard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:padding="12dp">
 
-            <!-- Rank number (Left) -->
+            <!-- Rank number -->
             <TextView
                 android:id="@+id/rank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:fontFamily="@font/varela_round"
                 android:text="04"
                 android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/varela_round"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <!-- Profile picture -->
-
-            <!-- Username -->
-
-            <!-- Points -->
-
-            <!-- Arrow image (up/down) -->
             <ImageView
                 android:id="@+id/profilepicture"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="12dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/avatar"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/rank"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
+            <!-- Username -->
             <TextView
                 android:id="@+id/username"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:fontFamily="@font/varela_round"
                 android:text="Kalista"
+                android:textSize="17sp"
                 android:textColor="@color/centsible_text_primary"
-                android:textSize="19sp"
-
+                android:fontFamily="@font/varela_round"
                 app:layout_constraintStart_toEndOf="@id/profilepicture"
-                app:layout_constraintTop_toTopOf="@id/profilepicture" />
+                app:layout_constraintTop_toTopOf="@id/profilepicture"
+                app:layout_constraintEnd_toStartOf="@id/arrowChangeText" />
 
+            <!-- Points -->
             <TextView
                 android:id="@+id/points"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/varela_round"
                 android:text="144 points"
-                android:textColor="@color/centsible_text_primary"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@id/username"
-                app:layout_constraintTop_toBottomOf="@id/username" />
+                android:textColor="@color/centsible_text_primary"
+                android:fontFamily="@font/varela_round"
+                app:layout_constraintTop_toBottomOf="@id/username"
+                app:layout_constraintStart_toStartOf="@id/username" />
 
+            <!-- Change arrow -->
             <ImageView
                 android:id="@+id/arrowUpDown"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/arrow_up"
-                app:layout_constraintBottom_toBottomOf="@id/arrowChangeText"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Change text (+2, -3) -->
+            <!-- Change text -->
             <TextView
                 android:id="@+id/arrowChangeText"
                 android:layout_width="wrap_content"
@@ -93,11 +93,12 @@
                 android:textSize="14sp"
                 android:textColor="@color/centsible_text_primary"
                 android:fontFamily="@font/varela_round"
+                android:layout_marginEnd="4dp"
                 app:layout_constraintEnd_toStartOf="@id/arrowUpDown"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="4dp" />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

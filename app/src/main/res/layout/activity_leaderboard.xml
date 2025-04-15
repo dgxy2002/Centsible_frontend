@@ -6,129 +6,187 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    tools:context=".MainActivity">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar_layout"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Top 3 Leaderboard Section -->
+    <!-- AVATAR: First Place -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/first_place_avatar_card"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:strokeColor="@color/pie3"
+        app:strokeWidth="1dp"
+        app:shapeAppearanceOverlay="@style/CircleCard"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="@id/first_place_card"
+        app:layout_constraintEnd_toEndOf="@id/first_place_card">
 
-    <!-- Second place (left) -->
+        <ImageView
+            android:id="@+id/firstPlaceImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="6dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar"
+            android:contentDescription="First place avatar" />
+    </com.google.android.material.card.MaterialCardView>
 
-    <ImageView
-        android:id="@+id/secondPlaceImageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="2dp"
-        android:contentDescription="Second place avatar"
-        android:src="@drawable/avatar"
-        app:layout_constraintBottom_toTopOf="@+id/second_place_name"
-        app:layout_constraintEnd_toEndOf="@+id/second_place_card"
-        app:layout_constraintStart_toStartOf="@+id/second_place_card" />
+    <!-- AVATAR: Second Place -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/second_place_avatar_card"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="4dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:strokeColor="@color/pie3"
+        app:strokeWidth="1dp"
+        app:shapeAppearanceOverlay="@style/CircleCard"
+        app:layout_constraintBottom_toTopOf="@id/second_place_name"
+        app:layout_constraintStart_toStartOf="@id/second_place_card"
+        app:layout_constraintEnd_toEndOf="@id/second_place_card">
 
-    <ImageView
-        android:id="@+id/firstPlaceImageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="2dp"
-        android:contentDescription="First place avatar"
-        android:src="@drawable/avatar"
-        app:layout_constraintEnd_toEndOf="@+id/first_place_card"
-        app:layout_constraintStart_toStartOf="@+id/first_place_card"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        <ImageView
+            android:id="@+id/secondPlaceImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="6dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar"
+            android:contentDescription="Second place avatar" />
+    </com.google.android.material.card.MaterialCardView>
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="2dp"
-        android:contentDescription="Third place avatar"
-        android:src="@drawable/avatar"
+    <!-- AVATAR: Third Place -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/third_place_avatar_card"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="4dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:strokeColor="@color/pie3"
+        app:strokeWidth="1dp"
+        app:shapeAppearanceOverlay="@style/CircleCard"
         app:layout_constraintBottom_toTopOf="@id/third_place_name"
-        app:layout_constraintEnd_toEndOf="@+id/third_place_card"
-        app:layout_constraintStart_toStartOf="@+id/third_place_card" />
+        app:layout_constraintStart_toStartOf="@id/third_place_card"
+        app:layout_constraintEnd_toEndOf="@id/third_place_card">
 
-    <TextView
-        android:id="@+id/second_place_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="@font/varela_round"
-        android:text=""
-        android:textColor="@color/centsible_text_primary"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@id/second_place_points"
-        app:layout_constraintEnd_toEndOf="@+id/second_place_card"
-        app:layout_constraintStart_toStartOf="@+id/second_place_card" />
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="6dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar"
+            android:contentDescription="Third place avatar" />
+    </com.google.android.material.card.MaterialCardView>
 
-    <TextView
-        android:id="@+id/second_place_points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="@font/varela_round"
-        android:text=""
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/second_place_card"
-        app:layout_constraintEnd_toEndOf="@+id/second_place_card"
-        app:layout_constraintStart_toStartOf="@+id/second_place_card" />
-
+    <!-- Names and Points -->
     <TextView
         android:id="@+id/first_place_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:fontFamily="@font/varela_round"
+        android:layout_marginTop="4dp"
         android:text=""
+        android:textSize="16sp"
         android:textColor="@color/centsible_text_primary"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/first_place_card"
-        app:layout_constraintStart_toStartOf="@+id/first_place_card"
-        app:layout_constraintTop_toBottomOf="@+id/firstPlaceImageView" />
+        android:fontFamily="@font/varela_round"
+        app:layout_constraintTop_toBottomOf="@id/first_place_avatar_card"
+        app:layout_constraintStart_toStartOf="@id/first_place_card"
+        app:layout_constraintEnd_toEndOf="@id/first_place_card" />
 
     <TextView
         android:id="@+id/first_place_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:fontFamily="@font/varela_round"
         android:text=""
+        android:textSize="28sp"
         android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="@+id/first_place_card"
-        app:layout_constraintStart_toStartOf="@+id/first_place_card"
-        app:layout_constraintTop_toBottomOf="@id/first_place_name" />
+        android:fontFamily="@font/varela_round"
+        app:layout_constraintTop_toBottomOf="@id/first_place_name"
+        app:layout_constraintStart_toStartOf="@id/first_place_card"
+        app:layout_constraintEnd_toEndOf="@id/first_place_card" />
+
+    <TextView
+        android:id="@+id/second_place_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="15sp"
+        android:textColor="@color/centsible_text_primary"
+        android:fontFamily="@font/varela_round"
+        app:layout_constraintBottom_toTopOf="@id/second_place_points"
+        app:layout_constraintStart_toStartOf="@id/second_place_card"
+        app:layout_constraintEnd_toEndOf="@id/second_place_card" />
+
+    <TextView
+        android:id="@+id/second_place_points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="28sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/varela_round"
+        app:layout_constraintBottom_toTopOf="@id/second_place_card"
+        app:layout_constraintStart_toStartOf="@id/second_place_card"
+        app:layout_constraintEnd_toEndOf="@id/second_place_card" />
 
     <TextView
         android:id="@+id/third_place_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="@font/varela_round"
         android:text=""
-        android:textColor="@color/centsible_text_primary"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/third_place_points"
-        app:layout_constraintEnd_toEndOf="@+id/third_place_card"
-        app:layout_constraintStart_toStartOf="@+id/third_place_card" />
+        android:textColor="@color/centsible_text_primary"
+        android:fontFamily="@font/varela_round"
+        app:layout_constraintBottom_toTopOf="@id/third_place_points"
+        app:layout_constraintStart_toStartOf="@id/third_place_card"
+        app:layout_constraintEnd_toEndOf="@id/third_place_card" />
 
     <TextView
         android:id="@+id/third_place_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:fontFamily="@font/varela_round"
+        android:textSize="28sp"
         android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/third_place_card"
-        app:layout_constraintEnd_toEndOf="@+id/third_place_card"
-        app:layout_constraintStart_toEndOf="@+id/third_place_card"
-        app:layout_constraintStart_toStartOf="@+id/third_place_card" />
+        android:fontFamily="@font/varela_round"
+        app:layout_constraintBottom_toTopOf="@id/third_place_card"
+        app:layout_constraintStart_toStartOf="@id/third_place_card"
+        app:layout_constraintEnd_toEndOf="@id/third_place_card" />
+
+    <!-- Podium Cards -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/first_place_card"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="12dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/pie3"
+        app:cardPreventCornerOverlap="false"
+        app:shapeAppearance="@style/top3CardView"
+        app:layout_constraintTop_toBottomOf="@id/first_place_points"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/pie3"
+            android:padding="8dp" />
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/second_place_card"
@@ -136,115 +194,72 @@
         android:layout_height="100dp"
         android:layout_marginStart="32dp"
         app:cardElevation="0dp"
+        app:strokeColor="@color/pie3"
         app:cardPreventCornerOverlap="false"
-        app:layout_constraintBottom_toBottomOf="@id/first_place_card"
-        app:layout_constraintEnd_toStartOf="@+id/first_place_card"
-        app:layout_constraintStart_toStartOf="parent"
         app:shapeAppearance="@style/top3CardView"
-        app:strokeColor="@color/pie3">
+        app:layout_constraintBottom_toBottomOf="@id/first_place_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/first_place_card">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="129dp"
-            android:background="@color/pie3"
-            android:gravity="center"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="8dp">
-        </LinearLayout>
+            android:gravity="center"
+            android:background="@color/pie3"
+            android:padding="8dp" />
     </com.google.android.material.card.MaterialCardView>
 
-        <!-- First place (center) -->
-        <com.google.android.material.card.MaterialCardView
-            app:shapeAppearance="@style/top3CardView"
-            app:cardPreventCornerOverlap="false"
-            android:id="@+id/first_place_card"
-            android:layout_width="100dp"
-            android:layout_height="120dp"
-            app:cardElevation="0dp"
-            android:layout_marginTop="10dp"
-            app:strokeColor="@color/pie3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/first_place_points"
-            app:layout_constraintVertical_bias="0.8">
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/third_place_card"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="32dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/pie3"
+        app:cardPreventCornerOverlap="false"
+        app:shapeAppearance="@style/top3CardView"
+        app:layout_constraintBottom_toBottomOf="@id/first_place_card"
+        app:layout_constraintStart_toEndOf="@id/first_place_card"
+        app:layout_constraintEnd_toEndOf="parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/pie3"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Third place (right) -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/third_place_card"
-            app:shapeAppearance="@style/top3CardView"
-            android:layout_width="80dp"
-            android:layout_height="70dp"
-            android:layout_marginEnd="32dp"
-            app:cardPreventCornerOverlap="false"
-            app:strokeColor="@color/pie3"
-            app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/first_place_card"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/first_place_card"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/pie3"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-        <!-- List of other leaderboard positions -->
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:cardPreventCornerOverlap="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/first_place_card"
-            app:strokeColor="@color/pie3"
-            app:shapeAppearance="@style/LeaderBoardCardView">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/pie3"
+            android:padding="8dp" />
+    </com.google.android.material.card.MaterialCardView>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- RecyclerView for remaining leaderboard -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:strokeColor="@color/pie3"
+        app:cardPreventCornerOverlap="false"
+        app:shapeAppearance="@style/LeaderBoardCardView"
+        app:layout_constraintTop_toBottomOf="@id/first_place_card"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/leaderboard_background"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="30dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/leaderboard_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/leaderboard_background"
-                android:paddingTop="30dp"
-                android:paddingHorizontal="10dp">
+                android:paddingVertical="8dp"
+                android:clipToPadding="false"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/leaderboard_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-    <!-- Bottom Navigation -->
-    <!-- <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/centsible_background_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navigation_menu" /> -->
