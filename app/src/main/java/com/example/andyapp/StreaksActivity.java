@@ -24,8 +24,8 @@ import com.example.andyapp.queries.mongoModels.UserModel;
 import com.example.andyapp.utils.CalendarUtils;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +40,8 @@ public class StreaksActivity extends AppCompatActivity {
 
     private SharedPreferences mypref;
     private String userid;
+    private Set<LocalDate> fullStreakDates = new HashSet<>();
+
     private static final String TAG = "STREAKS_LOG";
 
     @Override
@@ -60,8 +62,6 @@ public class StreaksActivity extends AppCompatActivity {
         mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userid = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
 
-        Log.d(TAG, "UserID: " + userid);
-
         loadUserInfoAndUpdateStreak();
         setupListeners();
     }
@@ -78,12 +78,12 @@ public class StreaksActivity extends AppCompatActivity {
     private void setupListeners() {
         findViewById(R.id.buttonPreviousMonth).setOnClickListener(v -> {
             currentDate = currentDate.minusMonths(1);
-            loadUserInfoAndUpdateStreak();
+            renderMonthView();
         });
 
         findViewById(R.id.buttonNextMonth).setOnClickListener(v -> {
             currentDate = currentDate.plusMonths(1);
-            loadUserInfoAndUpdateStreak();
+            renderMonthView();
         });
 
         btnBack.setOnClickListener(view -> {
@@ -93,41 +93,47 @@ public class StreaksActivity extends AppCompatActivity {
 
     private void loadUserInfoAndUpdateStreak() {
         ApiService api = RetrofitClient.getApiService();
-        api.getUserById(userid).enqueue(new Callback<UserModel>() {
+        api.getUserObject(userid).enqueue(new Callback<UserModel>() {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     int streakCount = response.body().getLoginStreak();
-                    updateCalendarFromBackendStreak(streakCount);
+                    LocalDate today = LocalDate.now();
+                    fullStreakDates.clear();
+
+                    for (int i = 0; i < streakCount; i++) {
+                        fullStreakDates.add(today.minusDays(i));
+                    }
+
+                    renderMonthView();
+                    updateStreakHeaderUI(streakCount);
                 } else {
-                    Toast.makeText(StreaksActivity.this, "Failed to load user streak data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StreaksActivity.this, "Failed to load streak data", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
-                Toast.makeText(StreaksActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(StreaksActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void updateCalendarFromBackendStreak(int streakCount) {
-        LocalDate today = LocalDate.now();
+    private void renderMonthView() {
         Set<LocalDate> visibleStreakDates = new HashSet<>();
-
-        for (int i = 0; i < streakCount; i++) {
-            LocalDate streakDate = today.minusDays(i);
-            if (streakDate.getMonth() == currentDate.getMonth() && streakDate.getYear() == currentDate.getYear()) {
-                visibleStreakDates.add(streakDate);
+        for (LocalDate date : fullStreakDates) {
+            if (date.getMonth() == currentDate.getMonth() && date.getYear() == currentDate.getYear()) {
+                visibleStreakDates.add(date);
             }
         }
 
-        // Update calendar
+        textMonthYear.setText(currentDate.getMonth().name() + " " + currentDate.getYear());
         CalendarAdapter adapter = new CalendarAdapter(this, CalendarUtils.getMonthDates(currentDate), visibleStreakDates);
         calendarRecyclerView.setLayoutManager(new GridLayoutManager(this, 7));
         calendarRecyclerView.setAdapter(adapter);
+    }
 
-        // Update UI
+    private void updateStreakHeaderUI(int streakCount) {
         dayCountText.setText(String.valueOf(streakCount));
         streakNumberText.setText(String.valueOf(streakCount));
 

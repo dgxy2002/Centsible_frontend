@@ -22,6 +22,11 @@
     <color name="soft_lavender_grey">#D3CDEA</color>
     <color name="streak_active">#B388FF</color>
     <color name="warning_tint">#FFF0F0</color>
+    <color name="streak_gradient_start">#A18CD1</color>
+    <color name="streak_gradient_end">#FBC2EB</color>
+    <color name="streak_tint">#33A18CD1</color>
+
+
 
 
 
