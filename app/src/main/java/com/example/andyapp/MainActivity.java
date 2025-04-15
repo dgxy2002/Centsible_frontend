@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.example.andyapp.models.LeaderboardUser;
 import com.example.andyapp.queries.ApiService;
 import com.example.andyapp.queries.RetrofitClient;
 import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private UsernameModelRCV adapter;
     private ArrayList<UsernameModel> usernameList = new ArrayList<>();
+
+    private MaterialCardView firstCard, secondCard, thirdCard;
 
     private static final String TAG = "LEADERBOARD";
 
@@ -75,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
         firstImg = findViewById(R.id.firstPlaceImageView);
         secondImg = findViewById(R.id.secondPlaceImageView);
         thirdImg = findViewById(R.id.imageView2);
+
+
+        firstCard = findViewById(R.id.first_place_avatar_card);
+        secondCard = findViewById(R.id.second_place_avatar_card);
+        thirdCard = findViewById(R.id.third_place_avatar_card);
+
+
 
         ImageButton btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
@@ -114,12 +125,22 @@ public class MainActivity extends AppCompatActivity {
         // Sort by score descending
         Collections.sort(users, (u1, u2) -> Integer.compare(u2.getScore(), u1.getScore()));
 
+        List<String> topUserIds = new ArrayList<>();
+
         // Top 1
         if (users.size() >= 1) {
             LeaderboardUser u = users.get(0);
             firstName.setText(userId.equals(u.getUserId()) ? "You" : u.getUsername());
             firstPoints.setText(String.valueOf(u.getScore()));
             Glide.with(this).load(u.getImageUrl()).placeholder(R.drawable.avatar).circleCrop().into(firstImg);
+            firstCard.setVisibility(View.VISIBLE);
+            firstName.setVisibility(View.VISIBLE);
+            firstPoints.setVisibility(View.VISIBLE);
+            topUserIds.add(u.getUserId());
+        } else {
+            firstCard.setVisibility(View.GONE);
+            firstName.setVisibility(View.GONE);
+            firstPoints.setVisibility(View.GONE);
         }
 
         // Top 2
@@ -128,10 +149,14 @@ public class MainActivity extends AppCompatActivity {
             secondName.setText(userId.equals(u.getUserId()) ? "You" : u.getUsername());
             secondPoints.setText(String.valueOf(u.getScore()));
             Glide.with(this).load(u.getImageUrl()).placeholder(R.drawable.avatar).circleCrop().into(secondImg);
+            secondCard.setVisibility(View.VISIBLE);
+            secondName.setVisibility(View.VISIBLE);
+            secondPoints.setVisibility(View.VISIBLE);
+            topUserIds.add(u.getUserId());
         } else {
-            secondName.setText("");
-            secondPoints.setText("");
-            secondImg.setImageDrawable(null);
+            secondCard.setVisibility(View.GONE);
+            secondName.setVisibility(View.GONE);
+            secondPoints.setVisibility(View.GONE);
         }
 
         // Top 3
@@ -140,10 +165,14 @@ public class MainActivity extends AppCompatActivity {
             thirdName.setText(userId.equals(u.getUserId()) ? "You" : u.getUsername());
             thirdPoints.setText(String.valueOf(u.getScore()));
             Glide.with(this).load(u.getImageUrl()).placeholder(R.drawable.avatar).circleCrop().into(thirdImg);
+            thirdCard.setVisibility(View.VISIBLE);
+            thirdName.setVisibility(View.VISIBLE);
+            thirdPoints.setVisibility(View.VISIBLE);
+            topUserIds.add(u.getUserId());
         } else {
-            thirdName.setText("");
-            thirdPoints.setText("");
-            thirdImg.setImageDrawable(null);
+            thirdCard.setVisibility(View.GONE);
+            thirdName.setVisibility(View.GONE);
+            thirdPoints.setVisibility(View.GONE);
         }
 
         // Remaining users for RecyclerView
