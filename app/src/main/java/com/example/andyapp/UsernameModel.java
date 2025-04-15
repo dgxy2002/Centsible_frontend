@@ -4,15 +4,15 @@ public class UsernameModel {
     private String name;
     private String number_points;
     private String pointsUpDown;
-    private int image;
+    private String imageUrl; // 🔁 from int to String
     private int arrowUpDown_img;
     private String userId;
 
-    public UsernameModel(String name, String number_points, String pointsUpDown, int image, int arrowUpDown_img, String userId) {
+    public UsernameModel(String name, String number_points, String pointsUpDown, String imageUrl, int arrowUpDown_img, String userId) {
         this.name = name;
         this.number_points = number_points;
         this.pointsUpDown = pointsUpDown;
-        this.image = image;
+        this.imageUrl = imageUrl;
         this.arrowUpDown_img = arrowUpDown_img;
         this.userId = userId;
     }
@@ -29,8 +29,8 @@ public class UsernameModel {
         return pointsUpDown;
     }
 
-    public int getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public int getArrowUpDown_img() {
