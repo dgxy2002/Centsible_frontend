@@ -67,7 +67,7 @@ public class AlertsFragment extends Fragment {
 
     private void fetchUnreadNotificationCount() {
         if (userId.isEmpty() || token.equals("None")) {
-            StyleableToast.makeText(getContext(), "Missing ID or token", R.style.custom_toast).show();
+            //StyleableToast.makeText(getContext(), "Missing ID or token", R.style.custom_toast).show();
             return;
         }
 
@@ -80,7 +80,7 @@ public class AlertsFragment extends Fragment {
                     if (response.isSuccessful() && response.body() != null) {
                         int count = response.body();
                         if (count > 0) {
-                            StyleableToast.makeText(getContext(), "🔴 " + count + " unread alert(s)", R.style.custom_toast).show();
+                            StyleableToast.makeText(getContext(), "🔴 " + count + " Unread Alert(s)", R.style.custom_toast).show();
                         }
                     }
                 }
@@ -95,7 +95,7 @@ public class AlertsFragment extends Fragment {
 
     private void fetchNotificationsFromBackend() {
         if (userId.isEmpty() || token.equals("None")) {
-            StyleableToast.makeText(getContext(), "Missing ID or token", R.style.custom_toast).show();
+            //StyleableToast.makeText(getContext(), "Missing ID or token", R.style.custom_toast).show();
             return;
         }
 
@@ -135,6 +135,7 @@ public class AlertsFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<List<NotificationResponse>> call, Throwable t) {
+                    Log.e(TAG, "Network call failed", t);
                     StyleableToast.makeText(getContext(), "Network error: " + t.getMessage(), R.style.custom_toast).show();
                     t.printStackTrace();
                 }

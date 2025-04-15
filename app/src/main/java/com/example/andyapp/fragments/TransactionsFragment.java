@@ -68,7 +68,7 @@ public class TransactionsFragment extends Fragment {
 
     private void fetchExpensesFromBackend() {
         if (userId.isEmpty() || token.equals("None")) {
-            StyleableToast.makeText(getContext(), "Missing user ID or token. Please log in again.", R.style.custom_toast).show();
+            //StyleableToast.makeText(getContext(), "Missing user ID or token. Please log in again.", R.style.custom_toast).show();
             return;
         }
 
@@ -88,7 +88,7 @@ public class TransactionsFragment extends Fragment {
                         ));
                     }
 
-                    // ✅ Sort by date descending
+                    // Sort by date descending
                     Collections.sort(allItems, new Comparator<TransactionItem>() {
                         @Override
                         public int compare(TransactionItem t1, TransactionItem t2) {
