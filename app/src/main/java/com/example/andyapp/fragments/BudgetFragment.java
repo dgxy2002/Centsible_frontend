@@ -14,20 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.andyapp.DataObserver;
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LogBudget;
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.R;
-import com.example.andyapp.adapters.Bd_RecyclerViewAdapter;
+import com.example.andyapp.adapters.BudgetRecyclerViewAdapter;
 import com.example.andyapp.models.BudgetModel;
 import com.example.andyapp.models.BudgetModels;
 import com.example.andyapp.queries.BudgetService;
@@ -89,7 +87,7 @@ public class BudgetFragment extends Fragment {
         budgetModels = new ArrayList<>();
         budgetService = new BudgetService(requireContext());
         RecyclerView bdRecyclerView = view.findViewById(R.id.bdrecyclerView);
-        Bd_RecyclerViewAdapter adapter = new Bd_RecyclerViewAdapter(view.getContext(), budgetModels);
+        BudgetRecyclerViewAdapter adapter = new BudgetRecyclerViewAdapter(view.getContext(), budgetModels);
         bdRecyclerView.setAdapter(adapter);
         bdRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         //Register Observers

@@ -15,13 +15,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.andyapp.RecyclerViewSpacingDecorator;
 import com.example.andyapp.models.GroupsModel;
 import com.example.andyapp.models.GroupsModels;
 import com.example.andyapp.queries.NotificationService;
@@ -30,13 +28,13 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Groups_RecyclerViewAdapter extends RecyclerView.Adapter<Groups_RecyclerViewAdapter.MyViewHolder> implements DataObserver<GroupsModels> {
+public class GroupsRecyclerViewAdapter extends RecyclerView.Adapter<GroupsRecyclerViewAdapter.MyViewHolder> implements DataObserver<GroupsModels> {
     Context context;
     ArrayList<GroupsModel> groupsModels;
     SharedPreferences mPref;
     NotificationService notificationService;
 
-    public Groups_RecyclerViewAdapter(ArrayList<GroupsModel> groupsModels, Context context) {
+    public GroupsRecyclerViewAdapter(ArrayList<GroupsModel> groupsModels, Context context) {
         this.groupsModels = groupsModels;
         this.context = context;
         this.notificationService = new NotificationService(context);
@@ -47,7 +45,7 @@ public class Groups_RecyclerViewAdapter extends RecyclerView.Adapter<Groups_Recy
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.groups_recycler_view_row, parent, false);
-        return new Groups_RecyclerViewAdapter.MyViewHolder(view);
+        return new GroupsRecyclerViewAdapter.MyViewHolder(view);
     }
 
     @Override

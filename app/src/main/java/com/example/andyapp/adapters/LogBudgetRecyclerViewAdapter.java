@@ -1,23 +1,14 @@
 package com.example.andyapp.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.andyapp.DataObserver;
@@ -29,14 +20,14 @@ import com.example.andyapp.models.LogBudgetModels;
 import java.util.ArrayList;
 
 
-public class LogBd_RecyclerViewAdapter extends RecyclerView.Adapter<LogBd_RecyclerViewAdapter.MyViewHolder> implements DataObserver<LogBudgetModels> {
+public class LogBudgetRecyclerViewAdapter extends RecyclerView.Adapter<LogBudgetRecyclerViewAdapter.MyViewHolder> implements DataObserver<LogBudgetModels> {
     Context context;
     ArrayList<LogBudgetModel> logBudgetModels;
     private final RecyclerViewOnClickInterface recyclerViewInterface;
     String TAG = "LOGCAT";
 
 
-    public LogBd_RecyclerViewAdapter(Context context, ArrayList<LogBudgetModel> logBudgetModels, RecyclerViewOnClickInterface recyclerViewInterface) {
+    public LogBudgetRecyclerViewAdapter(Context context, ArrayList<LogBudgetModel> logBudgetModels, RecyclerViewOnClickInterface recyclerViewInterface) {
         this.context = context;
         this.logBudgetModels = logBudgetModels;
         this.recyclerViewInterface = recyclerViewInterface;
@@ -47,7 +38,7 @@ public class LogBd_RecyclerViewAdapter extends RecyclerView.Adapter<LogBd_Recycl
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.log_budget_recycler_view_row, parent, false);
-        return new LogBd_RecyclerViewAdapter.MyViewHolder(view);
+        return new LogBudgetRecyclerViewAdapter.MyViewHolder(view);
     }
 
     @Override

@@ -53,12 +53,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <com.google.android.material.card.MaterialCardView
-        app:shapeAppearance="@style/TopRoundedCardView"
         android:layout_width="match_parent"
-        android:layout_height="575dp"
+        android:layout_height="0dp"
         android:layout_marginTop="25dp"
         android:backgroundTint="@color/backgroundaccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/budgetProgressBar"
+        app:shapeAppearance="@style/TopRoundedCardView"
         app:strokeColor="@color/backgroundaccent">
 
         <androidx.constraintlayout.widget.ConstraintLayout

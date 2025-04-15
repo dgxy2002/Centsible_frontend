@@ -3,8 +3,6 @@ package com.example.andyapp.adapters;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +21,12 @@ import com.example.andyapp.models.BudgetModels;
 
 import java.util.ArrayList;
 
-public class Bd_RecyclerViewAdapter extends RecyclerView.Adapter<Bd_RecyclerViewAdapter.MyViewHolder> implements DataObserver<BudgetModels> {
+public class BudgetRecyclerViewAdapter extends RecyclerView.Adapter<BudgetRecyclerViewAdapter.MyViewHolder> implements DataObserver<BudgetModels> {
 
     Context context;
     ArrayList<BudgetModel> budgetModels;
 
-    public Bd_RecyclerViewAdapter(Context context, ArrayList<BudgetModel> budgetModels) {
+    public BudgetRecyclerViewAdapter(Context context, ArrayList<BudgetModel> budgetModels) {
         this.context = context;
         this.budgetModels = budgetModels;
     }
@@ -39,7 +37,7 @@ public class Bd_RecyclerViewAdapter extends RecyclerView.Adapter<Bd_RecyclerView
         //Inflates the layout
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.budget_recycler_view_row, parent, false);
-        return new Bd_RecyclerViewAdapter.MyViewHolder(view);
+        return new BudgetRecyclerViewAdapter.MyViewHolder(view);
     }
 
     @Override

@@ -7,24 +7,54 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.github.mikephil.charting.charts.LineChart
-        android:padding="30dp"
         android:id="@+id/incomeLineChart"
         android:layout_width="match_parent"
         android:layout_height="330dp"
+        android:padding="30dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.github.mikephil.charting.charts.LineChart>
+
+    <TextView
+        android:id="@+id/bottomAxisTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="170dp"
+        android:fontFamily="@font/varela_round"
+        android:textColor="@color/black"
+        android:text="Days"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/incomeLineChart"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/sideAxisTextView"
+        android:layout_marginTop="165dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotation="-90"
+        android:layout_marginStart="-20dp"
+        android:text="Total Income"
+        android:visibility="invisible"
+        android:fontFamily="@font/varela_round"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
-        app:shapeAppearance="@style/TopRoundedCardView"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="0dp"
         app:cardBackgroundColor="@color/backgroundaccent"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/incomeLineChart"
+        app:shapeAppearance="@style/TopRoundedCardView"
         app:strokeColor="@color/backgroundaccent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -72,13 +102,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
                 android:layout_marginEnd="30dp"
-                app:boxStrokeWidth="2dp"
                 android:background="@color/backgroundaccent"
                 app:boxCornerRadiusBottomEnd="20dp"
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
                 app:boxStrokeColor="@color/black"
+                app:boxStrokeWidth="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/incomeLogsTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/incomeLogsTextView">
@@ -89,8 +119,8 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/varela_round"
                     android:inputType="none"
-                    android:textColor="@color/black"
-                    android:text="Sort By" />
+                    android:text="Sort By"
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

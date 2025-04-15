@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,16 +28,14 @@ import com.example.andyapp.DataSubject;
 import com.example.andyapp.LoginActivity;
 import com.example.andyapp.NavigationDrawerActivity;
 import com.example.andyapp.PieChartExpenseObserver;
-import com.example.andyapp.adapters.Exp_RecyclerViewAdapter;
+import com.example.andyapp.adapters.ExpRecyclerViewAdapter;
 import com.example.andyapp.models.GetCategoryExpenseModel;
-import com.example.andyapp.LogExpense;
 import com.example.andyapp.R;
 import com.example.andyapp.models.GetCategoryExpenseModels;
 import com.example.andyapp.queries.ExpenseService;
 import com.example.andyapp.utils.SortExpenseByAmount;
 import com.example.andyapp.utils.SortExpenseByName;
 import com.github.mikephil.charting.charts.PieChart;
-import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,7 +69,7 @@ public class ExpenseFragment extends Fragment {
     RecyclerView recyclerView;
     ImageButton btnAdd;
     ImageView profilePicView;
-    private Exp_RecyclerViewAdapter adapter;
+    private ExpRecyclerViewAdapter adapter;
     AutoCompleteTextView dropdownSorting;
     DataSubject<GetCategoryExpenseModels> subject;
     SharedPreferences myPref;
@@ -143,7 +140,7 @@ public class ExpenseFragment extends Fragment {
             }
         });
         //Configure RecyclerView
-        adapter = new Exp_RecyclerViewAdapter(view.getContext(), getCategoryExpenseModels);
+        adapter = new ExpRecyclerViewAdapter(view.getContext(), getCategoryExpenseModels);
         recyclerView.setAdapter(adapter);
         subject.registerObserver(adapter);
         subject.registerObserver(pieChartObserver);

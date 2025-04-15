@@ -25,31 +25,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.andyapp.DataObserver;
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LoginActivity;
-import com.example.andyapp.MainActivity;
 import com.example.andyapp.R;
 import com.example.andyapp.RecyclerViewSpacingDecorator;
-import com.example.andyapp.adapters.Groups_RecyclerViewAdapter;
+import com.example.andyapp.adapters.GroupsRecyclerViewAdapter;
 import com.example.andyapp.models.GroupsModel;
 import com.example.andyapp.models.GroupsModels;
 import com.example.andyapp.queries.GroupsService;
-import com.example.andyapp.queries.NotificationService;
-import com.example.andyapp.queries.RetrofitClient;
-import com.example.andyapp.queries.mongoModels.Connections;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
@@ -63,7 +53,7 @@ public class GroupsFragment extends Fragment {
     TextView nameView;
     RecyclerView groupsRecycler;
     GroupsModels groupsModels;
-    Groups_RecyclerViewAdapter adapter;
+    GroupsRecyclerViewAdapter adapter;
     ItemTouchHelper.SimpleCallback simpleCallback;
     RecyclerViewSpacingDecorator spacingDecorator;
     String userId;
@@ -123,7 +113,7 @@ public class GroupsFragment extends Fragment {
         });
         //Set up Recycler View
         setUpGroupsModels(); //Get data
-        adapter = new Groups_RecyclerViewAdapter(new ArrayList<GroupsModel>(), view.getContext());
+        adapter = new GroupsRecyclerViewAdapter(new ArrayList<GroupsModel>(), view.getContext());
         subject.registerObserver(adapter);
         groupsRecycler.setAdapter(adapter);
         groupsRecycler.setLayoutManager(new LinearLayoutManager(view.getContext()));

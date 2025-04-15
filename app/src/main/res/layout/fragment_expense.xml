@@ -32,7 +32,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/expenseCardView"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="0dp"
         app:cardBackgroundColor="@color/backgroundaccent"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"

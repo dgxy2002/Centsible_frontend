@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String USERKEY = "USERKEY";
     public static final String VIEWERKEY = "VIEWERKEY";
     public static final String VIEWERNAMEKEY = "VIEWERNAMEKEY";
+    public static final String VIEWERIMAGEKEY = "VIEWERIMAGEKEY";
     public static final String TOKENKEY = "TOKENKEY";
     public static final String PREFTAG = "MYPREF";
     public static final String USERNAMEKEY = "USERNAMEKEY";
@@ -111,12 +112,14 @@ public class LoginActivity extends AppCompatActivity {
                             String username = resp.getUsername();
                             String message = resp.getMessage();
                             String token = resp.getToken();
+//                            String imageUrl = resp.getImageUrl();
                             sharedPreferences = getSharedPreferences(PREFTAG, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString(TOKENKEY, "Bearer " +token);
                             editor.putString(USERKEY, userId);
                             editor.putString(VIEWERKEY, userId);
                             editor.putString(USERNAMEKEY, username);
+//                            editor.putString(VIEWERIMAGEKEY, imageUrl);
                             editor.apply();
                             Log.d(TAG, String.format("userId: %s, username, %s, message: %s, token: %s", userId, username, message, token));
                             Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);

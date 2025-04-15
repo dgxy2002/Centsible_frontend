@@ -1,5 +1,7 @@
 package com.example.andyapp.fragments;
 
+import static android.view.View.VISIBLE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +30,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.example.andyapp.DataObserver;
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LineChartObserver;
 import com.example.andyapp.LoginActivity;
@@ -50,6 +53,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -73,6 +77,8 @@ public class IncomeFragment extends Fragment {
     private AutoCompleteTextView dropdownSort;
     private String[] sortingTypes;
     private ArrayAdapter<String> sortingAdapter;
+    private TextView sideAxisTextView;
+    private TextView bottomAxisTextView;
     private String userId;
     private String viewerId;
     private String TAG = "LOGCAT";
@@ -120,6 +126,8 @@ public class IncomeFragment extends Fragment {
         lineChartObserver = new LineChartObserver(lineChart, requireContext());
         recyclerView = view.findViewById(R.id.incomeRecycler);
         btnLogIncome = view.findViewById(R.id.btnAddIncome);
+        sideAxisTextView = view.findViewById(R.id.sideAxisTextView);
+        bottomAxisTextView = view.findViewById(R.id.bottomAxisTextView);
         subject = new DataSubject<>();
         fetchIncomes = new FetchIncomes(new ArrayList<>());
         incomeService = new IncomeService(requireContext());
@@ -146,6 +154,7 @@ public class IncomeFragment extends Fragment {
         //Register observers
         subject.registerObserver(lineChartObserver);
         subject.registerObserver(adapter);
+        subject.registerObserver(new axisObservers());
         setFetchIncomes();
     }
 
@@ -162,5 +171,14 @@ public class IncomeFragment extends Fragment {
                 fetchIncomes = incomeService.fetchIncomesByMonth(viewerId, month, year, subject, handler);
             }
         });
+    }
+
+    class axisObservers implements DataObserver<FetchIncomes>{
+
+        @Override
+        public void updateData(FetchIncomes data) {
+            bottomAxisTextView.setVisibility(VISIBLE);
+            sideAxisTextView.setVisibility(VISIBLE);
+        }
     }
 }

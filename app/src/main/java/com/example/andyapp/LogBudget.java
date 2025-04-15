@@ -6,13 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,8 +29,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.andyapp.managers.ScaleCenterItemLayoutManager;
 
-import com.example.andyapp.adapters.LogBd_RecyclerViewAdapter;
-import com.example.andyapp.models.CategoryAllocation;
+import com.example.andyapp.adapters.LogBudgetRecyclerViewAdapter;
 import com.example.andyapp.models.LogBudgetModel;
 import com.example.andyapp.models.LogBudgetModels;
 import com.example.andyapp.models.PostCategoryAllocation;
@@ -46,7 +41,7 @@ import java.util.concurrent.Executors;
 
 public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickInterface{
     LogBudgetModels logBudgetModels;
-    LogBd_RecyclerViewAdapter recyclerViewAdapter;
+    LogBudgetRecyclerViewAdapter recyclerViewAdapter;
     ImageButton btnBack;
     Button btnApply;
     RecyclerView recyclerView;
@@ -158,7 +153,7 @@ public class LogBudget extends AppCompatActivity implements RecyclerViewOnClickI
                 startActivity(intent);
             }
         });
-        recyclerViewAdapter = new LogBd_RecyclerViewAdapter(LogBudget.this, logBudgetModels.getLogBudgetModels(), this);
+        recyclerViewAdapter = new LogBudgetRecyclerViewAdapter(LogBudget.this, logBudgetModels.getLogBudgetModels(), this);
         recyclerView = findViewById(R.id.logBdRecyclerView);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setHasFixedSize(true);

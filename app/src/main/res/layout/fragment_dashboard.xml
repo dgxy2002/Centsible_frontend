@@ -45,9 +45,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/transTab"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/transTab"/>
+        app:layout_constraintTop_toBottomOf="@+id/transTab" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

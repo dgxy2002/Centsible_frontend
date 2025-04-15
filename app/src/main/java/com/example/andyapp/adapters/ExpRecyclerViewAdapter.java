@@ -19,7 +19,7 @@ import com.example.andyapp.models.GetCategoryExpenseModels;
 
 import java.util.ArrayList;
 
-public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerViewAdapter.MyViewHolder> implements DataObserver<GetCategoryExpenseModels> {
+public class ExpRecyclerViewAdapter extends RecyclerView.Adapter<ExpRecyclerViewAdapter.MyViewHolder> implements DataObserver<GetCategoryExpenseModels> {
     Context context;
     ArrayList<GetCategoryExpenseModel> getCategoryExpenseModels;
     double totalExpense;
@@ -34,7 +34,7 @@ public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerVi
         notifyDataSetChanged();
     }
 
-    public Exp_RecyclerViewAdapter(Context context, GetCategoryExpenseModels data){
+    public ExpRecyclerViewAdapter(Context context, GetCategoryExpenseModels data){
         this.context = context;
         this.getCategoryExpenseModels = data.getCategoryExpensesModels();
         this.totalExpense = 0;
@@ -44,15 +44,15 @@ public class Exp_RecyclerViewAdapter extends RecyclerView.Adapter<Exp_RecyclerVi
     }
     @NonNull
     @Override
-    public Exp_RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ExpRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //Inflate layout and give look to rows
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.expense_recycler_view_row, parent, false);
-        return new Exp_RecyclerViewAdapter.MyViewHolder(view);
+        return new ExpRecyclerViewAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Exp_RecyclerViewAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ExpRecyclerViewAdapter.MyViewHolder holder, int position) {
         //assigning values to each view we create in recycler_row_view file
         //based on the position of the recycler view
         holder.catView.setText(getCategoryExpenseModels.get(position).getCategory());
