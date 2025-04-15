@@ -1,6 +1,7 @@
 package com.example.andyapp.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.andyapp.R;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -66,6 +68,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     @Override
     public void onBindViewHolder(CalendarAdapter.ViewHolder holder, int position) {
         LocalDate date = days.get(position);
+
         if (date == null) {
             holder.dayText.setText("");
             holder.dayText.setBackground(null);
@@ -73,16 +76,36 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
         }
 
         holder.dayText.setText(String.valueOf(date.getDayOfMonth()));
+        holder.dayText.setTextColor(ContextCompat.getColor(context, R.color.black));
+        holder.dayText.setBackground(null);
 
-        if (highlightedDates.contains(date)) {
-            GradientDrawable drawable = new GradientDrawable();
-            drawable.setCornerRadius(100);
-            drawable.setColor(ContextCompat.getColor(context, R.color.streak_active));
-            holder.dayText.setBackground(drawable);
-            holder.dayText.setTextColor(ContextCompat.getColor(context, R.color.white));
-        } else {
-            holder.dayText.setBackground(null);
-            holder.dayText.setTextColor(ContextCompat.getColor(context, R.color.black));
+        LocalDate today = LocalDate.now();
+
+        if (highlightedDates.contains(date) && !date.isAfter(today)) {
+            boolean isStart = !highlightedDates.contains(date.minusDays(1));
+            boolean isEnd = !highlightedDates.contains(date.plusDays(1));
+
+            GradientDrawable streakDrawable = new GradientDrawable();
+            streakDrawable.setColor(ContextCompat.getColor(context, R.color.streak_active)); // Default streak color
+
+            // Weekend check
+            DayOfWeek day = date.getDayOfWeek();
+            if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+                streakDrawable.setColor(ContextCompat.getColor(context, R.color.streak_weekend)); // Optional alt color
+            }
+
+            if (isStart && isEnd) {
+                streakDrawable.setCornerRadius(100f); // Circle
+            } else if (isStart) {
+                streakDrawable.setCornerRadii(new float[]{100f, 100f, 0f, 0f, 0f, 0f, 100f, 100f}); // Left rounded
+            } else if (isEnd) {
+                streakDrawable.setCornerRadii(new float[]{0f, 0f, 100f, 100f, 100f, 100f, 0f, 0f}); // Right rounded
+            } else {
+                streakDrawable.setCornerRadius(0f); // Square middle
+            }
+
+            holder.dayText.setBackground(streakDrawable);
+            holder.dayText.setTextColor(Color.WHITE);
         }
     }
 }

@@ -20,14 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.andyapp.adapters.CalendarAdapter;
 import com.example.andyapp.queries.ApiService;
 import com.example.andyapp.queries.RetrofitClient;
-import com.example.andyapp.queries.mongoModels.Expense;
+import com.example.andyapp.queries.mongoModels.UserModel;
 import com.example.andyapp.utils.CalendarUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import io.github.muddz.styleabletoast.StyleableToast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,9 +39,7 @@ public class StreaksActivity extends AppCompatActivity {
     private LocalDate currentDate;
 
     private SharedPreferences mypref;
-    private String userid, token;
-    private Set<LocalDate> completedDates = new HashSet<>();
-
+    private String userid;
     private static final String TAG = "STREAKS_LOG";
 
     @Override
@@ -62,12 +59,10 @@ public class StreaksActivity extends AppCompatActivity {
 
         mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userid = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
-        token = mypref.getString(LoginActivity.TOKENKEY, "None");
 
         Log.d(TAG, "UserID: " + userid);
-        Log.d(TAG, "Token: " + token);
 
-        loadExpenseDatesFromBackend();
+        loadUserInfoAndUpdateStreak();
         setupListeners();
     }
 
@@ -83,12 +78,12 @@ public class StreaksActivity extends AppCompatActivity {
     private void setupListeners() {
         findViewById(R.id.buttonPreviousMonth).setOnClickListener(v -> {
             currentDate = currentDate.minusMonths(1);
-            updateMonthStats();
+            loadUserInfoAndUpdateStreak();
         });
 
         findViewById(R.id.buttonNextMonth).setOnClickListener(v -> {
             currentDate = currentDate.plusMonths(1);
-            updateMonthStats();
+            loadUserInfoAndUpdateStreak();
         });
 
         btnBack.setOnClickListener(view -> {
@@ -96,77 +91,34 @@ public class StreaksActivity extends AppCompatActivity {
         });
     }
 
-    private void loadExpenseDatesFromBackend() {
-        if (userid == null || userid.isEmpty() || token == null || token.equals("None")) {
-            StyleableToast.makeText(this, "Missing user ID or token. Please log in again.", R.style.custom_toast).show();
-            return;
-        }
-
+    private void loadUserInfoAndUpdateStreak() {
         ApiService api = RetrofitClient.getApiService();
-        api.getUserExpenses(token, userid).enqueue(new Callback<List<Expense>>() {
+        api.getUserById(userid).enqueue(new Callback<UserModel>() {
             @Override
-            public void onResponse(Call<List<Expense>> call, Response<List<Expense>> response) {
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    completedDates.clear();
-                    for (Expense expense : response.body()) {
-                        try {
-                            completedDates.add(expense.getParsedCreatedDate());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    updateMonthStats();
+                    int streakCount = response.body().getLoginStreak();
+                    updateCalendarFromBackendStreak(streakCount);
                 } else {
-                    StyleableToast.makeText(StreaksActivity.this, "Failed to load expense dates", R.style.custom_toast).show();
+                    Toast.makeText(StreaksActivity.this, "Failed to load user streak data", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Expense>> call, Throwable t) {
-                StyleableToast.makeText(StreaksActivity.this, "Network error: " + t.getMessage(), R.style.custom_toast).show();
-                t.printStackTrace();
+            public void onFailure(Call<UserModel> call, Throwable t) {
+                Toast.makeText(StreaksActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void updateMonthStats() {
-        int count = 0;
+    private void updateCalendarFromBackendStreak(int streakCount) {
         LocalDate today = LocalDate.now();
-
-        List<LocalDate> sortedDates = new ArrayList<>(completedDates);
-        Collections.sort(sortedDates);
-
-        List<List<LocalDate>> streakGroups = new ArrayList<>();
-        List<LocalDate> currentStreak = new ArrayList<>();
-
-        for (int i = 0; i < sortedDates.size(); i++) {
-            LocalDate curr = sortedDates.get(i);
-
-            if (i == 0 || curr.minusDays(1).equals(sortedDates.get(i - 1))) {
-                currentStreak.add(curr);
-            } else {
-                if (currentStreak.size() >= 3) {
-                    streakGroups.add(new ArrayList<>(currentStreak));
-                }
-                currentStreak.clear();
-                currentStreak.add(curr);
-            }
-        }
-
-        if (currentStreak.size() >= 3) {
-            streakGroups.add(currentStreak);
-        }
-
         Set<LocalDate> visibleStreakDates = new HashSet<>();
 
-        if (!streakGroups.isEmpty()) {
-            List<LocalDate> latestStreak = streakGroups.get(streakGroups.size() - 1);
-            count = latestStreak.size();
-
-            for (LocalDate date : latestStreak) {
-                if (date.getMonth() == currentDate.getMonth() && date.getYear() == currentDate.getYear()) {
-                    visibleStreakDates.add(date);
-                }
+        for (int i = 0; i < streakCount; i++) {
+            LocalDate streakDate = today.minusDays(i);
+            if (streakDate.getMonth() == currentDate.getMonth() && streakDate.getYear() == currentDate.getYear()) {
+                visibleStreakDates.add(streakDate);
             }
         }
 
@@ -175,20 +127,17 @@ public class StreaksActivity extends AppCompatActivity {
         calendarRecyclerView.setLayoutManager(new GridLayoutManager(this, 7));
         calendarRecyclerView.setAdapter(adapter);
 
-        // UI update
-        dayCountText.setText(String.valueOf(count));
-        streakNumberText.setText(String.valueOf(count));
+        // Update UI
+        dayCountText.setText(String.valueOf(streakCount));
+        streakNumberText.setText(String.valueOf(streakCount));
 
-        if (count == 0) {
+        if (streakCount == 0) {
             congratsMessage.setText("Let’s get back to it! Good practices take time.");
-        } else if (count <= 6) {
+        } else if (streakCount <= 6) {
             congratsMessage.setText("Keep up the good work! 💪");
         } else {
-            int weeks = count / 7;
+            int weeks = streakCount / 7;
             congratsMessage.setText("🎉 You've kept a Perfect Streak for " + weeks + " straight " + (weeks == 1 ? "week" : "weeks") + ". Wow!");
         }
     }
-
-
-
 }
