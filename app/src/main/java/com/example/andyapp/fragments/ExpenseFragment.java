@@ -23,6 +23,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.andyapp.DataObserver;
 import com.example.andyapp.DataSubject;
 import com.example.andyapp.LoginActivity;
@@ -33,6 +34,7 @@ import com.example.andyapp.models.GetCategoryExpenseModel;
 import com.example.andyapp.R;
 import com.example.andyapp.models.GetCategoryExpenseModels;
 import com.example.andyapp.queries.ExpenseService;
+import com.example.andyapp.queries.UserService;
 import com.example.andyapp.utils.SortExpenseByAmount;
 import com.example.andyapp.utils.SortExpenseByName;
 import com.github.mikephil.charting.charts.PieChart;
@@ -173,8 +175,10 @@ public class ExpenseFragment extends Fragment {
     class ProfilePictureObserver implements DataObserver<GetCategoryExpenseModels>{
         @Override
         public void updateData(GetCategoryExpenseModels data) {
-            profilePicView.setImageResource(R.drawable.avatar); //Replace with SharedPref ViewerImage
-            profilePicView.setVisibility(View.VISIBLE);
+            UserService userService = new UserService(requireContext());
+            Looper looper = Looper.getMainLooper();
+            Handler handler = new Handler(looper);
+            userService.getUserImage(userId, handler, profilePicView);
         }
     }
 }

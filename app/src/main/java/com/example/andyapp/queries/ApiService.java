@@ -39,9 +39,6 @@ public interface ApiService {
     @GET("expenses/user/{userId}/total-by-category")
     Call<HashMap<String, Double>> getTotalExpensesByCategory(@Path("userId") String userId);
 
-    @GET("/users/login")
-    Call<UserModel> getUser(@Body LoginModel login);
-
     @GET("expenses/user/{userId}")
     Call<List<Expense>> getUserExpenses(@Header("Authorization") String token,@Path("userId") String userId);
 
@@ -62,12 +59,16 @@ public interface ApiService {
             @Header("Authorization") String token,
             @Path("userId") String userId
     );
+
+    //Get User by Id
+    @GET("users/{id}")
+    Call<UserModel>getUserObject(@Path("id") String id);
     //Send nudge notification
     @POST("users/{fromUsername}/nudge/{toUsername}")
     Call<ResponseBody>sendNudge(@Path("fromUsername") String forUsername, @Path("toUsername") String toUsername);
     //Get all outgoing connections
     @GET("users/{userId}/connections")
-    Call<ArrayList<Map<String, String>>> getConnections(
+    Call<ArrayList<UserModel>> getConnections(
             @Path("userId") String userId
     );
 
@@ -109,11 +110,12 @@ public interface ApiService {
     Call<UserSettings>getSettings(@Path("username") String username);
 
     @PUT("users/{username}/profile")
-    Call<ResponseBody>updateSettings(@Path("username") String username, @Body Map<String, Object> userSettings);
+    Call<Map<String, String>>updateSettings(@Path("username") String username, @Body Map<String, Object> userSettings);
 
     @Multipart
     @POST("users/{username}/upload-profile-image")
     Call<ResponseBody>updateProfilePhoto(@Path("username") String username, @Part MultipartBody.Part file);
+
 }
 
 

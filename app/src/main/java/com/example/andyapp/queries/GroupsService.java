@@ -9,6 +9,7 @@ import com.example.andyapp.DataSubject;
 import com.example.andyapp.R;
 import com.example.andyapp.models.GroupsModel;
 import com.example.andyapp.models.GroupsModels;
+import com.example.andyapp.queries.mongoModels.UserModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,15 +33,15 @@ public class GroupsService {
 
     public GroupsModels getConnections(String userId, Handler handler, DataSubject<GroupsModels> subject){
         GroupsModels groupsModels = new GroupsModels(new ArrayList<GroupsModel>());
-        api.getConnections(userId).enqueue(new Callback<ArrayList<Map<String, String>>>() {
+        api.getConnections(userId).enqueue(new Callback<ArrayList<UserModel>>() {
             @Override
-            public void onResponse(Call<ArrayList<Map<String, String>>> call, Response<ArrayList<Map<String, String>>> response) {
+            public void onResponse(Call<ArrayList<UserModel>> call, Response<ArrayList<UserModel>> response) {
                 if (response.body() != null){
-                    ArrayList<Map<String, String>> connections = response.body();
-                    for(Map<String, String> connection: connections){
-                        String userId = connection.get("userId");
-                        String username = connection.get("username");
-                        String imageUrl = connection.get("imageUrl");
+                    ArrayList<UserModel> connections = response.body();
+                    for(UserModel connection: connections){
+                        String userId = connection.getId();
+                        String username = connection.getUsername();
+                        String imageUrl = connection.getImageUrl();
                         Log.d("LOGCAT", "Username: " + username + ", UserId: " + userId);
                         groupsModels.addGroupModel(new GroupsModel(username, userId, imageUrl));
                     }
@@ -61,7 +62,7 @@ public class GroupsService {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Map<String, String>>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<UserModel>> call, Throwable t) {
                 if (t.getMessage() != null){
                     Log.d(TAG, t.getMessage());
                 }

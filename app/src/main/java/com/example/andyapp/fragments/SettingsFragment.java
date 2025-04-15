@@ -229,6 +229,7 @@ public class SettingsFragment extends Fragment {
             String imageURL = data.getImageUrl();
             Glide.with(requireContext())
                     .load(imageURL)
+                    .circleCrop()
                     .into(profilePicImageView);
             bioEditText.setText(data.getBiography());
         }

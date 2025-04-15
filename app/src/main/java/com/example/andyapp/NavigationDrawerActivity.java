@@ -32,6 +32,7 @@ import com.example.andyapp.fragments.InvitationsFragment;
 import com.example.andyapp.fragments.LogExpenseFragment;
 import com.example.andyapp.fragments.SettingsFragment;
 import com.example.andyapp.queries.NotificationService;
+import com.example.andyapp.queries.UserService;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.concurrent.ExecutorService;
@@ -53,11 +54,13 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     View headerView;
     TextView toolbarTitle;
     TextView drawerHeaderTextView;
+    ImageView drawerHeaderImageView;
     public static String FRAGMENT_TAG = "FRAGMENT_TAG";
     public static String CONNECTION_NAME_TAG = "CONNECTION_NAME_TAG";
     String targetFragmentName;
     NotificationService notificationService;
     BtnBarRightObserver btnBarRightObserver;
+    private UserService userService;
 
     private static final String TAG = "LOGCAT";
 
@@ -73,6 +76,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         drawerNavView = findViewById(R.id.drawerNavView);
         headerView = drawerNavView.getHeaderView(0);
+        userService = new UserService(this);
         resetToolBar();
         if (targetFragmentName != null && targetFragmentName.equals("LogExpense")) {
             toolbarTitle.setText("Log Expense");
@@ -113,6 +117,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         drawerHeaderTextView = headerView.findViewById(R.id.headerTextView);
         drawerHeaderTextView.setText(String.format("%s's Menu", username));
+
+        drawerHeaderImageView = headerView.findViewById(R.id.drawerHeaderImageView);
+        userService.getUserImage(userId, new Handler(Looper.getMainLooper()), drawerHeaderImageView);
 
 
         btnNavStreaks = headerView.findViewById(R.id.navStreaks);

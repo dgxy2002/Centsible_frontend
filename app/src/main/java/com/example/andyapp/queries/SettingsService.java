@@ -6,6 +6,7 @@ import android.provider.Settings;
 import android.util.Log;
 
 import com.example.andyapp.DataSubject;
+import com.example.andyapp.R;
 import com.example.andyapp.models.UserSettings;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.github.muddz.styleabletoast.StyleableToast;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -64,16 +66,13 @@ public class SettingsService {
     }
 
     public void uploadSettings(String username, Map<String, Object> userSettings){
-        api.updateSettings(username, userSettings).enqueue(new Callback<ResponseBody>() {
+        api.updateSettings(username, userSettings).enqueue(new Callback<Map<String, String>>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
                 if (response.isSuccessful() && response.body()!= null){
-                    try {
-                        String message = response.body().string();
-                        Log.d(TAG, message);
-                    } catch (IOException e) {
-                        Log.d(TAG, e.toString());
-                    }
+                    String message = response.body().get("message");
+                    StyleableToast.makeText(context, message, R.style.custom_toast).show();
+                    Log.d(TAG, message);
                 }else{
                     try {
                         String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error details";
@@ -85,7 +84,7 @@ public class SettingsService {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Map<String, String>> call, Throwable t) {
                 if (t.getMessage() != null){
                     Log.e(TAG, t.getMessage());
                 }

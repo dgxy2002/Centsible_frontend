@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String NOT_API_KEY = "227166733379629";
     public static final String NOT_API_SECRET = "gnZXu0awAPwBRPfrjNXCmyS5uo4";
     public static final String NOT_CLOUD_NAME = "dipmlrzfc";
+    public static final String DEFAULT_IMAGE = "https://res.cloudinary.com/dipmlrzfc/image/upload/v1744623604/Generic_avatar_yxu2zr.png";
 
 
     private String TAG = "LOGCAT";
@@ -56,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         private String username;
         private String token;
         private String message;
+        private String imageUrl;
 
         public String getId() {
             return id;
@@ -68,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         public String getToken() {
             return token;
-        }
+        }public String getImageUrl() {return imageUrl;}
     }
 
     interface RequestUser{
@@ -111,14 +113,14 @@ public class LoginActivity extends AppCompatActivity {
                             String username = resp.getUsername();
                             String message = resp.getMessage();
                             String token = resp.getToken();
-//                            String imageUrl = resp.getImageUrl();
+                            String imageUrl = resp.getImageUrl();
                             sharedPreferences = getSharedPreferences(PREFTAG, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString(TOKENKEY, "Bearer " +token);
                             editor.putString(USERKEY, userId);
                             editor.putString(VIEWERKEY, userId);
                             editor.putString(USERNAMEKEY, username);
-//                            editor.putString(VIEWERIMAGEKEY, imageUrl);
+                            editor.putString(VIEWERIMAGEKEY, imageUrl);
                             editor.apply();
                             Log.d(TAG, String.format("userId: %s, username, %s, message: %s, token: %s", userId, username, message, token));
                             Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
