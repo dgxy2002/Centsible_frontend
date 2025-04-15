@@ -242,6 +242,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                fetchUnreadNotifications();
                 checkQuests();
                 updateProfilePhoto();
                 drawerLayout.open();
