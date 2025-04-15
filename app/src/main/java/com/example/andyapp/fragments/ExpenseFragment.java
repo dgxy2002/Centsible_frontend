@@ -162,17 +162,17 @@ public class ExpenseFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_expense, container, false);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        imageUrl = myPref.getString(LoginActivity.VIEWERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
-        Log.d(TAG, imageUrl);
-        Glide.with(requireContext())
-                .load(imageUrl)
-                .circleCrop()
-                .into(profilePicView);
-        profilePicView.setVisibility(View.VISIBLE);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        imageUrl = myPref.getString(LoginActivity.VIEWERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
+//        Log.d(TAG, imageUrl);
+//        Glide.with(requireContext())
+//                .load(imageUrl)
+//                .circleCrop()
+//                .into(profilePicView);
+//        profilePicView.setVisibility(View.VISIBLE);
+//    }
 
     private void updateExpenseObservers() {
         Log.d(TAG, "USERID" + viewerId);
