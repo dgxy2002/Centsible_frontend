@@ -7,11 +7,13 @@ import android.widget.ImageButton;
 
 import com.example.andyapp.DataObserver;
 import com.example.andyapp.DataSubject;
+import com.example.andyapp.R;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.github.muddz.styleabletoast.StyleableToast;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,6 +64,7 @@ public class NotificationService {
                             @Override
                             public void run() {
                                 Log.d(TAG, message);
+                                StyleableToast.makeText(context, "Nudge Sent!", R.style.custom_toast);
                             }
                         });
                     } catch (IOException e) {

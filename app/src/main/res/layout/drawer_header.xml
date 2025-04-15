@@ -15,23 +15,27 @@
         android:id="@+id/navStreaks"
         android:layout_width="60dp"
         android:layout_height="80dp"
+        android:layout_marginEnd="40dp"
         android:background="@null"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/headerTextView"
         app:srcCompat="@drawable/fire_icon_expense" />
 
     <TextView
         android:id="@+id/headerTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/varela_round"
         android:textColor="@color/black"
         android:text="Sean's Menu"
+        android:layout_marginEnd="80dp"
         android:textSize="25sp"
         android:textStyle="bold"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/navStreaks"
         app:layout_constraintStart_toStartOf="@+id/drawerHeaderCardView" />
 
     <androidx.cardview.widget.CardView

@@ -115,6 +115,7 @@
                 android:fontFamily="@font/varela_round"
                 android:hint="Enter Username"
                 android:inputType="text"
+                android:textColor="@color/centsible_text_secondary"
                 android:textColorHint="@color/centsible_text_secondary"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

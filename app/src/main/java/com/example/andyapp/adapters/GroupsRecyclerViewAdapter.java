@@ -63,6 +63,7 @@ public class GroupsRecyclerViewAdapter extends RecyclerView.Adapter<GroupsRecycl
         String imageUrl = model.getImageUrl();
         Glide.with(context)
                 .load(imageUrl)
+                .circleCrop()
                 .into(holder.imageView);
         holder.nameView.setText(model.getName());
         holder.relationView.setText("Connection");

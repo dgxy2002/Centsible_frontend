@@ -80,6 +80,7 @@ public class ExpenseFragment extends Fragment {
     String viewerId;
     String token;
     String TAG = "LOGCAT";
+    ProfilePictureObserver profilePictureObserver;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -99,6 +100,7 @@ public class ExpenseFragment extends Fragment {
         //Initialise Profile Picture
         profilePicView = view.findViewById(R.id.expenseProfilePicture);
         profilePicView.setVisibility(View.INVISIBLE);
+        profilePictureObserver = new ProfilePictureObserver();
         //Initialise dropdown menu
         String[] sortingTypes = requireActivity().getResources().getStringArray(R.array.sorting_types);
         sortingAdapter = new ArrayAdapter<>(requireActivity(), R.layout.dropdownitem, sortingTypes);
@@ -148,7 +150,7 @@ public class ExpenseFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         subject.registerObserver(adapter);
         subject.registerObserver(pieChartObserver);
-        subject.registerObserver(new ProfilePictureObserver());
+        subject.registerObserver(profilePictureObserver);
         updateExpenseObservers();
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
@@ -158,6 +160,18 @@ public class ExpenseFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_expense, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        imageUrl = myPref.getString(LoginActivity.VIEWERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
+        Log.d(TAG, imageUrl);
+        Glide.with(requireContext())
+                .load(imageUrl)
+                .circleCrop()
+                .into(profilePicView);
+        profilePicView.setVisibility(View.VISIBLE);
     }
 
     private void updateExpenseObservers() {

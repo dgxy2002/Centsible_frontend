@@ -117,7 +117,7 @@ public interface ApiService {
 
     @Multipart
     @POST("users/{username}/upload-profile-image")
-    Call<ResponseBody>updateProfilePhoto(@Path("username") String username, @Part MultipartBody.Part file);
+    Call<Map<String, String>>updateProfilePhoto(@Path("username") String username, @Part MultipartBody.Part file);
 
 }
 

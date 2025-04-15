@@ -162,7 +162,6 @@ public class GroupsFragment extends Fragment {
             }
             @Override
             public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
-
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                         .addBackgroundColor(ContextCompat.getColor(requireContext(), R.color.delete_red))
                         .addSwipeLeftActionIcon(R.drawable.delete)

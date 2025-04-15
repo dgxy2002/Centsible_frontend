@@ -96,18 +96,15 @@ public class SettingsService {
         });
     }
     public void uploadProfilePicture(String username, MultipartBody.Part filePart){
-        api.updateProfilePhoto(username, filePart).enqueue(new Callback<ResponseBody>() {
+        api.updateProfilePhoto(username, filePart).enqueue(new Callback<Map<String, String>>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
                 if (response.isSuccessful() && response.body()!= null){
-                    try {
-                        String url = response.body().string();
-                        SharedPreferences.Editor editor = mPref.edit();
-                        editor.putString(LoginActivity.VIEWERIMAGEKEY, url);
-                        editor.apply();
-                    } catch (IOException e) {
-                        Log.d(TAG, e.toString());
-                    }
+                    Map<String, String> url = response.body();
+                    String imageUrl = url.get("imageUrl");
+                    SharedPreferences.Editor editor = mPref.edit();
+                    editor.putString(LoginActivity.VIEWERIMAGEKEY, imageUrl);
+                    editor.apply();
                 }else{
                     try {
                         String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error details";
@@ -119,7 +116,7 @@ public class SettingsService {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Map<String, String>> call, Throwable t) {
                 if (t.getMessage() != null){
                     Log.e(TAG, t.getMessage());
                 }

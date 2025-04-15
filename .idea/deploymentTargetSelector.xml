@@ -23,10 +23,10 @@
       </SelectionState>
       <SelectionState runConfigName="NavigationDrawerActivity">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-03-21T06:40:50.449566Z">
+        <DropdownSelection timestamp="2025-04-15T14:48:05.359679Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/seanleng/.android/avd/Pixel_6_Pro_API_33.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=RRCW203YBEN" />
             </handle>
           </Target>
         </DropdownSelection>

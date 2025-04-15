@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.andyapp.DataObserver;
@@ -65,6 +66,7 @@ public class SettingsFragment extends Fragment {
 
     private Button btnApply;
     private final String TAG = "LOGCAT";
+    private TextView greetingTextView;
     private ImageView profilePicImageView;
     private ImageView editImageView;
     private DataSubject<UserSettings> subject;
@@ -120,10 +122,13 @@ public class SettingsFragment extends Fragment {
         profilePicImageView = view.findViewById(R.id.settingsImageView);
         editImageView = view.findViewById(R.id.settingsEditImageView);
         btnApply = view.findViewById(R.id.settingsBtnApply);
+        greetingTextView = view.findViewById(R.id.settingsNameView);
         settingsService = new SettingsService(requireContext());
         subject = new DataSubject<>();
         subject.registerObserver(new ViewObserver());
         getSettings(username);
+
+        greetingTextView.setText("Welcome, " + username);
 
         profilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,12 +147,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-//        editImageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //TODO Same as above profile picture
-//            }
-//        });
 
         birthdayEditText.setOnClickListener(new View.OnClickListener() {
             @Override

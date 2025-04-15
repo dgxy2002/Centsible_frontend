@@ -100,7 +100,7 @@
                 android:id="@+id/sortIncomeLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="wrap_content"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
                 android:background="@color/backgroundaccent"
                 app:boxCornerRadiusBottomEnd="20dp"

@@ -212,7 +212,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             resetToolBar();
                             toolbarTitle.setText("Groups");
-                            btnMenu.setImageResource(R.drawable.hamburgermenu);
                             btnBarRight.setImageResource(R.drawable.message_icon);
                             changeFragment(new GroupsFragment());
                         }
@@ -229,11 +228,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
     public void resetToolBar() {
-        btnBarRight.setImageResource(R.drawable.bell);
+        btnBarRight.setImageResource(R.drawable.notifications);
         btnBarRight.setEnabled(true);
         btnBarRight.setVisibility(View.VISIBLE);
         toolbarTitle.setText("Insights");
-        btnBarRight.setScaleType(ImageView.ScaleType.FIT_CENTER);
         btnBarRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -244,6 +242,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                checkQuests();
+                updateProfilePhoto();
                 drawerLayout.open();
             }
         });
@@ -269,6 +269,14 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         userService.getUserQuest(userId, handler, new QuestObserver(logQuest), new QuestObserver(nudgeQuest), new QuestObserver(budgetQuest));
     }
 
+    public void updateProfilePhoto(){
+        imageUrl = mypref.getString(LoginActivity.VIEWERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
+        Glide.with(this)
+                .load(imageUrl)
+                .circleCrop()
+                .into(drawerHeaderImageView);
+    }
+
     class QuestObserver implements DataObserver<Boolean>{
         private final MenuItem menuItem;
         public QuestObserver(MenuItem menuItem) {
@@ -291,7 +299,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             if (getSupportFragmentManager().findFragmentById(R.id.dashboardFragmentContainer) instanceof DashboardFragment) {
                 if (data > 0) {
                     btnBarRight.setImageResource(R.drawable.unreadnotifications);
-                    btnBarRight.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 }
             }
         }
