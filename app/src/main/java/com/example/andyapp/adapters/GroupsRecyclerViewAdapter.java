@@ -24,7 +24,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.andyapp.models.GroupsModel;
 import com.example.andyapp.models.GroupsModels;
+import com.example.andyapp.queries.GroupsService;
 import com.example.andyapp.queries.NotificationService;
+import com.example.andyapp.queries.UserService;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -85,6 +87,8 @@ public class GroupsRecyclerViewAdapter extends RecyclerView.Adapter<GroupsRecycl
                 editor.putString(LoginActivity.VIEWERKEY, connectionId);
                 editor.putString(LoginActivity.VIEWERIMAGEKEY, imageUrl);
                 editor.apply();
+                UserService userService = new UserService(context);
+                userService.updateViewDashboard(fromUsername);
                 Intent intent = new Intent(context, NavigationDrawerActivity.class);
                 intent.putExtra(NavigationDrawerActivity.CONNECTION_NAME_TAG, model.getName());
                 intent.putExtra(NavigationDrawerActivity.FRAGMENT_TAG, "ViewExpense");

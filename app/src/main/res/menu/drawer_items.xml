@@ -35,7 +35,7 @@
         <item
             android:id="@+id/navQuest3"
             android:icon="@drawable/checkbox_full"
-            android:title="View a connection's dashboard!">
+            android:title="View a connection!">
         </item>
     </group>
     <item

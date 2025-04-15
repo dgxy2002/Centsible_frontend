@@ -187,6 +187,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
 
     public void changeFragment(Fragment fragment) {
+        checkQuests();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.dashboardFragmentContainer, fragment);

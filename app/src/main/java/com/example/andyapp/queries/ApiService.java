@@ -72,6 +72,9 @@ public interface ApiService {
             @Path("userId") String userId
     );
 
+    @POST("users/{username}/checked-child")
+    Call<ResponseBody>updateViewConnection(@Path("username") String username);
+
     //Get budget by category
     @GET("category-allocations/user/{userId}")
     Call<ArrayList<CategoryAllocation>>getCategoryAllocations(@Path("userId") String userId);

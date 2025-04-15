@@ -7,6 +7,7 @@ public class UserModel {
     private String lastNudge;
 
     private String lastLog;
+    private String lastCheckChild;
     private String username;
     private String imageUrl;
     private int loginStreak;
@@ -31,6 +32,9 @@ public class UserModel {
         return lastNudge;
     }
 
+    public String getLastCheckChild() {
+        return lastCheckChild;
+    }
     public String getLastLog() {
         return lastLog;
     }
