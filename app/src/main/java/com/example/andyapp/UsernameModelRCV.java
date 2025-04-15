@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class UsernameModelRCV extends RecyclerView.Adapter<UsernameModelRCV.MyViewHolder> {
@@ -37,7 +39,13 @@ public class UsernameModelRCV extends RecyclerView.Adapter<UsernameModelRCV.MyVi
         holder.points.setText(model.getNumber_points());
         holder.pointsChange.setText(model.getPointsUpDown());
         holder.imgArrow.setImageResource(model.getArrowUpDown_img());
-        holder.imgProfile.setImageResource(model.getImage());
+
+        // Load profile picture using Glide
+        Glide.with(context)
+                .load(model.getImageUrl())
+                .placeholder(R.drawable.avatar)
+                .circleCrop()
+                .into(holder.imgProfile);
     }
 
     @Override

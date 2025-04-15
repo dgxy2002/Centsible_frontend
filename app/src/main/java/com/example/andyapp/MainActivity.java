@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.andyapp.models.LeaderboardUser;
 import com.example.andyapp.queries.ApiService;
 import com.example.andyapp.queries.RetrofitClient;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -113,37 +114,39 @@ public class MainActivity extends AppCompatActivity {
         // Sort by score descending
         Collections.sort(users, (u1, u2) -> Integer.compare(u2.getScore(), u1.getScore()));
 
-        //Top 3 to add into recyclerview
+        // Top 1
         if (users.size() >= 1) {
             LeaderboardUser u = users.get(0);
             firstName.setText(userId.equals(u.getUserId()) ? "You" : u.getUsername());
             firstPoints.setText(String.valueOf(u.getScore()));
-            firstImg.setImageResource(R.drawable.avatar);
+            Glide.with(this).load(u.getImageUrl()).placeholder(R.drawable.avatar).circleCrop().into(firstImg);
         }
 
+        // Top 2
         if (users.size() >= 2) {
             LeaderboardUser u = users.get(1);
             secondName.setText(userId.equals(u.getUserId()) ? "You" : u.getUsername());
             secondPoints.setText(String.valueOf(u.getScore()));
-            secondImg.setImageResource(R.drawable.avatar);
+            Glide.with(this).load(u.getImageUrl()).placeholder(R.drawable.avatar).circleCrop().into(secondImg);
         } else {
             secondName.setText("");
             secondPoints.setText("");
             secondImg.setImageDrawable(null);
         }
 
+        // Top 3
         if (users.size() >= 3) {
             LeaderboardUser u = users.get(2);
             thirdName.setText(userId.equals(u.getUserId()) ? "You" : u.getUsername());
             thirdPoints.setText(String.valueOf(u.getScore()));
-            thirdImg.setImageResource(R.drawable.avatar);
+            Glide.with(this).load(u.getImageUrl()).placeholder(R.drawable.avatar).circleCrop().into(thirdImg);
         } else {
             thirdName.setText("");
             thirdPoints.setText("");
             thirdImg.setImageDrawable(null);
         }
 
-        // Exclude Top 3
+        // Remaining users for RecyclerView
         List<LeaderboardUser> remainingUsers = users.size() > 3
                 ? users.subList(3, users.size())
                 : new ArrayList<>();
@@ -154,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                     user.getUsername(),
                     pointsText,
                     "+0",
-                    R.drawable.avatar,
+                    user.getImageUrl(), //using image URL
                     R.drawable.arrow_up,
                     user.getUserId()
             ));
@@ -162,4 +165,5 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
     }
+
 }
