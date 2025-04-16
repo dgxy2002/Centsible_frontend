@@ -62,14 +62,17 @@
 
             <TextView
                 android:id="@+id/relationView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
                 android:fontFamily="@font/varela_round"
                 android:text="Child"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/nameView"
                 app:layout_constraintStart_toStartOf="@+id/nameView" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -81,6 +84,7 @@
                 android:fontFamily="@font/varela_round"
                 android:gravity="center"
                 android:text="Nudge"
+                android:textColor="@color/black"
                 android:textAllCaps="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
