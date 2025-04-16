@@ -49,7 +49,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     String username;
     String viewerId;
     String token;
-    String imageUrl;
+    String userImageUrl;
+    String viewerImageUrl;
     SharedPreferences mypref;
     ImageButton btnNavStreaks;
     View headerView;
@@ -119,7 +120,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         mypref = getSharedPreferences(LoginActivity.PREFTAG, Context.MODE_PRIVATE);
         userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         viewerId = mypref.getString(LoginActivity.VIEWERKEY, LoginActivity.DEFAULT_USERID);
-        imageUrl = mypref.getString(LoginActivity.VIEWERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
+        viewerImageUrl = mypref.getString(LoginActivity.VIEWERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
+        userImageUrl = mypref.getString(LoginActivity.USERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
         username = mypref.getString(LoginActivity.USERNAMEKEY, LoginActivity.DEFAULT_USERNAME);
         token = mypref.getString(LoginActivity.TOKENKEY, "None");
 
@@ -135,7 +137,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         drawerHeaderImageView = headerView.findViewById(R.id.drawerHeaderImageView);
         Glide.with(this)
-                .load(imageUrl)
+                .load(userImageUrl)
                 .circleCrop()
                 .into(drawerHeaderImageView);
         drawerHeaderImageView.setVisibility(View.VISIBLE);
@@ -165,6 +167,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 if (itemid == R.id.navDashboard) {
                     SharedPreferences.Editor editor = mypref.edit();
                     editor.putString(LoginActivity.VIEWERKEY, userId);
+                    editor.putString(LoginActivity.VIEWERIMAGEKEY, userImageUrl);
                     editor.apply();
                     changeFragment(new DashboardFragment());
                 } else if (itemid == R.id.navLB) {
@@ -271,9 +274,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
     public void updateProfilePhoto(){
-        imageUrl = mypref.getString(LoginActivity.VIEWERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
+        userImageUrl = mypref.getString(LoginActivity.USERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
+        Log.d(TAG, userImageUrl);
         Glide.with(this)
-                .load(imageUrl)
+                .load(userImageUrl)
                 .circleCrop()
                 .into(drawerHeaderImageView);
     }

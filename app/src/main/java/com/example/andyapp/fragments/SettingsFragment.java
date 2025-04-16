@@ -83,16 +83,19 @@ public class SettingsFragment extends Fragment {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Intent data = result.getData();
                 if (data.getData() != null){
-                    Uri imageURI = data.getData(); //If you are using Gallery
+                    Uri imageURI = data.getData();
+                    Log.d(TAG, imageURI.toString());//If you are using Gallery
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageURI);
                         profilePicImageView.setImageBitmap(bitmap);
+                        Log.d(TAG, "im here");
                         isPictureUpdated = true;
                     } catch (IOException e) {
                         Log.d(TAG, e.toString());
                     }
                 }else if (data.getExtras() != null){
                     //If you are using the camera
+                    Log.d(TAG, "FROm gallery");
                     isPictureUpdated = true;
                     Bitmap photo = (Bitmap) data.getExtras().get("data");
                     profilePicImageView.setImageBitmap(photo);
@@ -141,7 +144,6 @@ public class SettingsFragment extends Fragment {
                 // Combine into a chooser
                 Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Image");
                 chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{ cameraIntent });
-
                 // Launch the chooser
                 launcher.launch(chooserIntent);
             }

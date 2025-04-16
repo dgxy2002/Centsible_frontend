@@ -103,7 +103,8 @@ public class SettingsService {
                     Map<String, String> url = response.body();
                     String imageUrl = url.get("imageUrl");
                     SharedPreferences.Editor editor = mPref.edit();
-                    editor.putString(LoginActivity.VIEWERIMAGEKEY, imageUrl);
+                    Log.d(TAG, imageUrl);
+                    editor.putString(LoginActivity.USERIMAGEKEY, imageUrl);
                     editor.apply();
                 }else{
                     try {

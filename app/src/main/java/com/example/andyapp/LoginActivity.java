@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String VIEWERIMAGEKEY = "VIEWERIMAGEKEY";
     public static final String TOKENKEY = "TOKENKEY";
     public static final String PREFTAG = "MYPREF";
+    public static final String USERIMAGEKEY = "USERIMAGEKEY";
     public static final String USERNAMEKEY = "USERNAMEKEY";
     public static final String DEFAULT_USERID = "67ecf4e07cb6ed67c0e7e67a";
     public static final String DEFAULT_USERNAME = "hugo";
@@ -121,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString(VIEWERKEY, userId);
                             editor.putString(USERNAMEKEY, username);
                             editor.putString(VIEWERIMAGEKEY, imageUrl);
+                            editor.putString(USERIMAGEKEY, imageUrl);
                             editor.apply();
                             Log.d(TAG, String.format("userId: %s, username, %s, message: %s, token: %s", userId, username, message, token));
                             Intent intent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);

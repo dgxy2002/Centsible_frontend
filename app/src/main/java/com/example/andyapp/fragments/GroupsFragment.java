@@ -93,7 +93,7 @@ public class GroupsFragment extends Fragment {
         userId = mypref.getString(LoginActivity.USERKEY, LoginActivity.DEFAULT_USERID);
         token = mypref.getString(LoginActivity.TOKENKEY, LoginActivity.DEFAULT_USERID);
         username = mypref.getString(LoginActivity.USERNAMEKEY, LoginActivity.DEFAULT_USERNAME);
-        imageUrl = mypref.getString(LoginActivity.VIEWERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
+        imageUrl = mypref.getString(LoginActivity.USERIMAGEKEY, LoginActivity.DEFAULT_IMAGE);
 //        Log.d(TAG, String.format("USERID IN GROUPS %s", userId));
 //        Log.d(TAG, String.format("TOKEN IN GROUPS %s", token));
         //Set Up GroupsService for model querying
