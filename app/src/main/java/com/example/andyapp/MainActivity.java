@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         usernameList.clear();
 
         // Sort by score descending
+
         Collections.sort(users, (u1, u2) -> Integer.compare(u2.getScore(), u1.getScore()));
 
         List<String> topUserIds = new ArrayList<>();
@@ -177,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Remaining users for RecyclerView
         List<LeaderboardUser> remainingUsers = users.size() > 3
-                ? users.subList(4, users.size())
+                ? users.subList(3, users.size())
                 : new ArrayList<>();
 
         for (LeaderboardUser user : remainingUsers) {
