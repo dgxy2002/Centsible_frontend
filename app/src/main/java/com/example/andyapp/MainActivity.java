@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         usernameList.clear();
 
         // Sort by score descending
+
         Collections.sort(users, (u1, u2) -> Integer.compare(u2.getScore(), u1.getScore()));
 
         List<String> topUserIds = new ArrayList<>();

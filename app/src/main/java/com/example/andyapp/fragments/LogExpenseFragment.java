@@ -2,18 +2,26 @@ package com.example.andyapp.fragments;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,6 +36,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +77,7 @@ public class LogExpenseFragment extends Fragment {
     private ArrayAdapter<String> payAdapter;
     private ArrayAdapter<String> catAdapter;
     private ImageButton btnSubmit;
+    private ImageView logExpenseImageView;
     private ImageButton btnDelete;
     private ImageButton btnDate;
     private ImageButton btnBack;
@@ -83,12 +93,40 @@ public class LogExpenseFragment extends Fragment {
     private LocalDate currentDate;
     private String TAG = "LOGCAT";
     private SharedPreferences mPref;
+    private Boolean isPictureUpdated;
 
     AppCompatButton[] btnArray = new AppCompatButton[11];
     interface PostExpenseService{
         @POST("expenses/post")
         Call<ResponseBody> postExpenseService(@Body PostExpense expense);
     }
+
+    ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
+                Intent data = result.getData();
+                if (data.getData() != null){
+                    Uri imageURI = data.getData();
+                    Log.d(TAG, imageURI.toString());//If you are using Gallery
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageURI);
+                        logExpenseImageView.setImageBitmap(bitmap);
+                        Log.d(TAG, "im here");
+                        isPictureUpdated = true;
+                    } catch (IOException e) {
+                        Log.d(TAG, e.toString());
+                    }
+                }else if (data.getExtras() != null){
+                    //If you are using the camera
+                    Log.d(TAG, "FROm gallery");
+                    isPictureUpdated = true;
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    logExpenseImageView.setImageBitmap(photo);
+                }
+            }
+        }
+    });
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,6 +150,7 @@ public class LogExpenseFragment extends Fragment {
         btnSubmit = view.findViewById(R.id.btnSubmit);
         btnDelete = view.findViewById(R.id.buttoncross);
         descEditText = view.findViewById(R.id.logExpDesc);
+        logExpenseImageView = view.findViewById(R.id.logExpenseImageView);
         btnDate = view.findViewById(R.id.btnDate);
         btnArray[0] = view.findViewById(R.id.button0);
         btnArray[1] = view.findViewById(R.id.button1);
@@ -187,6 +226,23 @@ public class LogExpenseFragment extends Fragment {
                 setAmountViewText();
             }
         });
+
+        logExpenseImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO Make profile picture dynamically change
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Gallery Intent
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryIntent.setType("image/*");
+                // Combine into a chooser
+                Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Image");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{ cameraIntent });
+                // Launch the chooser
+                launcher.launch(chooserIntent);
+            }
+        });
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

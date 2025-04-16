@@ -64,7 +64,6 @@
         android:text="$0.00"
         android:textColor="@color/black"
         android:fontFamily="@font/varela_round"
-        android:inputType="numberDecimal"
         android:textSize="50sp"
         android:background="@null"
         app:layout_constraintEnd_toEndOf="parent"
