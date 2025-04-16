@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Remaining users for RecyclerView
         List<LeaderboardUser> remainingUsers = users.size() > 3
-                ? users.subList(4, users.size())
+                ? users.subList(3, users.size())
                 : new ArrayList<>();
 
         for (LeaderboardUser user : remainingUsers) {
